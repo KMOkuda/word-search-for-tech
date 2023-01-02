@@ -24,25 +24,16 @@
 <body class="drawer drawer--left">
 	<main role="main">
 		<div th:fragment="home_contents" th:remove="tag">
-			<!-- Page content -->
-			<h1>カテゴリーを選ぶ</h1>
+		<!-- Page content -->
+			<h1>楽しんで受かる基本情報<br>TechSearchFE</h1>
 			<!--
 			<span th:if="${continue == true}">
 			<a class="btn btn-success" href="#">中断したゲームを開始する</a>
 			</span>
 			-->
-
-			<tr th:each="i : ${#numbers.sequence(0, 2)}">
-				<!-- fruitsの要素の数が#numbers.sequenceの値より大きい場合、要素を表示 -->
-				<th:block th:if="${#lists.size(fruits) gt __${i}__}">
-					<td th:text="${fruits[__${i}__].cd}">/td>
-					<td th:text="${fruits[__${i}__].name}">/td>
-					<td th:text="${fruits[__${i}__].color}"></td>
-				</th:block>
-			</tr>
 			<a class="btn btn-success" href="#">新しく始める</a>
-			</di
-					v>
+			
+		</div>
 	</main>
 	<footer>
 		<div
