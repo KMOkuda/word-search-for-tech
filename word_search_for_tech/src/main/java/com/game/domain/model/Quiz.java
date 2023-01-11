@@ -1,10 +1,14 @@
 package com.game.domain.model;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
 public class Quiz {
-	int quizId;
-	int categoryId;
-	int basicReward;
+	String category;
+	int level;
+	List<String> KWs;
+	int basicPoint;
+	boolean isSolved;
 }

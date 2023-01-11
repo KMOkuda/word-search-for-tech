@@ -5,8 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class QuizClearHistory {
-	String userId;
+public class QuizHistory {
 	Date clearDate;
 	int quizId;
 	boolean onHardMode;
