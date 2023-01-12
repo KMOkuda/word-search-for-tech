@@ -5,8 +5,8 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class Game{
-	char[][] gameBoard;
+public class Quiz{
+	char[][] board;
 	List<String> KWs;
-	QuizInfo quizInfo;
+	QuizInfo info;
 }
