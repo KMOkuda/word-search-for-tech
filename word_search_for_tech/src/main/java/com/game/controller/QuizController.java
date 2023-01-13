@@ -58,10 +58,10 @@ public class QuizController {
 	public String getQuizDetail(Model model, @PathVariable(name = "id", required = true) Integer quizId,
 			@AuthenticationPrincipal UserDetails user) {
 
-		QuizInfo quizInfo = quizService.getQuizInfo(quizId);
-		boolean onFirstTry = quizService.checkFirstHardTry(user.getUsername(), quizId);
+		boolean firstBlind = quizService.checkFirstBlind(user.getUsername(), quizId);
+		QuizInfo quizInfo = quizService.getQuizInfo(quizId, firstBlind);
 
-		model.addAttribute("onFirstTry", onFirstTry);
+		model.addAttribute("onFirstTry", firstBlind);
 		model.addAttribute("id", quizId);
 		model.addAttribute("category", quizInfo.getCategory());
 		model.addAttribute("level", quizInfo.getLevel());
@@ -74,13 +74,14 @@ public class QuizController {
 	@PostMapping("/game/{id}")
 	public String getGame(Model model, @PathVariable(name = "id", required = true) Integer quizId,
 			@RequestParam String display, @AuthenticationPrincipal UserDetails user) {
-		if (display.equals("off")) {
-			if (!quizService.checkFirstHardTry(user.getUsername(), quizId)) {
-			}
-		}
-		Quiz quiz = quizService.createNewQuiz(quizId);
+
+		Quiz quiz = quizService.createNewQuiz(quizId, display);
+		quizService.registerClearHistory(user.getUsername(), quizId, display);
+
 		model.addAttribute("id", quizId);
+
 		model.addAttribute("KW", quiz.getKWs());
+
 		model.addAttribute("board", quiz.getBoard());
 		model.addAttribute("display", display);
 

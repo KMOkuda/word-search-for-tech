@@ -9,13 +9,18 @@ import com.game.domain.model.QuizInfo;
 
 public interface QuizService {
 	List<Category> getCategories();
-	List<Level> getLevels();
-	List<QuizInfo> getQuizInfos(String filterMode, int filterId);
-	List<QuizInfo> getQuizInfos(Quiz quiz);
-	QuizInfo getQuizInfo(int quizId);
 
-	Quiz createNewQuiz(int quidId);
-	int getQuizPoint(Quiz quiz, boolean onHardMode);
-	int registerHistory(int userId, int quizId);
-	boolean checkFirstHardTry(String username, int quizId);
+	List<Level> getLevels();
+
+	List<QuizInfo> getQuizInfos(String filterMode, int filterId);
+
+	List<QuizInfo> getQuizInfos(Quiz quiz);
+
+	QuizInfo getQuizInfo(int quizId, boolean firstBlind);
+
+	boolean checkFirstBlind(String username, int quizId);
+
+	Quiz createNewQuiz(int quidId, String display);
+
+	int registerClearHistory(String string, int quizId, String display);
 }
