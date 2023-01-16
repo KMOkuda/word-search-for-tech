@@ -31,16 +31,17 @@ public class QuizController {
 
 		List<?> categoryList = quizService.getCategories();
 		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("contents", "quiz/category::category_contents");
 
-		return "home";
+		return "layout";
 	}
 
 	@GetMapping("/level")
 	public String getLevel(Model model, @RequestParam String selectMode, String filter) {
 		List<?> levelList = quizService.getLevels();
 		model.addAttribute("levelList", levelList);
-
-		return "home";
+		model.addAttribute("contents", "quiz/level::level_contents");
+		return "layout";
 	}
 
 	@GetMapping("/quiz")
@@ -51,7 +52,8 @@ public class QuizController {
 		 * {id, category, difficulty, normalPoint, HardPoint}
 		 * */
 
-		return "home";
+		model.addAttribute("contents", "quiz/quiz::quiz_contents");
+		return "layout";
 	}
 
 	@GetMapping("/quiz-info/{id}")
@@ -68,7 +70,9 @@ public class QuizController {
 		model.addAttribute("normalPoint", quizInfo.getNormalPoint());
 		model.addAttribute("hardPoint", quizInfo.getHardPoint());
 
-		return "home";
+
+		model.addAttribute("contents", "quiz/quiz-info::quiz-info_contents");
+		return "layout";
 	}
 
 	@PostMapping("/game/{id}")
@@ -85,12 +89,22 @@ public class QuizController {
 		model.addAttribute("board", quiz.getBoard());
 		model.addAttribute("display", display);
 
-		return "home";
+		model.addAttribute("contents", "quiz/game::game_contents");
+
+		return "layout";
 	}
 
 	@PostMapping("/clear/{id}")
-	public String postClear(Model model, @RequestParam String quizId) {
+	public String postClear(Model model, @RequestParam String quizId, String answerCode,
+			@AuthenticationPrincipal UserDetails user) {
+		boolean answerCheck = quizService.checkAnswerCode(user.getUsername(), Integer.parseInt(quizId), Integer.parseInt(answerCode));
 
-		return "home";
+		model.addAttribute("contents", "quiz/clear::clear_contents");
+
+		if(answerCheck == true) {
+			return "layout";
+		}else {
+			return "layout";
+		}
 	}
 }

@@ -23,4 +23,6 @@ public interface QuizService {
 	Quiz createNewQuiz(int quidId, String display);
 
 	int registerClearHistory(String string, int quizId, String display);
+
+	boolean checkAnswerCode(String userId, int quizId, int answerCode);
 }

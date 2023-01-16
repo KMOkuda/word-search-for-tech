@@ -12,6 +12,7 @@ public class HomeController {
 		//Service getCurrentDuration(String userId);
 		//model.addAttribute 連続プレイ日数
 		//model.addAttribute 最長日数
-		return "home";
+		model.addAttribute("contents", "home::home_contents");
+		return "layout";
 	}
 }

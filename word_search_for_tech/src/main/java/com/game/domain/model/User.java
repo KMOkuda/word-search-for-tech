@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 public class User implements UserDetails{
-	int userId;
+	String userId;
 	String customId;
 	String email;
 	String password;
@@ -33,8 +33,7 @@ public class User implements UserDetails{
 
 	@Override
 	public String getUsername() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		return this.userId;
 	}
 
 	@Override
