@@ -5,8 +5,9 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class Favorite {
-	String favoriteId;
-	String KW;
+public class Trophy {
+	int id;
+	String name;
+	int difficulty;
 	Date registedDate;
 }

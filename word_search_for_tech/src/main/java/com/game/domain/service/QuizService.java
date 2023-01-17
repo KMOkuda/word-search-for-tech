@@ -2,11 +2,14 @@ package com.game.domain.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.game.domain.model.Category;
 import com.game.domain.model.Level;
 import com.game.domain.model.Quiz;
 import com.game.domain.model.QuizInfo;
 
+@Service
 public interface QuizService {
 	List<Category> getCategories();
 
