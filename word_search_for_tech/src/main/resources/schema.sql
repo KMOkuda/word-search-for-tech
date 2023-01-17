@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS t_favorite(
 	quiz_id INT NOT NULL,
 	memo VARCHAR,
 	created_at TIMESTAMP NOT NULL,
-	updated_at
+	updated_at TIMESTAMP NOT NULL
 )
 
 
