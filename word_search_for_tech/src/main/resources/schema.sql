@@ -37,9 +37,11 @@ CREATE TABLE IF NOT EXISTS t_quiz(
 );
 
 CREATE TABLE IF NOT EXISTS t_kw(
-	kw_id INT PRIMARY KEY,
+	kw_id INT AUTO_INCREMENT PRIMARY KEY,
 	kw_name VARCHAR
 );
+
+CREATE INDEX idx_kw_id ON t_kw(kw_id);
 
 CREATE TABLE IF NOT EXISTS t_question(
 	quiz_id CHAR(6),
@@ -67,10 +69,10 @@ CREATE TABLE IF NOT EXISTS t_favorite(
 	favoite_id INT PRIMARY KEY,
 	user_id INT NOT NULL,
 	quiz_id INT NOT NULL,
-	memo VARCHAR,
+	memo VARCHAR(140),
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL
-)
+);
 
 
 CREATE TABLE IF NOT EXISTS m_user(

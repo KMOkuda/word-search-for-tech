@@ -5,8 +5,8 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class Quiz{
+public class Puzzle{
 	char[][] board;
-	List<String> KWs;
-	QuizInfo info;
+	List<KW> KWList;
+	PuzzleInfo info;
 }

@@ -3,7 +3,7 @@ package com.game.domain.model;
 import lombok.Data;
 
 @Data
-public class QuizInfo{
+public class PuzzleInfo{
 	int id;
 	Category category;
 	Level level;

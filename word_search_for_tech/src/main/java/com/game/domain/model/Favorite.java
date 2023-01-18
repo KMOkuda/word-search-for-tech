@@ -6,7 +6,8 @@ import lombok.Data;
 
 @Data
 public class Favorite {
-	String favoriteId;
+	String publicFavoriteId;
 	String KW;
+	String memo;
 	Date registedDate;
 }

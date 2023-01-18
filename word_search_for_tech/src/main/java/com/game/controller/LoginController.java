@@ -16,6 +16,4 @@ public class LoginController {
 		model.addAttribute("contents", "home::home_contents");
 		return "redirect:layout";
 	}
-
-
 }
