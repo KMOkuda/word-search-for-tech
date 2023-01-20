@@ -5,42 +5,40 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.game.domain.model.Category;
-import com.game.domain.model.KW;
-import com.game.domain.model.Level;
+import com.game.domain.model.Game;
 import com.game.domain.model.PlayRecord;
-import com.game.domain.model.PuzzleInfo;
+import com.game.domain.model.Property;
 
 @Service
 public class PuzzleServiceImpl implements PuzzleService{
 
 	@Override
-	public List<Category> getCategories() {
+	public List<String> getCategories() {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
 
 	@Override
-	public List<Level> getLevels() {
+	public List<Integer> getLevels() {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
 
 	@Override
-	public List<PuzzleInfo> getPuzzleInfos(String filterMode, String filterId) {
+	public List<Property> getProperties(String filterMode, String filterId) {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
 
 	@Override
-	public PuzzleInfo getPuzzleInfoByPuzzleId(String puzzleId, boolean firstBlind) {
+	public Property getPropertyByTemplateId(String puzzleId) {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
 
 
 	@Override
-	public PuzzleInfo getPuzzleInfoByPlayId(String username, String publicPlayId) {
+	public Property getPropertyByPlayId(String username, String publicPlayId) {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
@@ -52,14 +50,14 @@ public class PuzzleServiceImpl implements PuzzleService{
 	}
 
 	@Override
-	public int createPlayRecord(String username, String puzzleId, String display) {
+	public int createGame(String username, String puzzleId, String display) {
 		// TODO 自動生成されたメソッド・スタブ
 		return 0;
 	}
 
 
 	@Override
-	public PlayRecord getPlayRecord(String username, String publicPuzzleId) {
+	public Game getGame(String username, String publicPuzzleId) {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
@@ -77,7 +75,7 @@ public class PuzzleServiceImpl implements PuzzleService{
 	}
 
 	@Override
-	public List<KW> getKWList(String username, String publicPlayId) {
+	public List<String> getKWList(String username, String publicPlayId) {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}

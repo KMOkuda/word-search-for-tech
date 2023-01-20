@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.game.domain.model.KW;
-import com.game.domain.model.PlayRecord;
-import com.game.domain.model.PuzzleInfo;
+import com.game.domain.model.Game;
+import com.game.domain.model.Property;
 import com.game.domain.service.PuzzleService;
 import com.game.domain.service.UserService;
 
@@ -50,8 +49,8 @@ public class PuzzleController {
 
 	@GetMapping("/puzzles")
 	public String getPuzzles(Model model, @RequestParam String filterMode, String filterId) {
-		List<?> PuzzleInfos = puzzleService.getPuzzleInfos(filterMode, filterId);
-		model.addAttribute("PuzzleList", PuzzleInfos);
+		List<?> properties = puzzleService.getProperties(filterMode, filterId);
+		model.addAttribute("PuzzleList", properties);
 		/*
 		 * {id, category, difficulty, normalPoint, HardPoint}
 		 * */
@@ -60,55 +59,54 @@ public class PuzzleController {
 		return "layout";
 	}
 
-	@GetMapping("/puzzle-info/{id}")
+	@GetMapping("/puzzle/{id}")
 	public String getPuzzleDetail(Model model, @PathVariable(name = "id", required = true) String puzzleId,
 			@AuthenticationPrincipal UserDetails user) {
 
-		boolean firstBlind = puzzleService.checkFirstBlind(user.getUsername(), puzzleId);
-		PuzzleInfo puzzleInfo = puzzleService.getPuzzleInfoByPuzzleId(puzzleId, firstBlind);
+		Property property = puzzleService.getPropertyByTemplateId(puzzleId);
 
-		model.addAttribute("onFirstTry", firstBlind);
-		model.addAttribute("id", puzzleId);
-		model.addAttribute("category", puzzleInfo.getCategory());
-		model.addAttribute("level", puzzleInfo.getLevel());
-		model.addAttribute("normalPoint", puzzleInfo.getNormalPoint());
-		model.addAttribute("hardPoint", puzzleInfo.getHardPoint());
+		model.addAttribute("category", property.getCategory());
+		model.addAttribute("level", property.getLevel());
+		model.addAttribute("mode", puzzleService.getModes());
 
 		model.addAttribute("contents", "puzzle/puzzle-info::puzzle-info_contents");
 		return "layout";
 	}
 
 	@PostMapping("/create/{id}")
-	public String postCreate(Model model, @PathVariable(name = "id", required = true) String puzzleId,
-			@RequestParam String display, @AuthenticationPrincipal UserDetails user) {
+	public String postCreate(Model model, @PathVariable(name = "id", required = true) String templateId,
+			@RequestParam("mode") String mode, @AuthenticationPrincipal UserDetails user) {
 
-		int playId = puzzleService.createPlayRecord(user.getUsername(), puzzleId, display);
+		int statusId = puzzleService.createGame(user.getUsername(), templateId, mode);
 
-		return "redirect:/game/" + playId;
+		return "redirect:/game/" + statusId;
 	}
 
-	@RequestMapping("/play/{id}")
+	@RequestMapping("/game/{id}")
 	public String postPlay(Model model, @PathVariable(name = "id", required = true) String publicPuzzleId,
 			@RequestParam("msg") String msg, @AuthenticationPrincipal UserDetails user) {
 
 		//必ずユーザー名と一緒に照合すること！！
-		PlayRecord playRecord = puzzleService.getPlayRecord(user.getUsername(), publicPuzzleId);
+		Game game = puzzleService.getGame(user.getUsername(), publicPuzzleId);
 
-		model.addAttribute("board", playRecord.getBoard());
-		model.addAttribute("id", playRecord.getPlayId());
-		model.addAttribute("isBlind", playRecord.isBlind());
+		model.addAttribute("board", game.getBoard());
+		model.addAttribute("id", publicPuzzleId);
+		model.addAttribute("mode", game.getMode());
+		model.addAttribute("KW", game.getTemplate().getKWList());
 
 		model.addAttribute(msg);
-
-		if (!playRecord.isBlind()) {
-			List<KW> KWList = puzzleService.getKWList(user.getUsername(), publicPuzzleId);
-			model.addAttribute("KWs", KWList);
-		}
 
 		model.addAttribute("contents", "puzzle/play::play_contents");
 
 		return "layout";
 	}
+
+	@PostMapping("/answer/{id}")
+	public String postAnswer(Model model, @RequestParam String publicPlayId, String answerCode,
+			RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails user) {
+
+	}
+
 
 	@PostMapping("/clear/{id}")
 	public String postClear(Model model, @RequestParam String publicPlayId, String answerCode,
@@ -119,15 +117,15 @@ public class PuzzleController {
 			return "error";
 
 		} else if (answerCheck == 0) {
-			puzzleService.getPlayRecord(user.getUsername(), publicPlayId);
+			puzzleService.getGame(user.getUsername(), publicPlayId);
 			redirectAttributes.addAttribute("msg", "wrong");
 
 			return "redirect:/play/" + publicPlayId;
 
 		} else {
 			PlayRecord playRecord = puzzleService.RegisterClear(user.getUsername(), publicPlayId, LocalDateTime.now());
-			List<KW> KWList = puzzleService.getKWList(user.getUsername(), publicPlayId);
-			PuzzleInfo puzzleInfo = puzzleService.getPuzzleInfoByPlayId(publicPlayId, user.getUsername());
+			List<String> KWList = puzzleService.getKWList(user.getUsername(), publicPlayId);
+			Property puzzleInfo = puzzleService.getPropertyByPlayId(publicPlayId, user.getUsername());
 
 			model.addAttribute("category",puzzleInfo.getCategory().getName());
 			model.addAttribute("level",puzzleInfo.getLevel().getLevelName());

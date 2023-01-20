@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.game.domain.model.Favorite;
+import com.game.domain.model.suspended.Favorite;
 import com.game.domain.service.FavoriteService;
 
 public class UserController {

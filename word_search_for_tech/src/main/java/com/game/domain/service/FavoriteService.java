@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.game.domain.model.Favorite;
+import com.game.domain.model.suspended.Favorite;
 
 @Service
 public interface FavoriteService {

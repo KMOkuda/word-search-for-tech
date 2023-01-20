@@ -5,9 +5,9 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class PlayRecord{
+public class GameStatus{
 	int playId;
-	boolean blind;
+	String mode;
 	String board;
 	String answerCode;
 	int point;
