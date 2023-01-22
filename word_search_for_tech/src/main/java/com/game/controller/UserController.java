@@ -1,9 +1,7 @@
 package com.game.controller;
 
-import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
@@ -11,18 +9,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.game.domain.model.suspended.Favorite;
-import com.game.domain.service.FavoriteService;
-
 public class UserController {
+	/**
 	@Autowired
 	FavoriteService favoriteService;
-
+**/
 	@PostMapping("/quick-favorite")
 	public String postQuickFavorite(Model model, @AuthenticationPrincipal UserDetails user,
 			@RequestParam Map<String, String> KWMap) {//形式 {id, "true" or "false"}
 
-		favoriteService.registerFavoriteByParam(user.getUsername(), KWMap);
+//		favoriteService.registerFavoriteByParam(user.getUsername(), KWMap);
 
 
 		return "layout";
@@ -30,8 +26,8 @@ public class UserController {
 
 	@GetMapping("/favorites")
 	public String getFavorite(Model model, @AuthenticationPrincipal UserDetails user) {
-		List<Favorite> favoriteList = favoriteService.getFavorite(user.getUsername());
-		model.addAttribute("favoriteList", favoriteList);
+//		List<Favorite> favoriteList = favoriteService.getFavorite(user.getUsername());
+//		model.addAttribute("favoriteList", favoriteList);
 		model.addAttribute("contents", "user/favorites::favorites_contents");
 		return "layout";
 	}

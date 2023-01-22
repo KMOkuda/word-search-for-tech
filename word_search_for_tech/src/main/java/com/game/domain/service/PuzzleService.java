@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.game.domain.model.Game;
 import com.game.domain.model.Play;
-import com.game.domain.model.PuzzleModel;
+import com.game.domain.model.Puzzle;
 
 @Service
 public interface PuzzleService {
@@ -17,11 +17,11 @@ public interface PuzzleService {
 
 	List<String> getModes(String username, String puzzleModel);
 
-	List<PuzzleModel> getPuzzleModels(String filterMode, String filterId);
+	List<?> getPuzzleModels(String filterMode, String filterId);
 
-	PuzzleModel getPuzzleModel(String puzzleModelId);
+	Puzzle getPuzzleModel(String puzzleModelId);
 
-	PuzzleModel getPuzzleModel(String username, String publicPlayId);
+	Puzzle getPuzzleModel(String username, String publicPlayId);
 	
 	String getCategory(String puzzleModelId);
 	
