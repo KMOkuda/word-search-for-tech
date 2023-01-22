@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.game.domain.model.Game;
-import com.game.domain.model.GameStatus;
-import com.game.domain.model.Property;
+import com.game.domain.model.Play;
+import com.game.domain.model.PuzzleModel;
 
 @Service
 public interface PuzzleService {
@@ -15,18 +15,19 @@ public interface PuzzleService {
 
 	List<Integer> getLevels();
 
-	List<String> getModes();
+	List<String> getModes(String username, String puzzleModel);
 
-	List<Property> getProperties(String filterMode, String filterId);
+	List<PuzzleModel> getPuzzleModels(String filterMode, String filterId);
 
-	Property getPropertyByTemplateId(String puzzleId);
+	PuzzleModel getPuzzleModel(String puzzleModelId);
 
-	Property getPropertyByPlayId(String username, String publicPlayId);
+	PuzzleModel getPuzzleModel(String username, String publicPlayId);
+	
+	String getCategory(String puzzleModelId);
+	
+	String getLevel(String puzzleModelId);
 
 	boolean checkFirstBlind(String username, String puzzleId);
-
-	//publicPlayIdを返す
-	int createGame(String string, String puzzleId, String display);
 
 	Game getGame(String username, String publicPlayId);
 
@@ -34,7 +35,9 @@ public interface PuzzleService {
 
 	List<String> getKWList(String username, String publicPlayId);
 
-	GameStatus RegisterClear(String username, String publicPlayId, LocalDateTime now);
+	Play RegisterClear(String username, String publicPlayId, LocalDateTime now);
+
+	Play generateNewGame(String username, String puzzleModelId, String mode);
 
 
 

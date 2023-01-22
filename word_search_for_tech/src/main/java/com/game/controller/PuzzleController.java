@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.game.domain.model.Game;
-import com.game.domain.model.Property;
+import com.game.domain.model.Play;
+import com.game.domain.model.PlayStatus;
+import com.game.domain.model.PuzzleModel;
 import com.game.domain.service.PuzzleService;
 import com.game.domain.service.UserService;
 
@@ -28,67 +30,47 @@ public class PuzzleController {
 	@Autowired
 	PuzzleService puzzleService;
 
-	@GetMapping("/category")
-	public String getCategory(Model model) {
-		// 表示したい要素：カテゴリーID,カテゴリー名, アイコン←永続化しない。サービスで実装？
-
-		List<?> categoryList = puzzleService.getCategories();
-		model.addAttribute("categoryList", categoryList);
-		model.addAttribute("contents", "Puzzle/category::category_contents");
-
-		return "layout";
-	}
-
-	@GetMapping("/level")
-	public String getLevel(Model model, @RequestParam String selectMode, String filter) {
-		List<?> levelList = puzzleService.getLevels();
-		model.addAttribute("levelList", levelList);
-		model.addAttribute("contents", "Puzzle/level::level_contents");
-		return "layout";
-	}
-
-	@GetMapping("/puzzles")
-	public String getPuzzles(Model model, @RequestParam String filterMode, String filterId) {
-		List<?> properties = puzzleService.getProperties(filterMode, filterId);
+	@GetMapping("/search")
+	public String getPuzzles(Model model, @RequestParam("field") String filterField, String("level") filterLevel) {
+		List<?> properties = puzzleService.getPuzzleModels(filterField, filterLevel);
 		model.addAttribute("PuzzleList", properties);
-		/*
-		 * {id, category, difficulty, normalPoint, HardPoint}
-		 * */
 
 		model.addAttribute("contents", "puzzle/puzzle::puzzle_contents");
 		return "layout";
 	}
 
-	@GetMapping("/puzzle/{id}")
-	public String getPuzzleDetail(Model model, @PathVariable(name = "id", required = true) String puzzleId,
+	@GetMapping("/mode-select")
+	public String getPuzzleDetail(Model model, @RequestParam("model") String puzzleModelId,
 			@AuthenticationPrincipal UserDetails user) {
 
-		Property property = puzzleService.getPropertyByTemplateId(puzzleId);
+		List<?> property = puzzleService.getModes(user.getUsername(), puzzleModelId);
+		PuzzleModel puzzleModel = puzzleService.getPuzzleModel(puzzleModelId);
+		
+		model.addAttribute("modelId", puzzleModelId);
+		model.addAttribute("category", puzzleModel.getCategory());
+		model.addAttribute("level", puzzleModel.getLevel());
+		model.addAttribute("modeList", property);
 
-		model.addAttribute("category", property.getCategory());
-		model.addAttribute("level", property.getLevel());
-		model.addAttribute("mode", puzzleService.getModes());
-
-		model.addAttribute("contents", "puzzle/puzzle-info::puzzle-info_contents");
+		model.addAttribute("contents", "puzzle/mode-select::mode-select_contents");
 		return "layout";
 	}
 
 	@PostMapping("/create/{id}")
-	public String postCreate(Model model, @PathVariable(name = "id", required = true) String templateId,
+	public String postCreate(Model model, @PathVariable(name = "id", required = true) String puzzleModelId,
 			@RequestParam("mode") String mode, @AuthenticationPrincipal UserDetails user) {
 
-		int statusId = puzzleService.createGame(user.getUsername(), templateId, mode);
+		Play play = puzzleService.generateNewGame(user.getUsername(), puzzleModelId, mode);
 
-		return "redirect:/game/" + statusId;
+		return "redirect:/play/" + play.getPublicPlayStatusId();
 	}
 
-	@RequestMapping("/game/{id}")
-	public String postPlay(Model model, @PathVariable(name = "id", required = true) String publicPuzzleId,
+	@RequestMapping("/play/{id}")
+	public String postPlay(Model model, @PathVariable(name = "id", required = true) String publicPlayId,
 			@RequestParam("msg") String msg, @AuthenticationPrincipal UserDetails user) {
 
 		//必ずユーザー名と一緒に照合すること！！
-		Game game = puzzleService.getGame(user.getUsername(), publicPuzzleId);
-
+		Game game = puzzleService.getGame(user.getUsername(), publicPlayId);
+/**
 		model.addAttribute("board", game.getBoard());
 		model.addAttribute("id", publicPuzzleId);
 		model.addAttribute("mode", game.getMode());
@@ -97,7 +79,7 @@ public class PuzzleController {
 		model.addAttribute(msg);
 
 		model.addAttribute("contents", "puzzle/play::play_contents");
-
+**/
 		return "layout";
 	}
 

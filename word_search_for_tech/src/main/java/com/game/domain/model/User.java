@@ -1,7 +1,6 @@
 package com.game.domain.model;
 
 import java.util.Collection;
-import java.util.Date;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,12 +14,10 @@ public class User implements UserDetails{
 	private String email;
 	private String password;
 
-	private int point;
-	private boolean onHardMode;
+	private int totalPoint;
 
-	private Date lastLoginDate;
-	private int currentRecord;
-	private int maxRecord;
+	private int seqCount;
+	private int maxSeqCount;
 
 	private Collection<GrantedAuthority> authorities;
 
