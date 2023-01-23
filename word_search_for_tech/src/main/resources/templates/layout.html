@@ -3,10 +3,15 @@
 	xmins:layout="http://www.ultraq.net.nz/thymeleaf/latout">
 <!-- Bootstrapを設定 -->
 <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
-<link th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css}"
-	rel="stylesheet"></link>
-<script th:src="@{/webjars/bootstrap/4.6.0/js/bootstrap.min.js}"></script>
-
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+	crossorigin="anonymous"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
 
@@ -15,6 +20,8 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/js/drawer.min.js"></script>
 
+<link rel="stylesheet" th:href="@{/css/reset.css}"></link>
+<link rel="stylesheet" th:href="@{/css/layout.css}"></link>
 <script th:src="@{/js/layout.js}"></script>
 
 
@@ -23,23 +30,31 @@
 </head>
 <body class="drawer drawer--left">
 	<header role="banner">
-		<button type="button" class="drawer-toggle drawer-hamburger">
-			<span class="sr-only">toggle navigation</span> <span
-				class="drawer-hamburger-icon"></span>
-		</button>
-		<nav class="drawer-nav" role="navigation">
-			<ul class="drawer-menu">
-				<li><a class="drawer-brand" href="#">TechSearchFE</a></li>
-				<li><a class="drawer-menu-item" href="#">ホーム</a></li>
-				<li><a class="drawer-menu-item" href="#">お気に入り</a></li>
-				<li><a class="drawer-menu-item" href="#">実績</a></li>
-				<li><a class="drawer-menu-item" href="#">クリア履歴</a></li>
-			</ul>
-		</nav>
+		<div class="inner bg-success h-100">
+			<button type="button" class="drawer-toggle drawer-hamburger">
+				<span class="sr-only">toggle navigation</span> <span
+					class="drawer-hamburger-icon"></span>
+			</button>
+			<nav class="drawer-nav bg-body-secondary" role="navigation">
+				<ul class="drawer-menu">
+					<li><a class="drawer-brand" href="#">｛ユーザー名｝さん</a></li>
+					<li><a class="drawer-menu-item" href="/">ホーム</a></li>
+					<li><a class="drawer-menu-item" href="/favorite">お気に入り</a></li>
+					<li><a class="drawer-menu-item" href="/history">実績</a></li>
+					<li><a class="drawer-menu-item" href="/trophy">トロフィー</a></li>
+					<li><a class="drawer-menu-item" href="#">クリア履歴</a></li>
+				</ul>
+			</nav>
+			<h1>IT Puzzle</h1>
+		</div>
 	</header>
 	<main role="main">
-		<!-- Page content -->
+		<div class="m-inner text-body">
+			<!-- Page content -->
+			<div th:insert="__${contents}__" th:class="main-content"></div>
+		</div>
 	</main>
+	<!--
 	<footer>
 		<div
 			class="fixed-bottom mx-0 bg-dark bg-opacity-75 text-center text-white">
@@ -47,7 +62,7 @@
 		</div>
 
 	</footer>
-
+-->
 </body>
 
 </body>

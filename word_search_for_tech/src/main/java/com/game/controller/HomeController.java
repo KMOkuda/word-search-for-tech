@@ -14,13 +14,13 @@ public class HomeController {
 **/
 	@GetMapping("/")
 	public String getHome(Model model, @AuthenticationPrincipal UserDetails user) {
-		
+
 		int currentDuration = 5;
 		int longestDuration = 5;
 
 		model.addAttribute("current", currentDuration);
 		model.addAttribute("longest", longestDuration);
-		model.addAttribute("contents", "home::home_contents");
+		model.addAttribute("contents", "home/home::home_contents");
 		return "layout";
 	}
 }

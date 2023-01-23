@@ -20,36 +20,32 @@ public class PuzzleController {
 	@Autowired(required =  false)
 	PuzzleService puzzleService;
 **/
-	@GetMapping("/search")
-	public String getPuzzles(Model model, @RequestParam("field") String filterField, @RequestParam("level")String filterLevel) {
-		/*
-		List<?> properties = puzzleService.getPuzzleModels(filterField, filterLevel);
-		model.addAttribute("PuzzleList", properties);
-
-		model.addAttribute("contents", "puzzle/puzzle::puzzle_contents");
-		*/
+	@GetMapping("/ws-search")
+	public String getPuzzles(Model model, @RequestParam(name = "category", required = false) String category,
+			@RequestParam(name = "level", required = false)String level) {
+		model.addAttribute("contents", "ws-puzzle/search::search_contents");
 		return "layout";
-		
+
 	}
 
-	@GetMapping("/mode-select")
+	@GetMapping("/ws-mode-select")
 	public String getPuzzleDetail(Model model, @RequestParam("model") String puzzleModelId,
 			@AuthenticationPrincipal UserDetails user) {
 /*
 		List<?> property = puzzleService.getModes(user.getUsername(), puzzleModelId);
 		Puzzle puzzleModel = puzzleService.getPuzzleModel(puzzleModelId);
-		
+
 		model.addAttribute("modelId", puzzleModelId);
 		model.addAttribute("category", puzzleModel.getCategory());
 		model.addAttribute("level", puzzleModel.getLevel());
 		model.addAttribute("modeList", property);
 */
-		model.addAttribute("contents", "puzzle/mode-select::mode-select_contents");
-		
+		model.addAttribute("contents", "ws-puzzle/mode-select::mode-select_contents");
+
 		return "layout";
 	}
 
-	@PostMapping("/create/{id}")
+	@PostMapping("/ws-create/{id}")
 	public String postCreate(Model model, @PathVariable(name = "id", required = true) String puzzleModelId,
 			@RequestParam("mode") String mode, @AuthenticationPrincipal UserDetails user) {
 /*
@@ -58,7 +54,7 @@ public class PuzzleController {
 		return "redirect:/play";
 	}
 
-	@RequestMapping("/play/{id}")
+	@RequestMapping("/ws-play/{id}")
 	public String postPlay(Model model, @PathVariable(name = "id", required = true) String publicPlayId,
 			@RequestParam("msg") String msg, @AuthenticationPrincipal UserDetails user) {
 /*
@@ -72,7 +68,7 @@ public class PuzzleController {
 
 		model.addAttribute(msg);
 */
-		model.addAttribute("contents", "puzzle/play::play_contents");
+		model.addAttribute("contents", "ws-puzzle/play::play_contents");
 
 		return "layout";
 	}
@@ -84,7 +80,7 @@ public class PuzzleController {
 	}
 */
 
-	@PostMapping("/clear/{id}")
+	@PostMapping("/ws-clear/{id}")
 	public String postClear(Model model, @RequestParam String publicPlayId, String answerCode,
 			RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails user) {
 		/*
@@ -110,10 +106,10 @@ public class PuzzleController {
 			model.addAttribute("KWList", KWList);
 			model.addAttribute("point", playRecord.getPoint());
 			*/
-		model.addAttribute("contents", "puzzle/clear::clear_contents");
+		model.addAttribute("contents", "ws-puzzle/clear::clear_contents");
 			return "layout";
 
-		
+
 	}
 
 }

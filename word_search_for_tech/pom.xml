@@ -71,16 +71,19 @@
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>jquery</artifactId>
-			<version>3.0.0</version>
+			<version>3.6.0</version>
 		</dependency>
 
 		<!-- webjars:Bootstrap -->
 
+		<!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>bootstrap</artifactId>
-			<version>3.3.7-1</version>
+			<version>5.2.3</version>
 		</dependency>
+
+
 
 		<!-- Spring AOP -->
 		<dependency>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmins:th="http://www.thymeleaf.org"
+	xmins:layout="http://www.ultraq.net.nz/thymeleaf/latout">
+<!-- Bootstrapを設定 -->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+<link th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css}"
+	rel="stylesheet"></link>
+<script th:src="@{/webjars/bootstrap/4.6.0/js/bootstrap.min.js}"></script>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/js/drawer.min.js"></script>
+
+<script th:src="@{/js/layout.js}"></script>
+
+
+<head>
+<meta charset="UTF8"></meta>
+</head>
+<body class="drawer drawer--left">
+	<main role="main">
+		<div th:fragment="search_contents" th:remove="tag">
+			<div class="search">
+				<!-- Page content -->
+				<h1>条件を指定してゲームを選ぶ</h1>
+				<!--
+			<span th:if="${continue == true}">
+			<a class="btn btn-success" href="#">中断したゲームを開始する</a>
+			</span>
+			-->
+				<!--
+			<tr th:each="i : ${#numbers.sequence(0, 2)}">
+				<!-- fruitsの要素の数が#numbers.sequenceの値より大きい場合、要素を表示 -->
+				<!--
+				<th:block th:if="${#lists.size(fruits) gt __${i}__}">
+					<td th:text="${fruits[__${i}__].cd}">/td>
+					<td th:text="${fruits[__${i}__].name}">/td>
+					<td th:text="${fruits[__${i}__].color}"></td>
+				</th:block>
+			</tr>
+			-->
+				<form action="/search" method="get">
+					<label for="category">都道府県</label> <select id="category"
+						name="category">
+						<option>ハードウェア</option>
+						<option>ソフトウェア</option>
+						<option>データベース</option>
+						<option>ネットワーク</option>
+						<option>セキュリティ</option>
+
+					</select>
+					<label for="level">都道府県</label> <select id="level"
+						name="level">
+						<option>1 (～ITパスポート)</option>
+						<option>2 (～基本情報)</option>
+						<option>3 (～応用情報)</option>
+						<option disabled>SP(???)</option><!-- ユーザーの権限に応じて -->
+					</select>
+
+				</form>
+			</div>
+		</div>
+
+	</main>
+	<footer>
+		<div
+			class="fixed-bottom mx-0 bg-dark bg-opacity-75 text-center text-white">
+			<h5>@BFT なごやしてん</h5>
+		</div>
+
+	</footer>
+
+</body>
+
+</body>
+</html>
