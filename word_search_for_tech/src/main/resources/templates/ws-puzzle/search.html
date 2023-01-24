@@ -43,36 +43,32 @@
 				</th:block>
 			</tr>
 			-->
-				<form action="/search" method="get">
-					<label for="category">分野</label> <select id="category"
-						name="category">
-						<option>ハードウェア</option>
-						<option>ソフトウェア</option>
-						<option>データベース</option>
-						<option>ネットワーク</option>
-						<option>セキュリティ</option>
-
-					</select>単語レベル</label> <select id="level"
-						name="level">
-						<option>1 (～ITパスポート)</option>
-						<option>2 (～基本情報)</option>
-						<option>3 (～応用情報)</option>
-						<option disabled>SP(???)</option><!-- ユーザーの権限に応じて -->
-					</select>
-
+				<form action="/ws-search" method="get">
+					<div class="select-wrap">
+						<select id="category" name="category">
+							<option value="0">分野指定なし</option>
+							<option value="1">ハードウェア</option>
+							<option value="2">ソフトウェア</option>
+							<option value="3">データベース</option>
+							<option value="4">ネットワーク</option>
+							<option value="5">セキュリティ</option>
+						</select>
+					</div>
+					<div class="select-wrap">
+						<select id="level" name="level">
+							<option value="0">レベル指定なし</option>
+							<option value="1">1 (～Iパス)</option>
+							<option value="2">2 (～基本情報)</option>
+							<option value="3">3 (～応用情報)</option>
+							<option disabled value="sp">SP(???)</option>
+							<!-- ユーザーの権限に応じて -->
+						</select>
+					</div>
+					<button type="submit">検索</button>
 				</form>
 			</div>
 		</div>
-
 	</main>
-	<footer>
-		<div
-			class="fixed-bottom mx-0 bg-dark bg-opacity-75 text-center text-white">
-			<h5>@BFT なごやしてん</h5>
-		</div>
-
-	</footer>
-
 </body>
 
 </body>

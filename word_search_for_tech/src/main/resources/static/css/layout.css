@@ -75,8 +75,57 @@ header h1 {
 	padding-bottom:7rem;
 }
 
-.select {
-	font-size: 3rem;
+form select, form button {
+	font-size: 2.5rem;
+	background-color: #FFF;
+	width: auto;
+	outline: auto;
+	outline-color: var(--bs-green);
+	padding: 1.25rem;
+}
+
+form option {
+	font-size: 1rem;
+	width: auto;
+}
+
+
+select {
+  -moz-appearance: menulist;
+  -webkit-appearance: menulist;
+}
+
+
+select::-ms-expand {
+    display: block;
+}
+
+select{
+	position: relative;
+	padding: 10px;
+	width: 100%;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+.select-wrap {
+    position: relative;
+    width: 100px;
+}
+
+.select-wrap:after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #ccc;
+    border-left: 2px solid #ccc;
+    transform: translateY(-50%) rotate(-135deg);
+    font-size: 3rem;
+    pointer-events: none;
 }
 
 .home .btn {
