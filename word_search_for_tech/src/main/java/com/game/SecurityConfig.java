@@ -4,7 +4,10 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 public class SecurityConfig {
@@ -25,12 +28,20 @@ public class SecurityConfig {
 	 * アクセス権限について規定
 	 */
 
+	
+	@Autowired
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("hoge").password("HOGE").roles("USER");
+    }
+	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
 		http.authorizeHttpRequests(authz -> authz
 				.mvcMatchers("/webjars/**", "/css/**").permitAll()
-				.anyRequest().authenticated());
+				.anyRequest().authenticated()
+				);
 
 		http.formLogin()
 				.loginProcessingUrl("/login")
@@ -58,7 +69,7 @@ public class SecurityConfig {
 
 		return users;
 	}
-
+**/
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {

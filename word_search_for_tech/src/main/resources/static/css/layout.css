@@ -1,15 +1,8 @@
 @charset "UTF-8";
 
-.sidebar {
-	position: fixed;
-	display: block;
-	top: 50px;
-	bottom: 0;
-	background-color: #F4F5F7;
-}
-
 html {
 	height: 100%;
+	width: 100%;
 }
 
 body {
@@ -29,11 +22,12 @@ header h1 {
 	font-size: 5rem;
 	text-align: center;
 	color: #FFFFFF;
+	padding: 1rem 0rem;
 	margin: auto;
 }
 
 .drawer-nav {
-	padding: 0% 1.5%;
+	padding: 3% 3%;
 }
 
 .drawer-hamburger {
@@ -56,17 +50,19 @@ header h1 {
 }
 
 .drawer-menu-item {
-	border-bottom: dotted 3px var(- -bs-gray);
+	font-size: 2rem;
+	border-bottom: dotted 3px var(--bs-gray);
 }
 
 .main-content h1 {
-	font-size: 4rem;
+	font-size: 3rem;
+	margin-bottom: 4rem;
 	text-align: center;
 }
 
 .m-inner {
 	height: 100%;
-	padding: 10% 10%;
+	padding: 10% 5%;
 }
 
 .home h1 {
@@ -75,10 +71,14 @@ header h1 {
 	padding-bottom:7rem;
 }
 
+.inline-form{
+	display: flex;
+}
+
 form select, form button {
-	font-size: 2.5rem;
+	font-size: 2rem;
 	background-color: #FFF;
-	width: auto;
+	width: 300px;
 	outline: auto;
 	outline-color: var(--bs-green);
 	padding: 1.25rem;
@@ -110,15 +110,16 @@ select{
 }
 
 .select-wrap {
+	display: inline-block;
     position: relative;
-    width: 100px;
+    width: 300px;
 }
 
 .select-wrap:after {
     content: "";
     position: absolute;
     right: 10px;
-    top: 15px;
+    top: 30px;
     width: 10px;
     height: 10px;
     border-top: 2px solid #ccc;
@@ -138,4 +139,9 @@ select{
 
 .btn:active{
 	border-color: transparent!important;
+}
+
+.main-content #btn-sub{
+	display: inline-block;
+	width: auto;
 }
