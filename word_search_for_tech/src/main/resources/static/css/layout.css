@@ -5,11 +5,15 @@ html {
 	width: 100%;
 }
 
+
+
 body {
 	height: 100%;
 }
 
 main {
+	margin: 0;
+    padding: 0;
 	background-image: url("../image/back-ground-image.jpg");
 	height: 100%;
 }
@@ -18,11 +22,15 @@ main {
 	margin-top: 0px;
 }
 
+header {
+	height: 50px;
+}
+
 header h1 {
-	font-size: 5rem;
+	font-size: 1.5rem;
 	text-align: center;
 	color: #FFFFFF;
-	padding: 1rem 0rem;
+	padding: 0.6rem 0rem;
 	margin: auto;
 }
 
@@ -31,23 +39,24 @@ header h1 {
 }
 
 .drawer-hamburger {
-	padding: 30px;
-	width: 3rem;
+	padding: 10px;
+	width: 1.5rem;
+	height: auto;
 }
 
 .drawer-hamburger-icon, .drawer-hamburger-icon:after,
 	.drawer-hamburger-icon:before {
-	height: 3px;
 	background-color: #FFF;
 }
 
 .drawer-hamburger-icon:after {
-	top: 15px;
+	top: 10px;
 }
 
 .drawer-hamburger-icon:before {
-	top: -15px;
+	top: -10px;
 }
+
 
 .drawer-menu-item {
 	font-size: 2rem;
@@ -55,8 +64,8 @@ header h1 {
 }
 
 .main-content h1 {
-	font-size: 3rem;
-	margin-bottom: 4rem;
+	font-size: 1.5rem;
+	margin-bottom: 1.5rem;
 	text-align: center;
 }
 
@@ -66,22 +75,23 @@ header h1 {
 }
 
 .home h1 {
-	font-size: 6rem;
-	padding-top: 7rem;
-	padding-bottom:7rem;
+	font-size: 1.5rem;
+	padding-top: 1.5rem;
+	padding-bottom: 1.5rem;
 }
 
-.inline-form{
+.inline-form {
 	display: flex;
+	justify-content: space-evenly;
 }
 
 form select, form button {
-	font-size: 2rem;
+	font-size: 1rem;
 	background-color: #FFF;
-	width: 300px;
+	width: 120px;
 	outline: auto;
 	outline-color: var(--bs-green);
-	padding: 1.25rem;
+	padding: 0.5rem;
 }
 
 form option {
@@ -112,28 +122,28 @@ select{
 .select-wrap {
 	display: inline-block;
     position: relative;
-    width: 300px;
+    width: 120px;
 }
 
 .select-wrap:after {
     content: "";
     position: absolute;
-    right: 10px;
-    top: 30px;
+    right: 6px;
+    top: 15px;
     width: 10px;
     height: 10px;
     border-top: 2px solid #ccc;
     border-left: 2px solid #ccc;
     transform: translateY(-50%) rotate(-135deg);
-    font-size: 3rem;
+    font-size: 1rem;
     pointer-events: none;
 }
 
 .home .btn {
 	display: block;
 	--bs-btn-border-radius: 0.5rem;
-	--bs-btn-font-size: 4rem;
-	margin: 5rem 0rem;
+	--bs-btn-font-size: 1rem;
+	margin: 1rem 0rem;
 	box-shadow: 10px 10px 10px #666;
 }
 
