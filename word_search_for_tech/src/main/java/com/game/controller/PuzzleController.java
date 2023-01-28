@@ -1,5 +1,8 @@
 package com.game.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.game.domain.model.PuzzleLabel;
+import com.game.domain.model.SearchPuzzleLabel;
+
 @Controller
 public class PuzzleController {
 	/**
@@ -20,28 +26,56 @@ public class PuzzleController {
 	@Autowired(required =  false)
 	PuzzleService puzzleService;
 **/
-	@GetMapping("/ws-search")
-	public String getPuzzles(Model model, @RequestParam(name = "category", required = false) String category,
-			@RequestParam(name = "level", required = false)String level) {
-		model.addAttribute("contents", "ws-puzzle/search::search_contents");
+	@GetMapping("/ws-category")
+	public String getPuzzles(Model model) {
+		model.addAttribute("contents", "ws-puzzle/category::category_contents");
 		return "layout";
 
 	}
+	
+	
 
-	@GetMapping("/ws-mode-select")
-	public String getPuzzleDetail(Model model, @RequestParam("model") String puzzleModelId,
-			@AuthenticationPrincipal UserDetails user) {
-/*
-		List<?> property = puzzleService.getModes(user.getUsername(), puzzleModelId);
-		Puzzle puzzleModel = puzzleService.getPuzzleModel(puzzleModelId);
+	@GetMapping("/ws-puzzles")
+	public String getPuzzleDetail(Model model, @RequestParam(name = "category", required = true) String category,
+			@RequestParam(name = "level", required = false) String level) {
 
-		model.addAttribute("modelId", puzzleModelId);
-		model.addAttribute("category", puzzleModel.getCategory());
-		model.addAttribute("level", puzzleModel.getLevel());
-		model.addAttribute("modeList", property);
-*/
-		model.addAttribute("contents", "ws-puzzle/mode-select::mode-select_contents");
+		model.addAttribute("contents", "ws-puzzle/puzzles::puzzles_contents");
+		PuzzleLabel puzzleLabel = new SearchPuzzleLabel();
+		
+		List<PuzzleLabel> puzzleList = new ArrayList<>();
+		
 
+		puzzleLabel.setId("010101");
+		puzzleLabel.setCategory("ハードウェア");
+		puzzleLabel.setLevel(1);
+		puzzleLabel.setWidth(9);
+		puzzleLabel.setHeight(9);
+		puzzleLabel.setDisplay(true);
+		
+		puzzleList.add(puzzleLabel);
+		
+		puzzleLabel = new SearchPuzzleLabel();
+
+		puzzleLabel.setId("010102");
+		puzzleLabel.setCategory("ハードウェア");
+		puzzleLabel.setLevel(1);
+		puzzleLabel.setWidth(9);
+		puzzleLabel.setHeight(9);
+		puzzleLabel.setDisplay(false);
+		
+		puzzleList.add(puzzleLabel);
+		
+		puzzleLabel = new SearchPuzzleLabel();
+
+		puzzleLabel.setId("010103");
+		puzzleLabel.setCategory("ハードウェア");
+		puzzleLabel.setLevel(1);
+		puzzleLabel.setWidth(9);
+		puzzleLabel.setHeight(9);
+		puzzleLabel.setDisplay(false);
+		
+		model.addAttribute("puzzleList", puzzleList);
+		
 		return "layout";
 	}
 

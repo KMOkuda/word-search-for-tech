@@ -1,3 +1,4 @@
+ color: var(--bs-succeed);
 <!DOCTYPE html>
 <html xmins:th="http://www.thymeleaf.org"
 	xmins:layout="http://www.ultraq.net.nz/thymeleaf/latout">
@@ -23,15 +24,17 @@
 </head>
 <body class="drawer drawer--left">
 	<main role="main">
-		<div th:fragment="home_contents" th:remove="tag">
-			<div class="home">
-				<h1>ゲームを選ぶ</h1>
-
-				<a class="btn bg-success bg-gradient text-white" href="/ws-category">単語探し</a> <a
-					class="btn bg-success bg-gradient text-white" href="/an-search">アナグラム</a>
+		<div th:fragment="puzzles_contents" th:remove="tag">
+			<h1>遊びたいパズルを選んで下さい</h1>
+			<div class="puzzles-content" th:each="puzzle : ${puzzleList}"
+				th:object="${puzzle}">
+				<div class="each-puzzle">
+					<span th:text="*{id}"></span> <span th:text="*{category}"></span> <span
+						th:text="*{level}"></span> <span th:text="*{width}"></span> <span
+						th:text="*{height}"></span>
+				</div>
 			</div>
 		</div>
-
 	</main>
 	<footer>
 		<div

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmins:th="http://www.thymeleaf.org"
+	xmins:layout="http://www.ultraq.net.nz/thymeleaf/latout">
+<!-- Bootstrapを設定 -->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+<link th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css}"
+	rel="stylesheet"></link>
+<script th:src="@{/webjars/bootstrap/4.6.0/js/bootstrap.min.js}"></script>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/js/drawer.min.js"></script>
+
+<script th:src="@{/js/layout.js}"></script>
+
+
+<head>
+<meta charset="UTF8"></meta>
+</head>
+<body class="drawer drawer--left">
+	<main role="main">
+		<div th:fragment="category_contents" th:remove="tag">
+			<!-- Page content -->
+			<h1>カテゴリーを選んでください</h1>
+			<div class="category-contents">
+				<a class="category-select bg-primary bg-gradient"
+				href="./ws-puzzles?category=1"> ハードウェア </a>
+				<a class="category-select bg-info bg-gradient"
+				href="./ws-puzzles?category=2">ソフトウェア </a>
+				<a class="category-select bg-orange bg-gradient"
+				href="./ws-puzzles?category=3"> データベース </a>
+				<a class="category-select bg-purple bg-gradient"
+				href="./ws-puzzles?category=4"> ネットワーク </a>
+				<a class="category-select bg-danger bg-gradient"
+				href="./ws-puzzles?category=5"> セキュリティ </a>
+				<a class="category-select bg-warning bg-gradient"
+				href="./ws-puzzles?category=6"> システム設計 </a>
+				<a class="category-select bg-indigo bg-gradient"
+				href="./ws-puzzles?category=7"> マネジメント </a>
+				<a class="category-select bg-success bg-gradient"
+				href="./ws-puzzles?category=8"> ストラテジー </a>
+			</div>
+		</div>
+	</main>
+</body>
+
+</body>
+</html>

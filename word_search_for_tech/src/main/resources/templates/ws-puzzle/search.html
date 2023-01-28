@@ -27,22 +27,6 @@
 			<div class="search">
 				<!-- Page content -->
 				<h1>条件を指定してゲームを選ぶ</h1>
-				<!--
-			<span th:if="${continue == true}">
-			<a class="btn btn-success" href="#">中断したゲームを開始する</a>
-			</span>
-			-->
-				<!--
-			<tr th:each="i : ${#numbers.sequence(0, 2)}">
-				<!-- fruitsの要素の数が#numbers.sequenceの値より大きい場合、要素を表示 -->
-				<!--
-				<th:block th:if="${#lists.size(fruits) gt __${i}__}">
-					<td th:text="${fruits[__${i}__].cd}">/td>
-					<td th:text="${fruits[__${i}__].name}">/td>
-					<td th:text="${fruits[__${i}__].color}"></td>
-				</th:block>
-			</tr>
-			-->
 				<form class="inline-form" action="/ws-search" method="get">
 					<div class="select-wrap">
 						<select id="category" name="category">

@@ -12,17 +12,17 @@ body {
 }
 
 main {
+	position: relative;
 	margin: 0;
     padding: 0;
-	background-image: url("../image/back-ground-image.jpg");
+	background-color: white;
 	height: 100%;
 }
 
-.page-header {
-	margin-top: 0px;
-}
-
 header {
+	position: relative;
+	box-shadow: 2px 2px 2px #CCC;
+	z-index: 1;
 	height: 50px;
 }
 
@@ -32,6 +32,11 @@ header h1 {
 	color: #FFFFFF;
 	padding: 0.6rem 0rem;
 	margin: auto;
+	color: var(--bs-green);
+}
+
+header .inner{
+	display: flex;
 }
 
 .drawer-nav {
@@ -39,6 +44,7 @@ header h1 {
 }
 
 .drawer-hamburger {
+	position: fixed;
 	padding: 10px;
 	width: 1.5rem;
 	height: auto;
@@ -46,7 +52,7 @@ header h1 {
 
 .drawer-hamburger-icon, .drawer-hamburger-icon:after,
 	.drawer-hamburger-icon:before {
-	background-color: #FFF;
+	background-color: #999;
 }
 
 .drawer-hamburger-icon:after {
@@ -59,8 +65,14 @@ header h1 {
 
 
 .drawer-menu-item {
-	font-size: 2rem;
+	font-size: 1rem;
 	border-bottom: dotted 3px var(--bs-gray);
+}
+
+.drawer-user{
+	font-size: 1.2rem;
+	color: #000;
+	text-decoration: none;
 }
 
 .main-content h1 {
@@ -70,7 +82,6 @@ header h1 {
 }
 
 .m-inner {
-	height: 100%;
 	padding: 10% 5%;
 }
 
@@ -154,4 +165,39 @@ select{
 .main-content #btn-sub{
 	display: inline-block;
 	width: auto;
+}
+
+.category-contents, .puzzles-content{
+	margin: 30px 30px;
+}
+
+a.category-select{
+	display: block;
+	padding: 1rem;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	width: 100%;
+	text-decoration: none;
+    color: white;
+    /**
+    -webkit-transform: skewX(-15deg); 
+    transform: skewX(-15deg);
+    
+    **/
+}
+
+.puzzle-content{
+	
+}
+
+.bg-indigo{
+	background-color: #6610f2;
+}
+
+.bg-purple{
+	background-color: #6f42c1;
+}
+
+.bg-orange{
+	background-color: #fd7e14
 }

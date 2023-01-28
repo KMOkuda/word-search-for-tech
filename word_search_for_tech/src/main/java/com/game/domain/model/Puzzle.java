@@ -6,12 +6,7 @@ import lombok.Data;
 
 @Data
 public abstract class Puzzle{
-	private String modelId;
-	private String category;
-	private int level;
-	private int serialNumber;
-	private int height;
-	private int width;
+	protected PuzzleLabel puzzleLabel;
 	private List<String> answer;
 	private List<String> KWList;
 }
