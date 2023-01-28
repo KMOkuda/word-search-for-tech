@@ -25,6 +25,16 @@
 	<main role="main">
 		<div th:fragment="search_contents" th:remove="tag">
 			<div class="search">
+
+				<div class="modal_pop">
+					<div class="bg js-modal-close"></div>
+					<div class="modal_pop_main">
+						<p>難易度を選択してください</p>
+						<div class="btn"></div>
+					</div>
+				</div>
+
+
 				<!-- Page content -->
 				<h1>条件を指定してゲームを選ぶ</h1>
 				<!--
@@ -64,16 +74,77 @@
 							<!-- ユーザーの権限に応じて -->
 						</select>
 					</div>
-					<input type="checkbox" name="no-overlap" value="true">解いていない問題のみ表示する
 					<button id="btn-sub" type="submit">検索</button>
 				</form>
+
 				<div class="search-result">
 					<div class="each-result">
-						<span>ネットワーク</span>
-						<span>★</span>
-						<span>1</span>
+						<div class="result-label">分野：ネットワーク</div>
+						<div class="result-label">★</div>
+						<div class="re">#1</div>
+					</div>
+					<div class="each-result">
+						<div class="result-label">分野：ネットワーク</div>
+						<div class="result-label">★</div>
+						<div class="re">#1</div>
+					</div>
+					<div class="each-result">
+						<div class="result-label">分野：ネットワーク</div>
+						<div class="result-label">★</div>
+						<div class="re">#1</div>
+					</div>
+					<div class="each-result">
+						<div class="result-label">分野：ネットワーク</div>
+						<div class="result-label">★</div>
+						<div class="re">#1</div>
+					</div>
+					<div class="each-result">
+						<div class="result-label">分野：ネットワーク</div>
+						<div class="result-label">★</div>
+						<div class="re">#1</div>
+					</div>
+					<div class="each-result">
+						<div class="result-label">分野：ネットワーク</div>
+						<div class="result-label">★</div>
+						<div class="re">#1</div>
+					</div>
+					<div class="each-result">
+						<div class="result-label">分野：ネットワーク</div>
+						<div class="result-label">★</div>
+						<div class="re">#1</div>
 					</div>
 				</div>
+				<script>
+					$('.modal_pop').hide();
+					$('.each-result').on('touchstart', function() {
+						$('.modal_pop').fadeIn();
+					})
+					$('.js-modal-close').on('touchstart', function() {
+						$('.modal_pop').fadeOut();
+					})
+
+					$('.target')
+							.click(
+									function() {
+
+										// POST先
+										var url = "https://php.qumeru.com/index.php/JavaScript/450/sample5/index.php";
+
+										// パラメータを付与する場合
+										var inputs = '';
+										var params = [ [ "id", this.id ] ];
+										for (var i = 0, n = params.length; i < n; i++) {
+											inputs += '<input type="hidden" name="' + params[i][0] + '" value="' + params[i][1] + '" />';
+										}
+
+										// POST遷移
+										$("body").append(
+												'<form action="'+url+'" method="post" id="post">'
+														+ inputs + '</form>');
+										$("#post").submit();
+
+									});
+				</script>
 			</div>
 		</div>
 	</main>
