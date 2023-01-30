@@ -1,4 +1,3 @@
- color: var(--bs-succeed);
 <!DOCTYPE html>
 <html xmins:th="http://www.thymeleaf.org"
 	xmins:layout="http://www.ultraq.net.nz/thymeleaf/latout">
@@ -26,14 +25,54 @@
 	<main role="main">
 		<div th:fragment="puzzles_contents" th:remove="tag">
 			<h1>遊びたいパズルを選んで下さい</h1>
-			<div class="puzzles-content" th:each="puzzle : ${puzzleList}"
-				th:object="${puzzle}">
-				<div class="each-puzzle">
-					<span th:text="*{id}"></span> <span th:text="*{category}"></span> <span
-						th:text="*{level}"></span> <span th:text="*{width}"></span> <span
-						th:text="*{height}"></span>
+			<div class="puzzles-content">
+				<div class="each-puzzle" th:each="puzzle : ${puzzleList}"
+					th:object="${puzzle}">
+					<div class="puzzle-inner bg-gradient"
+						th:classappend="${puzzle.classCategory} + ' lv' + ${puzzle.level}">
+						<div
+							th:classappend="${puzzle.solvable} ? 'solvable' : 'unsolvable'">
+							<div class="id" th:text="'#' + *{id}"></div>
+							<div class="category" th:text="*{category}"></div>
+							<div class="level" th:text="'レベル ' + *{level}"></div>
+							<div class="board-size"
+								th:text="'ボードサイズ ' + *{width} + ' * ' + *{height}"></div>
+							<div class="width" th:text="*{width}" hidden></div>
+							<div class="height" th:text="*{height}" hidden></div>
+						</div>
+					</div>
 				</div>
 			</div>
+			<script>
+				$('.each-puzzle')
+						.click(
+								function() {
+									var id = $(this).find(".id").html();
+									id = id.slice(1, id.length);
+
+									// POST先
+									var url = "http://localhost:8082/ws-create";
+
+									// パラメータを付与する場合
+									var inputs = '';
+									var params = [ [ "id", id ] ];
+									for (var i = 0, n = params.length; i < n; i++) {
+										inputs += '<input type="hidden" name="' + params[i][0] + '" value="' + params[i][1] + '" />';
+									}
+
+									var token = $('head meta[name="_csrf"]')
+											.attr("content");
+
+									inputs += '<input type="hidden" name="_csrf" value="' + token + '" />';
+
+									// POST遷移
+									$("body").append(
+											'<form action="'+url+'" method="post" id="post">'
+													+ inputs + '</form>');
+									$("#post").submit();
+
+								});
+			</script>
 		</div>
 	</main>
 	<footer>

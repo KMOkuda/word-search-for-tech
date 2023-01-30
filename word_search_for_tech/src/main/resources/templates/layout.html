@@ -28,6 +28,8 @@
 <head>
 <meta charset="UTF8"></meta>
 <meta name="viewport" content="width=device-width">
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body class="drawer drawer--left">
 	<header role="banner">

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.game.domain.model.Puzzle;
 import com.game.domain.model.PuzzleLabel;
+import com.game.domain.model.SearchPuzzle;
 import com.game.domain.model.SearchPuzzleLabel;
 
 @Controller
@@ -32,8 +34,8 @@ public class PuzzleController {
 		return "layout";
 
 	}
-	
-	
+
+
 
 	@GetMapping("/ws-puzzles")
 	public String getPuzzleDetail(Model model, @RequestParam(name = "category", required = true) String category,
@@ -41,51 +43,70 @@ public class PuzzleController {
 
 		model.addAttribute("contents", "ws-puzzle/puzzles::puzzles_contents");
 		PuzzleLabel puzzleLabel = new SearchPuzzleLabel();
-		
+
 		List<PuzzleLabel> puzzleList = new ArrayList<>();
-		
+
 
 		puzzleLabel.setId("010101");
 		puzzleLabel.setCategory("ハードウェア");
+		puzzleLabel.setClassCategory("hardware");
 		puzzleLabel.setLevel(1);
 		puzzleLabel.setWidth(9);
 		puzzleLabel.setHeight(9);
-		puzzleLabel.setDisplay(true);
-		
+		puzzleLabel.setSolvable(true);
+
 		puzzleList.add(puzzleLabel);
-		
+
 		puzzleLabel = new SearchPuzzleLabel();
 
 		puzzleLabel.setId("010102");
 		puzzleLabel.setCategory("ハードウェア");
+		puzzleLabel.setClassCategory("hardware");
 		puzzleLabel.setLevel(1);
 		puzzleLabel.setWidth(9);
 		puzzleLabel.setHeight(9);
-		puzzleLabel.setDisplay(false);
-		
+		puzzleLabel.setSolvable(true);
+
 		puzzleList.add(puzzleLabel);
-		
+
 		puzzleLabel = new SearchPuzzleLabel();
 
 		puzzleLabel.setId("010103");
 		puzzleLabel.setCategory("ハードウェア");
+		puzzleLabel.setClassCategory("hardware");
 		puzzleLabel.setLevel(1);
 		puzzleLabel.setWidth(9);
 		puzzleLabel.setHeight(9);
-		puzzleLabel.setDisplay(false);
-		
+		puzzleLabel.setSolvable(true);
+
+		puzzleList.add(puzzleLabel);
+
+		puzzleLabel = new SearchPuzzleLabel();
+
+		puzzleLabel.setId("010103");
+		puzzleLabel.setCategory("ハードウェア");
+		puzzleLabel.setClassCategory("hardware");
+		puzzleLabel.setLevel(1);
+		puzzleLabel.setWidth(9);
+		puzzleLabel.setHeight(9);
+		puzzleLabel.setSolvable(false);
+
+		puzzleList.add(puzzleLabel);
+
 		model.addAttribute("puzzleList", puzzleList);
-		
+
 		return "layout";
 	}
 
-	@PostMapping("/ws-create/{id}")
-	public String postCreate(Model model, @PathVariable(name = "id", required = true) String puzzleModelId,
-			@RequestParam("mode") String mode, @AuthenticationPrincipal UserDetails user) {
-/*
-		Play play = puzzleService.generateNewGame(user.getUsername(), puzzleModelId, mode);
-*/
-		return "redirect:/play";
+	@PostMapping("/ws-create")
+	public String postCreate(Model model, @RequestParam(name = "id", required = true) String puzzleId, @AuthenticationPrincipal UserDetails user) {
+
+		System.out.println(puzzleId);
+		model.addAttribute("contents", "ws-puzzle/category::category_contents");
+		Puzzle puzzle = new SearchPuzzle();
+		puzzle.
+
+		return "layout";
 	}
 
 	@RequestMapping("/ws-play/{id}")

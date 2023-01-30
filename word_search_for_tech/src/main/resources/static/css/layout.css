@@ -171,23 +171,96 @@ select{
 	margin: 30px 30px;
 }
 
-a.category-select{
+a.category-select, .each-puzzle{
 	display: block;
 	padding: 1rem;
-	margin-top: 30px;
-	margin-bottom: 30px;
 	width: 100%;
 	text-decoration: none;
-    color: white;
     /**
-    -webkit-transform: skewX(-15deg); 
+    -webkit-transform: skewX(-15deg);
     transform: skewX(-15deg);
-    
+
     **/
 }
 
-.puzzle-content{
-	
+a.category-select{
+	margin-top: 30px;
+	margin-bottom: 30px;
+    color: white;
+}
+
+
+
+.puzzles-content{
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.each-puzzle{
+	padding: 0;
+	color: #FFF;
+	width: 50%;
+	display: inline-block;
+	border: solid #FFF;
+}
+
+.unsolvable{
+	pointer-events: none;
+}
+
+/**
+.each-puzzle > div::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: .5em;
+  left: -1.5em;
+  width: 10px;
+  height: 5px;
+  border-left: 2px solid #25AF01;
+  border-bottom: 2px solid #25AF01;
+  transform: rotate(-45deg);
+}
+**/
+
+.each-puzzle > div{
+	padding: 1rem;
+}
+
+.board-size{
+	display: block;
+}
+
+.hardware{
+	background-color: var(--bs-primary);
+}
+
+.software{
+	background-color: var(--bs-info);
+}
+
+.database{
+	background-color: var(--bs-orange);
+}
+
+.network{
+	background-color: #6f42c1;
+}
+
+.security{
+	background-color: var(--bs-danger);
+}
+
+.system{
+	background-color: var(--bs-warning);
+}
+
+.management{
+	background-color: #6610f2;
+}
+
+.strategy{
+	background-color: var(--bs-success);
 }
 
 .bg-indigo{
