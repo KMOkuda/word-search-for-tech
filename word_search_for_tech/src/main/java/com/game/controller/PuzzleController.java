@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -110,18 +109,34 @@ public class PuzzleController {
 			}
 		}
 
+		List<String> kwList = new ArrayList<>();
+
+		kwList.add("ABC");
+		kwList.add("XXX");
+		kwList.add("XXX");
+		kwList.add("XXX");
+		kwList.add("XXX");
+		kwList.add("XXX");
+		kwList.add("XXX");
+		kwList.add("XXX");
+		kwList.add("XXX");
+
+		puzzle.setKWList(kwList);
+		puzzle.setBoard(board);
+
 		long playId = 4567890987658L;
 
 		ModelMap modelMap = new ModelMap();
 		modelMap.addAttribute("puzzle", puzzle);
 		modelMap.addAttribute("playId", playId);
 		redirectAttributes.addFlashAttribute("modelMap", modelMap);
-		
+
 		return "redirect:/ws-play/" + Long.toString(playId);
 	}
 
-	@RequestMapping("/ws-play/{id}")
-	public String postPlay(Model model, @ModelAttribute("modelMap")ModelMap modelMap, @PathVariable(name = "id", required = true) String publicPlayId,
+	@GetMapping("/ws-play/{id}")
+	public String getPlay(Model model, @ModelAttribute("modelMap") ModelMap modelMap,
+			@PathVariable(name = "id", required = true) String publicPlayId,
 			@RequestParam(name = "msg", required = false) String msg, @AuthenticationPrincipal UserDetails user) {
 		/*
 		 * //必ずユーザー名と一緒に照合すること！！ Game game = puzzleService.getGame(user.getUsername(),
@@ -131,7 +146,38 @@ public class PuzzleController {
 		 * 
 		 * model.addAttribute(msg);
 		 */
-		model.addAttribute("puzzle", modelMap.get("puzzle"));
+
+		if (modelMap.isEmpty()) {
+			SearchPuzzle puzzle = new SearchPuzzle();
+
+			char board[][] = new char[9][9];
+
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					board[i][j] = (char) ((i * 9 + j) % 26 + 65);
+				}
+			}
+
+			List<String> kwList = new ArrayList<>();
+
+			kwList.add("ABC");
+			kwList.add("XXX");
+			kwList.add("XXX");
+			kwList.add("XXX");
+			kwList.add("XXX");
+			kwList.add("XXX");
+			kwList.add("XXX");
+			kwList.add("XXX");
+			kwList.add("XXX");
+
+			puzzle.setKWList(kwList);
+			puzzle.setBoard(board);
+			
+			model.addAttribute("puzzle", puzzle);
+			System.out.println("isnull");
+		} else {
+			model.addAttribute("puzzle", modelMap.get("puzzle"));
+		}
 		model.addAttribute("contents", "ws-puzzle/play::play_contents");
 
 		return "layout";

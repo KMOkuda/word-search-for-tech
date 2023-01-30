@@ -263,6 +263,13 @@ a.category-select{
 	background-color: var(--bs-success);
 }
 
+span.letter{
+	height: 20px;
+	width: 20px;
+	display: inline-block;
+	font-size: 130%;
+}
+
 .bg-indigo{
 	background-color: #6610f2;
 }

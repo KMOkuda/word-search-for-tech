@@ -24,15 +24,22 @@
 <body class="drawer drawer--left">
 	<main role="main">
 		<div th:fragment="play_contents" th:remove="tag">
-		<!-- Page content -->
-			<h1>楽しんで受かる基本情報<br>TechSearchFE</h1>
-			<!--
-			<span th:if="${continue == true}">
-			<a class="btn btn-success" href="#">中断したゲームを開始する</a>
-			</span>
-			-->
-			<a class="btn btn-success" href="#">新しく始める</a>
-			
+			<div class="kw-content">
+				<th:block th:each="kw : ${puzzle.KWList}">
+					<span th:text="${kw}"></span>
+				</th:block>
+			</div>
+
+			<div class="board-content">
+				<th:block th:each="h,i : ${puzzle.board}">
+					<th:block th:each="w, j : ${h}">
+						<span class="letter" th:text="${w}"></span>
+					</th:block>
+					<br>
+				</th:block>
+
+
+			</div>
 		</div>
 	</main>
 	<footer>
