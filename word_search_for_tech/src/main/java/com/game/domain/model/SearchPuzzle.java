@@ -3,8 +3,10 @@ package com.game.domain.model;
 import java.util.List;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class SearchPuzzle extends Puzzle {
 
 	private String id;
@@ -19,6 +21,8 @@ public class SearchPuzzle extends Puzzle {
 	private int height;
 	private int width;
 	boolean display;
+	
+	char[][] board;
 
 	private List<String> answer;
 	private List<String> KWList;
