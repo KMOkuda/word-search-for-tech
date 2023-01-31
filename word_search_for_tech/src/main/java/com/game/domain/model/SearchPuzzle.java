@@ -21,7 +21,7 @@ public class SearchPuzzle extends Puzzle {
 	private int height;
 	private int width;
 	boolean display;
-	
+
 	char[][] board;
 
 	private List<String> answer;
@@ -30,9 +30,4 @@ public class SearchPuzzle extends Puzzle {
 	public SearchPuzzle() {
 
 	}
-
-	@Override
-    public String toString() {
-        return "";
-    }
 }

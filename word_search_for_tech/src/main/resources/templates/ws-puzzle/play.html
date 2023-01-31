@@ -33,7 +33,7 @@
 			<div class="board-content">
 				<th:block th:each="h,i : ${puzzle.board}">
 					<th:block th:each="w, j : ${h}">
-						<span class="letter" th:text="${w}"></span>
+						<span class="letter" th:text="${w}" th:data-id="${i.index} * ${puzzle.height} + ${j.index}"></span>
 					</th:block>
 					<br>
 				</th:block>

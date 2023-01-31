@@ -23,7 +23,7 @@ import com.game.domain.model.SearchPuzzleLabel;
 public class PuzzleController {
 	/**
 	 * @Autowired(required = false) UserService userService;
-	 * 
+	 *
 	 * @Autowired(required = false) PuzzleService puzzleService;
 	 **/
 	@GetMapping("/ws-category")
@@ -124,6 +124,9 @@ public class PuzzleController {
 		puzzle.setKWList(kwList);
 		puzzle.setBoard(board);
 
+		puzzle.setWidth(9);
+		puzzle.setHeight(9);
+
 		long playId = 4567890987658L;
 
 		ModelMap modelMap = new ModelMap();
@@ -143,7 +146,7 @@ public class PuzzleController {
 		 * publicPlayId); /** model.addAttribute("board", game.getBoard());
 		 * model.addAttribute("id", publicPuzzleId); model.addAttribute("mode",
 		 * game.getMode()); model.addAttribute("KW", game.getTemplate().getKWList());
-		 * 
+		 *
 		 * model.addAttribute(msg);
 		 */
 
@@ -172,7 +175,9 @@ public class PuzzleController {
 
 			puzzle.setKWList(kwList);
 			puzzle.setBoard(board);
-			
+			puzzle.setWidth(9);
+			puzzle.setHeight(9);
+
 			model.addAttribute("puzzle", puzzle);
 			System.out.println("isnull");
 		} else {
@@ -187,7 +192,7 @@ public class PuzzleController {
 	 * model, @RequestParam String publicPlayId, String answerCode,
 	 * RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails
 	 * user) {
-	 * 
+	 *
 	 * }
 	 */
 
@@ -197,14 +202,14 @@ public class PuzzleController {
 		/*
 		 * int answerCheck = puzzleService.checkAnswerCode(user.getUsername(),
 		 * publicPlayId, answerCode);
-		 * 
+		 *
 		 * if (answerCheck == -1) { return "error";
-		 * 
+		 *
 		 * } else if (answerCheck == 0) { puzzleService.getGame(user.getUsername(),
 		 * publicPlayId); redirectAttributes.addAttribute("msg", "wrong");
-		 * 
+		 *
 		 * return "redirect:/play/" + publicPlayId;
-		 * 
+		 *
 		 * } else { Play playRecord = puzzleService.RegisterClear(user.getUsername(),
 		 * publicPlayId, LocalDateTime.now()); List<String> KWList =
 		 * puzzleService.getKWList(user.getUsername(), publicPlayId); // Property
