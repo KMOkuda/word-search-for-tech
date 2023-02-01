@@ -59,7 +59,13 @@
 					console.log("started");
 
 					console.log(e);
+					console.log(e.target.dataset.id);
+					console.log(e.target.dataset.id);
+					
+					from = to = document.elementFromPoint(e.touches[0].screenX, e.touches[0].screenY);
+					console.log(from);
 				}
+				
 				function draw(e) {
 					console.log("drawing");
 					/**
@@ -67,11 +73,16 @@
 					var target = $(document.elementFromPoint(touch.clientX,
 							touch.clientY));**/
 					console.log(e);
+					console.log(e.touches[0].screenX);
+					console.log(e.touches[0].screenY);
+					
+					to = document.elementFromPoint(e.touches[0].screenX, e.touches[0].screenY);
 				}
+				
 				function endDraw(e) {
 					console.log("ended");
 
-					console.log(e);
+					
 				}
 
 				var letters = document.getElementsByClassName('letter');

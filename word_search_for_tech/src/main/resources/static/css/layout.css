@@ -291,12 +291,13 @@ a.category-select{
 
 span.letter{
     vertical-align: middle;
-    height: 7vw;
-    line-height: 7vw;
-    width: 7vw;
+    height: 10vw;
+    line-height: 10vw;
+    width: 10vw;
     display: inline-block;
-    font-size: 130%;
+    font-size: 7vw;
     text-align: center;
+    z-index: 90;
 }
 
 

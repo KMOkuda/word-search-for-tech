@@ -101,11 +101,11 @@ public class PuzzleController {
 		model.addAttribute("contents", "ws-puzzle/category::category_contents");
 		SearchPuzzle puzzle = new SearchPuzzle();
 
-		char board[][] = new char[9][9];
+		char board[][] = new char[7][7];
 
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				board[i][j] = (char) ((i * 9 + j) % 26 + 65);
+		for (int i = 0; i < 7; i++) {
+			for (int j = 0; j < 7; j++) {
+				board[i][j] = (char) ((i * 7 + j) % 26 + 65);
 			}
 		}
 
@@ -124,8 +124,8 @@ public class PuzzleController {
 		puzzle.setKWList(kwList);
 		puzzle.setBoard(board);
 
-		puzzle.setWidth(9);
-		puzzle.setHeight(9);
+		puzzle.setWidth(7);
+		puzzle.setHeight(7);
 
 		long playId = 4567890987658L;
 
@@ -153,11 +153,11 @@ public class PuzzleController {
 		if (modelMap.isEmpty()) {
 			SearchPuzzle puzzle = new SearchPuzzle();
 
-			char board[][] = new char[9][9];
+			char board[][] = new char[7][7];
 
-			for (int i = 0; i < 9; i++) {
-				for (int j = 0; j < 9; j++) {
-					board[i][j] = (char) ((i * 9 + j) % 26 + 65);
+			for (int i = 0; i < 7; i++) {
+				for (int j = 0; j < 7; j++) {
+					board[i][j] = (char) ((i * 7 + j) % 26 + 65);
 				}
 			}
 
@@ -175,8 +175,8 @@ public class PuzzleController {
 
 			puzzle.setKWList(kwList);
 			puzzle.setBoard(board);
-			puzzle.setWidth(9);
-			puzzle.setHeight(9);
+			puzzle.setWidth(7);
+			puzzle.setHeight(7);
 
 			model.addAttribute("puzzle", puzzle);
 			System.out.println("isnull");
