@@ -44,34 +44,37 @@
 				</div>
 			</div>
 			<script>
-				$('.each-puzzle')
-						.click(
-								function() {
-									var id = $(this).find(".id").html();
-									id = id.slice(1, id.length);
+				$(function() {
+					$('.each-puzzle')
+							.on(
+									'touchstart',
+									function() {
+										var id = $(this).find(".id").html();
+										id = id.slice(1, id.length);
 
-									// POST先
-									var url = "http://localhost:8082/ws-create";
+										// POST先
+										var url = "http://localhost:8082/ws-create";
 
-									// パラメータを付与する場合
-									var inputs = '';
-									var params = [ [ "id", id ] ];
-									for (var i = 0, n = params.length; i < n; i++) {
-										inputs += '<input type="hidden" name="' + params[i][0] + '" value="' + params[i][1] + '" />';
-									}
+										// パラメータを付与する場合
+										var inputs = '';
+										var params = [ [ "id", id ] ];
+										for (var i = 0, n = params.length; i < n; i++) {
+											inputs += '<input type="hidden" name="' + params[i][0] + '" value="' + params[i][1] + '" />';
+										}
 
-									var token = $('head meta[name="_csrf"]')
-											.attr("content");
+										var token = $('head meta[name="_csrf"]')
+												.attr("content");
 
-									inputs += '<input type="hidden" name="_csrf" value="' + token + '" />';
+										inputs += '<input type="hidden" name="_csrf" value="' + token + '" />';
 
-									// POST遷移
-									$("body").append(
-											'<form action="'+url+'" method="post" id="post">'
-													+ inputs + '</form>');
-									$("#post").submit();
+										// POST遷移
+										$("body").append(
+												'<form action="'+url+'" method="post" id="post">'
+														+ inputs + '</form>');
+										$("#post").submit();
 
-								});
+									});
+				});
 			</script>
 		</div>
 	</main>

@@ -24,22 +24,155 @@
 <body class="drawer drawer--left">
 	<main role="main">
 		<div th:fragment="play_contents" th:remove="tag">
-			<div class="kw-content">
-				<th:block th:each="kw : ${puzzle.KWList}">
-					<span th:text="${kw}"></span>
-				</th:block>
-			</div>
-
-			<div class="board-content">
-				<th:block th:each="h,i : ${puzzle.board}">
-					<th:block th:each="w, j : ${h}">
-						<span class="letter" th:text="${w}" th:data-id="${i.index} * ${puzzle.height} + ${j.index}"></span>
+			<div class="play-content">
+				<div class="inner-header">
+					<!--<button class="btn" type="button" onclick="history.back()">戻る</button>-->
+				</div>
+				<div class="kw-content">
+					<th:block th:each="kw : ${puzzle.KWList}">
+						<span th:text="${kw}"></span>
 					</th:block>
-					<br>
-				</th:block>
+				</div>
 
+				<div class="board-content">
+					<th:block th:each="h,i : ${puzzle.board}">
+						<th:block th:each="w, j : ${h}">
+							<span class="letter" th:text="${w}"
+								th:data-id="${i.index} * ${puzzle.height} + ${j.index}"></span>
+						</th:block>
+						<br>
+					</th:block>
+					<canvas class="board-canvas">
+図形を表示するには、canvasタグをサポートしたブラウザが必要です。
+</canvas>
 
+				</div>
 			</div>
+
+			<script>
+				var from;
+				var to;
+
+				'use strict';
+
+				function startDraw(e) {
+					console.log("started");
+
+					console.log(e);
+				}
+				function draw(e) {
+					console.log("drawing");
+					/**
+					var touch = e.originalEvent.changedTouches[0];
+					var target = $(document.elementFromPoint(touch.clientX,
+							touch.clientY));**/
+					console.log(e);
+				}
+				function endDraw(e) {
+					console.log("ended");
+
+					console.log(e);
+				}
+
+				var letters = document.getElementsByClassName('letter');
+
+				for (var i = 0; i < letters.length; i++) {
+					console.log("i = " + i);
+					letters[i].ontouchstart = startDraw;
+					letters[i].ontouchmove = draw;
+					letters[i].ontouchend = endDraw;
+				}
+
+				/**
+					var from;
+					var to;
+
+
+					$('.letter').on('touchstart', function() {
+
+						console.log("touchstart");
+
+						from = to = $(this).data('id');
+
+						var context = $('canvas')[0].getContext('2d');
+						//ここに具体的な描画内容を指定する
+						//新しいパスを開始する
+						context.beginPath();
+						//パスの開始座標を指定する
+
+						var left = $(this).offset().left;
+						var top = $(this).offset().top;
+						var width = $(this).width();
+						var height = $(this).height();
+
+						offsetCenterLeft = left + (width / 2);
+						offsetCenterTop = top + (height / 2);
+
+						context.moveTo(offsetCenterLeft, offsetCenterTop);
+
+						console.log(from);
+					});
+
+
+
+					$('.letter').on('touchmove', function() {
+						console.log("touchmove");
+
+						to = $(this).data('id');
+						console.log(to);
+
+						var context = $('canvas')[0].getContext('2d');
+						//ここに具体的な描画内容を指定する
+						//新しいパスを開始する
+
+						var left = $(this).offset().left;
+						var top = $(this).offset().top;
+						var width = $(this).width();
+						var height = $(this).height();
+
+						offsetCenterLeft = left + (width / 2);
+						offsetCenterTop = top + (height / 2);
+
+						context.fillStyle = '#ccc';
+						context.strokeStyle = 'red';
+
+						context.lineTo(offsetCenterLeft, offsetCenterTop);
+						context.stroke();
+					});
+
+					$('.letter').on('touchend', function() {
+				/*
+						console.log("touchend");
+				 */
+
+				/**
+				 var context = $('canvas')[0].getContext('2d');
+				 //ここに具体的な描画内容を指定する
+				 //新しいパスを開始する
+
+				 var left = $(this).offset().left;
+				 var top = $(this).offset().top;
+				 var width = $(this).width();
+				 var height = $(this).height();
+
+				 offsetCenterLeft = left + (width / 2);
+				 offsetCenterTop = top + (height / 2);
+
+				 context.fillStyle = '#ccc';
+				 context.strokeStyle = 'red';
+				 /**
+				 console.log(offsetCenterLeft + " " + offsetCenterTop);
+				 **/
+
+				/**
+				 context.lineTo(offsetCenterLeft, offsetCenterTop);
+				 context.stroke();
+				 /**
+				 console.log("from : " + from.attr('data-id') + " to : " + to.attr('data-id'));
+				 **/
+				/*	});*/
+			</script>
+
 		</div>
 	</main>
 	<footer>

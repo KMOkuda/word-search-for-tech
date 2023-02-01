@@ -5,8 +5,6 @@ html {
 	width: 100%;
 }
 
-
-
 body {
 	height: 100%;
 }
@@ -16,7 +14,7 @@ main {
 	margin: 0;
     padding: 0;
 	background-color: white;
-	height: 100%;
+	height: calc(100% - 50px);
 }
 
 header {
@@ -82,7 +80,8 @@ header .inner{
 }
 
 .m-inner {
-	padding: 10% 5%;
+	padding: 10%;
+    height: 100%;
 }
 
 .home h1 {
@@ -167,8 +166,8 @@ select{
 	width: auto;
 }
 
-.category-contents, .puzzles-content{
-	margin: 30px 30px;
+.category-contents, .puzzles-content, .play-content{
+	margin: 0px;
 }
 
 a.category-select, .each-puzzle{
@@ -266,17 +265,35 @@ a.category-select{
 .kw-content{
 	width: fit-content;
 	margin: 0rem auto;
+
+	/**
+	display: flex;
+    flex-wrap: wrap;
+    width: fit-content;
+    margin: 0rem auto;
+	**/
 }
 
 .board-content{
+	position: relative;
 	width: fit-content;
-    margin: 1rem auto 0rem;
+    margin: 1rem auto 1rem;
+}
+
+.board-canvas{
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	right: 0;
+	bottom: 0;
 }
 
 span.letter{
-    margin: 2px;
-    height: 30px;
-    width: 30px;
+    vertical-align: middle;
+    height: 7vw;
+    line-height: 7vw;
+    width: 7vw;
     display: inline-block;
     font-size: 130%;
     text-align: center;
