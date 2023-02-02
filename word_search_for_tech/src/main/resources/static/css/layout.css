@@ -277,6 +277,8 @@ a.category-select{
 .board-content{
 	position: relative;
 	width: fit-content;
+	z-index: 2;
+	background-color: transparent;
     margin: 1rem auto 1rem;
 }
 
