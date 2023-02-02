@@ -12,6 +12,8 @@ public class HomeController {
 	@Autowired
 	UserService userService;
 **/
+
+	//まだSecurity用クラス実装してないのでこれで...
 	@GetMapping("/")
 	public String getHome(Model model, @AuthenticationPrincipal UserDetails user) {
 
@@ -20,7 +22,7 @@ public class HomeController {
 
 		model.addAttribute("current", currentDuration);
 		model.addAttribute("longest", longestDuration);
-		model.addAttribute("contents", "home/home::home_contents");
+		model.addAttribute("contents", "ws-puzzle/category::category_contents");
 		return "layout";
 	}
 }

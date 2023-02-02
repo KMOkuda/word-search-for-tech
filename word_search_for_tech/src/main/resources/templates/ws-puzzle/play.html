@@ -61,28 +61,36 @@
 					console.log(e);
 					console.log(e.target.dataset.id);
 					console.log(e.target.dataset.id);
-					
-					from = to = document.elementFromPoint(e.touches[0].screenX, e.touches[0].screenY);
-					console.log(from);
+
+					//from = to = document.elementFromPoint(e.touches[0].screenX, e.touches[0].screenY);
+					from = to = e.target.dataset.id;
+					var elements = document.querySelectorAll('[data-id="' + from + '"]');
+
+
+					console.log(elements);
 				}
-				
+
 				function draw(e) {
+					
+					e.preventDefault();
+					
 					console.log("drawing");
 					/**
 					var touch = e.originalEvent.changedTouches[0];
 					var target = $(document.elementFromPoint(touch.clientX,
 							touch.clientY));**/
-					console.log(e);
-					console.log(e.touches[0].screenX);
-					console.log(e.touches[0].screenY);
-					
-					to = document.elementFromPoint(e.touches[0].screenX, e.touches[0].screenY);
+					to = e.target.dataset.id;
+					console.log(e.changedTouches[0]);
+
+					var elements = document.querySelectorAll('[data-id="' + to + '"]');
+
+					console.log(elements);
 				}
-				
+
 				function endDraw(e) {
 					console.log("ended");
 
-					
+
 				}
 
 				var letters = document.getElementsByClassName('letter');
