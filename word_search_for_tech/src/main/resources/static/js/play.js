@@ -1,13 +1,19 @@
 				const canvasElm = document.getElementsByClassName( "board-canvas" )[0];
+				canvasElm.width = document.getElementsByClassName( "board-content" )[0].offsetWidth;
+				canvasElm.height = document.getElementsByClassName( "board-content" )[0].offsetHeight;
+
+				console.log("width: " + canvasElm.width);
+				console.log("height: " + canvasElm.height);
+
 				//const canvasTop = canvasElm.offsetTop;
 				//const canvasLeft = canvasElm.offsetLeft;
 				//const canvasTop = window.pageYOffset;
 				//const canvasLeft = window.pageXOffset;
-				
-				const canvasTop = canvasElm.getBoundingClientRect().top; 
-				const canvasLeft = canvasElm.getBoundingClientRect().left; 
-				
-				
+
+				const canvasTop = canvasElm.getBoundingClientRect().top;
+				const canvasLeft = canvasElm.getBoundingClientRect().left;
+
+
 				console.log("canvasTop: " + canvasTop);
 				console.log("canvasLeft: " + canvasLeft);
 
@@ -17,76 +23,79 @@
 				var drawToX;
 
 				//'use strict';
-				
+
 
 				function startDraw(e) {
-					
+
 					e.preventDefault();
-					
+
 					console.log("started");
 
 					var originX = e.touches[0].pageX;
 					var originY = e.touches[0].pageY;
-					
+
 					var elmFrom = document.elementFromPoint(originX, originY);
-					
+
 					var left = elmFrom.offsetLeft;
 					var top = elmFrom.offsetTop;
-					var width = elmFrom.clientWidth;
-					var height = elmFrom.clientHeight;
+					var width = elmFrom.offsetWidth;
+					var height = elmFrom.offsetHeight;
 
-					drawFromX = drawToX = offsetCenterLeft = left + (width / 2) - canvasLeft;
-					drawFromY = drawToY = offsetCenterTop = top + (height / 2) - canvasTop;
-					
-					console.log(offsetCenterLeft + " " + offsetCenterTop);
+					drawFromX = drawToX = offsetCenterLeft = left + (width / 2);
+					drawFromY = drawToY = offsetCenterTop = top + (height / 2);
+
+					console.log(left + " " + top);
 				}
 
 				function draw(e) {
-					
+
+
 					e.preventDefault();
-					
-					
-					
+
+
+
 					console.log("drawing");
-					
+
 					var destX = e.changedTouches[0].pageX;
 					var destY = e.changedTouches[0].pageY;
-					
-					var elmFrom = document.elementFromPoint(destX, destY);
-					
-					var left = elmFrom.clientX;
-					var top = elmFrom.clientY;
-					var width = elmFrom.clientWidth;
-					var height = elmFrom.clientHeight;
 
-					drawToX = left + (width / 2) - canvasLeft ;
-					drawToY = top + (height / 2) - canvasTop;
-					
+					var elmFrom = document.elementFromPoint(destX, destY);
+
+					var left = elmFrom.offsetLeft;
+					var top = elmFrom.offsetTop;
+					var width = elmFrom.offsetWidth;
+					var height = elmFrom.offsetHeight;
+
+					drawToX = left + (width / 2);
+					drawToY = top + (height / 2);
+
 					console.log(drawFromX + " " + drawFromY);
 					console.log(drawToX + " " + drawToY);
 					console.log(width + " : width");
 					console.log(height + " : height");
-					
+
 					var element = document.getElementsByClassName( "board-canvas" )[0];
 					console.log(element);
 					var context = element.getContext( "2d" ) ;
-					
+
+
 					console.log(context);
-					
-					
+
+
 					context.fillStyle = '#aaa';
 					context.strokeStyle = '#aaa';
 					context.beginPath() ;
-					
-					context.moveTo( drawFromX, drawFromY );
-					context.lineTo( drawToX, drawToY );
-					
+					context.lineCap = "round";
+
+					context.moveTo( 19, 19 );
+					context.lineTo( 105, 19 );
+
 					context.strokeStyle = "red" ;
-					context.lineWidth = 10 ;
+					context.lineWidth = 30 ;
 					context.strokeStyle = 'rgb(255,0,255)';
 					context.stroke() ;
-					
-					
+
+
 				}
 
 				function endDraw(e) {

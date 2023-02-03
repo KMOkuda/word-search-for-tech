@@ -78,10 +78,10 @@ public class PuzzleController {
 
 		puzzleLabel = new SearchPuzzleLabel();
 
-		puzzleLabel.setId("010103");
+		puzzleLabel.setId("010104");
 		puzzleLabel.setCategory("ハードウェア");
 		puzzleLabel.setClassCategory("hardware");
-		puzzleLabel.setLevel(1);
+		puzzleLabel.setLevel(2);
 		puzzleLabel.setWidth(9);
 		puzzleLabel.setHeight(9);
 		puzzleLabel.setSolvable(false);
