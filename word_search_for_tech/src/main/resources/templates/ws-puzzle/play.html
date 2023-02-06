@@ -29,8 +29,8 @@
 					<!--<button class="btn" type="button" onclick="history.back()">戻る</button>-->
 				</div>
 				<div class="kw-content">
-					<th:block th:each="kw : ${puzzle.KWList}">
-						<span th:text="${kw}"></span>
+					<th:block th:each="ar : ${puzzle.answerReturn}">
+						<span th:text="${ar.kw}"></span>
 					</th:block>
 				</div>
 
@@ -48,14 +48,15 @@
 
 				</div>
 			</div>
-			
+
 			<script>
-                const boardHeight = [[${puzzle.height}]]       
-                const boardWidth = [[${puzzle.width}]]       
+				const playId = [[${playId}]]
+                const boardHeight = [[${puzzle.height}]]
+                const boardWidth = [[${puzzle.width}]]
             </script>
 
 			<script th:src="@{/js/play.js}"></script>
-			
+
 		</div>
 	</main>
 	<footer>

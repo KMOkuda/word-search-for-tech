@@ -41,14 +41,33 @@ const Directions = {
 	TOPLEFT: 8
 };
 
-/**
- * 
- * @param {var} fromId 
- * @param {var} toId 
- */
 
+/**
+ *
+ * @param {var} id
+ */
+function calcHeight(id){
+    return Math.floor(id / boardWidth);
+}
+
+/**
+ *
+ * @param {var} id
+ */
+function calcWidth(id){
+    return id % boardWidth;
+}
+
+/**
+ *
+ * @param {var} fromId
+ * @param {var} toId
+ */
 function calcShortDict(fromId, toId) {
 	console.log("fromId, toId" + fromId, toId);
+
+
+
 	if (fromId + 1 == toId) {
 		return Directions.RIGHT;
 	}
@@ -85,20 +104,22 @@ function calcShortDict(fromId, toId) {
 }
 
 function isDraggable(fromId, toId) {
-	if (Math.floor(fromId / boardWidth) == Math.floor(toId / boardWidth)) {
-		return true;
-	}
+    if(fromId == null || toId == null){
+        return false;
+    }
 
-	if (Math.abs(toId - fromId) % boardWidth == 0) {
-		return true;
-	}
-	if (Math.abs(toId - fromId) % (boardWidth - 1) == 0) {
-		return true;
+    var fromHeight = calcHeight(fromId);
+    var fromWidth = calcWidth(fromId);
+    var toHeight = calcHeight(toId);
+    var toWidth = calcWidth(toId);
 
-	}
-	if (Math.abs(toId - fromId) % (boardWidth + 1) == 0) {
-		return true;
-	}
+    if(fromHeight == toHeight || fromWidth == toWidth
+        || Math.abs(fromHeight - toHeight) / Math.abs(fromWidth - toWidth) == 1){
+            return true;
+    } else{
+        return false;
+    }
+
 }
 
 
@@ -106,6 +127,7 @@ const canvasElm = document.getElementsByClassName("board-canvas")[0];
 canvasElm.width = document.getElementsByClassName("board-content")[0].offsetWidth;
 canvasElm.height = document.getElementsByClassName("board-content")[0].offsetHeight;
 
+var context = canvasElm.getContext("2d");
 
 const canvasTop = canvasElm.getBoundingClientRect().top;
 const canvasLeft = canvasElm.getBoundingClientRect().left;
@@ -117,6 +139,8 @@ var drawTo = new Point(null, null);
 var dict = Directions.NONE;
 var isFixed = false;
 
+var xhr = new window.XMLHttpRequest();
+
 function startDraw(e) {
 
 	e.preventDefault();
@@ -127,7 +151,10 @@ function startDraw(e) {
 	var destY = e.touches[0].pageY;
 
 	var elmFrom = document.elementFromPoint(destX, destY);
-	fromId = elmFrom.dataset.id;
+
+    if(elmFrom.dataset.id != null){
+	    fromId = elmFrom.dataset.id;
+    }
 
 	var left = elmFrom.offsetLeft;
 	var top = elmFrom.offsetTop;
@@ -158,13 +185,14 @@ function draw(e) {
 	var destX = e.changedTouches[0].pageX;
 	var destY = e.changedTouches[0].pageY;
 
-
 	var elmTo = document.elementsFromPoint(destX, destY)[0];
 
-	toId = elmTo.dataset.id;
+    if(elmTo.dataset.id != null){
+	    toId = elmTo.dataset.id;
+    }
 
 
-	if (elmTo.tagName == 'SPAN' && isDraggable(fromId, toId)) {
+	if (elmTo.className == 'letter' && isDraggable(fromId, toId)) {
 		console.log("fromId:" + fromId + " toId" + toId);
 		var left = elmTo.offsetLeft;
 		var top = elmTo.offsetTop;
@@ -177,11 +205,8 @@ function draw(e) {
 		drawTo.setX = drawToX;
 		drawTo.setY = drawToY;
 
-		var element = document.getElementsByClassName("board-canvas")[0];
-		var context = element.getContext("2d");
 
-		context.clearRect(0, 0, canvasElm.width, canvasElm.height)
-
+        context.clearRect(0, 0, canvasElm.width, canvasElm.height);
 		context.fillStyle = '#aaa';
 		context.strokeStyle = '#aaa';
 		context.beginPath();
@@ -200,6 +225,36 @@ function draw(e) {
 
 function endDraw(e) {
 	console.log("ended");
+
+    context.clearRect(0, 0, canvasElm.width, canvasElm.height);
+
+    if(playId == null || fromId == null){
+        return;
+    }
+
+
+    let header = $("meta[name='_csrf_header']").attr("content");
+    let token = $("meta[name='_csrf']").attr("content");
+
+    var data = [
+        { "playId" : playId,
+          "fromId" : fromId,
+          "toId" : toId
+        }
+      ];
+
+    var dataJSON = JSON.stringify(data);
+
+    xhr.open('POST', '/ws-answer', true);
+    xhr.setRequestHeader(header, token);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    console.log(header);
+    console.log(token);
+
+    xhr.send(dataJSON);
+
+    fromId = toId = null;
 }
 
 var letters = document.getElementsByClassName('letter');
@@ -209,5 +264,13 @@ for (var i = 0; i < letters.length; i++) {
 	letters[i].ontouchstart = startDraw;
 	letters[i].ontouchmove = draw;
 	letters[i].ontouchend = endDraw;
+}
+
+xhr.onload = function(){        //レスポンスを受け取った時の処理（非同期）
+    var res = xhr.responseText;
+    console.log(res.length);
+};
+xhr.onerror = function(){       //エラーが起きた時の処理（非同期）
+    alert("error!");
 }
 

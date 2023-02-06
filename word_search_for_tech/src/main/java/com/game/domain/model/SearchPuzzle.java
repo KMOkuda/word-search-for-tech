@@ -1,5 +1,6 @@
 package com.game.domain.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -26,6 +27,8 @@ public class SearchPuzzle extends Puzzle {
 
 	private List<String> answer;
 	private List<String> KWList;
+
+	private List<AnswerReturn> answerReturn = new ArrayList<AnswerReturn>();
 
 	public SearchPuzzle() {
 

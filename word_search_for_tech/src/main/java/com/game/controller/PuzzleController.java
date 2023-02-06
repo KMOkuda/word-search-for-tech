@@ -12,9 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.game.domain.model.Answer;
+import com.game.domain.model.AnswerReturn;
 import com.game.domain.model.PuzzleLabel;
 import com.game.domain.model.SearchPuzzle;
 import com.game.domain.model.SearchPuzzleLabel;
@@ -129,6 +135,17 @@ public class PuzzleController {
 
 		long playId = 4567890987658L;
 
+		puzzle.setId(Long.toString(playId));
+
+		puzzle.setAnswerReturn(new ArrayList<AnswerReturn>());
+		puzzle.getAnswerReturn().add(new AnswerReturn("ABC",false, 0, 0, "NONE"));
+		puzzle.getAnswerReturn().add(new AnswerReturn("HOV",false, 0, 0, "NONE"));
+		puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
+		puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
+		puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
+		puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
+
+
 		ModelMap modelMap = new ModelMap();
 		modelMap.addAttribute("puzzle", puzzle);
 		modelMap.addAttribute("playId", playId);
@@ -175,14 +192,25 @@ public class PuzzleController {
 
 			puzzle.setKWList(kwList);
 			puzzle.setBoard(board);
+
 			puzzle.setWidth(7);
 			puzzle.setHeight(7);
+			puzzle.setAnswerReturn(new ArrayList<AnswerReturn>());
+			puzzle.getAnswerReturn().add(new AnswerReturn("ABC", true, 0, 2, "RIGHT"));
+			puzzle.getAnswerReturn().add(new AnswerReturn("HOV", true, 1, 15, "DOWN"));
+			puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
+			puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
+			puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
+			puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
 
+			model.addAttribute("playId", publicPlayId);
 			model.addAttribute("puzzle", puzzle);
 			System.out.println("isnull");
 		} else {
+			model.addAttribute("playId", publicPlayId);
 			model.addAttribute("puzzle", modelMap.get("puzzle"));
 		}
+
 		model.addAttribute("contents", "ws-puzzle/play::play_contents");
 
 		return "layout";
@@ -195,6 +223,34 @@ public class PuzzleController {
 	 *
 	 * }
 	 */
+
+	@PostMapping("/ws-answer")
+	@ResponseBody
+	public String postAnswer(@RequestBody List<Answer> answer, @AuthenticationPrincipal UserDetails user) throws JsonProcessingException {
+		String puzzleId = answer.get(0).getPlayId();
+		String fromId = answer.get(0).getFromId();
+		String toId = answer.get(0).getToId();
+
+		System.out.println(puzzleId);
+		System.out.println(fromId);
+		System.out.println(toId);
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		/*
+		//JSON⇒Javaオブジェクトに変換
+		JsonEntity jsonToJavaObject = mapper.readValue(json, JsonEntity.class);
+		*/
+
+		List<AnswerReturn> answerReturn = new ArrayList<AnswerReturn>();
+		answerReturn.add(new AnswerReturn("ABC", true, 0, 2, "RIGHT"));
+		answerReturn.add(new AnswerReturn("HOV", true, 1, 15, "DOWN"));
+
+		//Javaオブジェクト⇒JSONに変換
+		String JavaObjectToJson = mapper.writeValueAsString(answerReturn);
+
+		return JavaObjectToJson;
+	}
 
 	@PostMapping("/ws-clear/{id}")
 	public String postClear(Model model, @RequestParam String publicPlayId, String answerCode,
