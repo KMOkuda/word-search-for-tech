@@ -20,18 +20,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.game.domain.model.Answer;
-import com.game.domain.model.AnswerReturn;
+import com.game.domain.model.AnswerStatus;
+import com.game.domain.model.JsonAnswerResponse;
 import com.game.domain.model.PuzzleLabel;
 import com.game.domain.model.SearchPuzzle;
 import com.game.domain.model.SearchPuzzleLabel;
 
 @Controller
 public class PuzzleController {
-	/**
-	 * @Autowired(required = false) UserService userService;
-	 *
-	 * @Autowired(required = false) PuzzleService puzzleService;
-	 **/
 	@GetMapping("/ws-category")
 	public String getPuzzles(Model model) {
 		model.addAttribute("contents", "ws-puzzle/category::category_contents");
@@ -115,19 +111,6 @@ public class PuzzleController {
 			}
 		}
 
-		List<String> kwList = new ArrayList<>();
-
-		kwList.add("ABC");
-		kwList.add("XXX");
-		kwList.add("XXX");
-		kwList.add("XXX");
-		kwList.add("XXX");
-		kwList.add("XXX");
-		kwList.add("XXX");
-		kwList.add("XXX");
-		kwList.add("XXX");
-
-		puzzle.setKWList(kwList);
 		puzzle.setBoard(board);
 
 		puzzle.setWidth(7);
@@ -137,13 +120,13 @@ public class PuzzleController {
 
 		puzzle.setId(Long.toString(playId));
 
-		puzzle.setAnswerReturn(new ArrayList<AnswerReturn>());
-		puzzle.getAnswerReturn().add(new AnswerReturn("ABC",false, 0, 0, "NONE"));
-		puzzle.getAnswerReturn().add(new AnswerReturn("HOV",false, 0, 0, "NONE"));
-		puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
-		puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
-		puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
-		puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
+		puzzle.setAnswerStatus(new ArrayList<AnswerStatus>());
+		puzzle.getAnswerStatus().add(new AnswerStatus("ABC",false, 0, 0));
+		puzzle.getAnswerStatus().add(new AnswerStatus("HOV",false, 0, 0));
+		puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
+		puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
+		puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
+		puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
 
 
 		ModelMap modelMap = new ModelMap();
@@ -158,14 +141,6 @@ public class PuzzleController {
 	public String getPlay(Model model, @ModelAttribute("modelMap") ModelMap modelMap,
 			@PathVariable(name = "id", required = true) String publicPlayId,
 			@RequestParam(name = "msg", required = false) String msg, @AuthenticationPrincipal UserDetails user) {
-		/*
-		 * //必ずユーザー名と一緒に照合すること！！ Game game = puzzleService.getGame(user.getUsername(),
-		 * publicPlayId); /** model.addAttribute("board", game.getBoard());
-		 * model.addAttribute("id", publicPuzzleId); model.addAttribute("mode",
-		 * game.getMode()); model.addAttribute("KW", game.getTemplate().getKWList());
-		 *
-		 * model.addAttribute(msg);
-		 */
 
 		if (modelMap.isEmpty()) {
 			SearchPuzzle puzzle = new SearchPuzzle();
@@ -178,30 +153,17 @@ public class PuzzleController {
 				}
 			}
 
-			List<String> kwList = new ArrayList<>();
-
-			kwList.add("ABC");
-			kwList.add("XXX");
-			kwList.add("XXX");
-			kwList.add("XXX");
-			kwList.add("XXX");
-			kwList.add("XXX");
-			kwList.add("XXX");
-			kwList.add("XXX");
-			kwList.add("XXX");
-
-			puzzle.setKWList(kwList);
 			puzzle.setBoard(board);
 
 			puzzle.setWidth(7);
 			puzzle.setHeight(7);
-			puzzle.setAnswerReturn(new ArrayList<AnswerReturn>());
-			puzzle.getAnswerReturn().add(new AnswerReturn("ABC", true, 0, 2, "RIGHT"));
-			puzzle.getAnswerReturn().add(new AnswerReturn("HOV", true, 1, 15, "DOWN"));
-			puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
-			puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
-			puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
-			puzzle.getAnswerReturn().add(new AnswerReturn("HOV", false, 1, 15, "DOWN"));
+			puzzle.setAnswerStatus(new ArrayList<AnswerStatus>());
+			puzzle.getAnswerStatus().add(new AnswerStatus("ABC", true, 0, 2));
+			puzzle.getAnswerStatus().add(new AnswerStatus("HOV", true, 7, 21));
+			puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
+			puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
+			puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
+			puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
 
 			model.addAttribute("playId", publicPlayId);
 			model.addAttribute("puzzle", puzzle);
@@ -215,14 +177,6 @@ public class PuzzleController {
 
 		return "layout";
 	}
-	/*
-	 * @PostMapping("/answer/{id}") public String postAnswer(Model
-	 * model, @RequestParam String publicPlayId, String answerCode,
-	 * RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails
-	 * user) {
-	 *
-	 * }
-	 */
 
 	@PostMapping("/ws-answer")
 	@ResponseBody
@@ -242,12 +196,12 @@ public class PuzzleController {
 		JsonEntity jsonToJavaObject = mapper.readValue(json, JsonEntity.class);
 		*/
 
-		List<AnswerReturn> answerReturn = new ArrayList<AnswerReturn>();
-		answerReturn.add(new AnswerReturn("ABC", true, 0, 2, "RIGHT"));
-		answerReturn.add(new AnswerReturn("HOV", true, 1, 15, "DOWN"));
+		JsonAnswerResponse jsonAnswerResponse = new JsonAnswerResponse();
+		jsonAnswerResponse.setHasCleared(false);
+		jsonAnswerResponse.setResponseAnswerStatus(new AnswerStatus("GN", true, 6, 13));
 
 		//Javaオブジェクト⇒JSONに変換
-		String JavaObjectToJson = mapper.writeValueAsString(answerReturn);
+		String JavaObjectToJson = mapper.writeValueAsString(jsonAnswerResponse);
 
 		return JavaObjectToJson;
 	}
@@ -255,28 +209,7 @@ public class PuzzleController {
 	@PostMapping("/ws-clear/{id}")
 	public String postClear(Model model, @RequestParam String publicPlayId, String answerCode,
 			RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails user) {
-		/*
-		 * int answerCheck = puzzleService.checkAnswerCode(user.getUsername(),
-		 * publicPlayId, answerCode);
-		 *
-		 * if (answerCheck == -1) { return "error";
-		 *
-		 * } else if (answerCheck == 0) { puzzleService.getGame(user.getUsername(),
-		 * publicPlayId); redirectAttributes.addAttribute("msg", "wrong");
-		 *
-		 * return "redirect:/play/" + publicPlayId;
-		 *
-		 * } else { Play playRecord = puzzleService.RegisterClear(user.getUsername(),
-		 * publicPlayId, LocalDateTime.now()); List<String> KWList =
-		 * puzzleService.getKWList(user.getUsername(), publicPlayId); // Property
-		 * puzzleInfo = puzzleService.getPropertyByPlayId(publicPlayId,
-		 * user.getUsername()); /*
-		 * model.addAttribute("category",puzzleInfo.getCategory().getName());
-		 * model.addAttribute("level",puzzleInfo.getLevel().getLevelName());
-		 * model.addAttribute("isBlind", playRecord.isBlind());
-		 * model.addAttribute("KWList", KWList); model.addAttribute("point",
-		 * playRecord.getPoint());
-		 */
+
 		model.addAttribute("contents", "ws-puzzle/clear::clear_contents");
 		return "layout";
 

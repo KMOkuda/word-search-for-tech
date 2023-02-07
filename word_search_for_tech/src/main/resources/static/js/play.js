@@ -29,115 +29,163 @@ var Point = class {
 	}
 }
 
-const Directions = {
-	NONE: 0,
-	RIGHT: 1,
-	DOWN: 2,
-	LEFT: 3,
-	UP: 4,
-	TOPRIGHT: 5,
-	DOWNRIGHT: 6,
-	DOWNLEFT: 7,
-	TOPLEFT: 8
-};
+/**
+ *
+ * @param {list} list
+ */
+function refleshFont(list) {
+	list.forEach((elm) => {
+		elm.classList.remove("selected");
+	})
+}
 
 
 /**
- *
  * @param {var} id
  */
-function calcHeight(id){
-    return Math.floor(id / boardWidth);
+function calcDrawPoint(id) {
+	var elm = document.querySelectorAll(`[data-id="${id}"]`)[0];
+
+	var left = elm.offsetLeft;
+	var top = elm.offsetTop;
+	var width = elm.getBoundingClientRect().width;
+	var height = elm.getBoundingClientRect().height;
+
+	var drawX = left + (width / 2);
+	var drawY = top + (height / 2);
+
+	return new Point(drawX, drawY);
 }
 
 /**
- *
- * @param {var} id
- */
-function calcWidth(id){
-    return id % boardWidth;
-}
-
-/**
- *
+ * @param {var} context
  * @param {var} fromId
  * @param {var} toId
+ * @param {boolean} overWrite
  */
-function calcShortDict(fromId, toId) {
-	console.log("fromId, toId" + fromId, toId);
+function draw(context, fromId, toId, overWrite) {
+	var fromPoint = calcDrawPoint(fromId);
+	var toPoint = calcDrawPoint(toId);
 
+	var fromHeight = calcHeight(fromId);
+	var fromWidth = calcWidth(fromId);
+	var toHeight = calcHeight(toId);
+	var toWidth = calcWidth(toId);
 
+	var currentHeight = fromHeight;
+	var currentWidth = fromWidth;
+	var currentId = fromId;
 
-	if (fromId + 1 == toId) {
-		return Directions.RIGHT;
+	var dx = (fromWidth == toWidth) ? 0 : (fromWidth < toWidth) ? 1 : -1;
+	var dy = (fromHeight == toHeight) ? 0 : (fromHeight < toHeight) ? 1 : -1;
+
+	if (overWrite) {
+		refleshFont(tmpSelectList);
 	}
 
-	if (fromId - 1 == toId) {
-		return Directions.LEFT;
+	do {
+		var target = document.querySelector('[data-id="' + currentId + '"]');
+		target.classList.add("selected");
+
+		if(!overWrite){
+			target.classList.add("protected");
+		}
+
+		if (overWrite && !target.classList.contains("protected")) {
+			tmpSelectList.push(target);
+		}
+
+		console.log(currentHeight + " " + currentWidth);
+
+		currentWidth += dx;
+		currentHeight += dy;
+
+		currentId = calcId(currentHeight, currentWidth);
+
+	} while (!(dx == 0 && dy == 0)
+	&& Math.min(fromHeight, toHeight) <= currentHeight
+	&& currentHeight <= Math.max(fromHeight, toHeight)
+	&& Math.min(fromWidth, toWidth) <= currentWidth
+		&& currentWidth <= Math.max(fromWidth, toWidth));
+
+	if (overWrite == true) {
+		context.clearRect(0, 0, topCanvasElm.width, topCanvasElm.height);
 	}
 
-	if (fromId + boardWidth == toId) {
-		return Directions.DOWN;
-	}
+	context.fillStyle = '#aaa';
+	context.strokeStyle = '#aaa';
+	context.beginPath();
+	context.lineCap = "round";
 
-	if (fromId - boardWidth == toId) {
-		return Directions.UP;
-	}
+	context.moveTo(fromPoint.getX, fromPoint.getY);
+	context.lineTo(toPoint.getX, toPoint.getY);
 
-	if (fromId + boardWidth + 1 == toId) {
-		return Directions.DOWNRIGHT;
-	}
 
-	if (fromId + boardWidth - 1 == toId) {
-		return Directions.DOWNLEFT;
-	}
+	context.strokeStyle = "red";
+	context.lineWidth = 30;
+	context.strokeStyle = 'rgb(255,0,255)';
+	context.stroke();
+}
 
-	if (fromId - boardWidth + 1 == toId) {
-		return Directions.TOPRIGHT;
-	}
+/**
+ *
+ * @param {var} height
+ * @param {var} width
+ */
+function calcId(height, width) {
+	return height * boardWidth + width;
+}
 
-	if (fromId - boardWidth - 1 == toId) {
-		return Directions.TOPLEFT;
-	}
 
-	return Directions.NONE;
+/**
+ *
+ * @param {var} id
+ */
+function calcHeight(id) {
+	return Math.floor(id / boardWidth);
+}
+
+/**
+ *
+ * @param {var} id
+ */
+function calcWidth(id) {
+	return id % boardWidth;
 }
 
 function isDraggable(fromId, toId) {
-    if(fromId == null || toId == null){
-        return false;
-    }
+	if (fromId == null || toId == null) {
+		return false;
+	}
 
-    var fromHeight = calcHeight(fromId);
-    var fromWidth = calcWidth(fromId);
-    var toHeight = calcHeight(toId);
-    var toWidth = calcWidth(toId);
+	var fromHeight = calcHeight(fromId);
+	var fromWidth = calcWidth(fromId);
+	var toHeight = calcHeight(toId);
+	var toWidth = calcWidth(toId);
 
-    if(fromHeight == toHeight || fromWidth == toWidth
-        || Math.abs(fromHeight - toHeight) / Math.abs(fromWidth - toWidth) == 1){
-            return true;
-    } else{
-        return false;
-    }
+	if (fromHeight == toHeight || fromWidth == toWidth
+		|| Math.abs(fromHeight - toHeight) / Math.abs(fromWidth - toWidth) == 1) {
+		return true;
+	} else {
+		return false;
+	}
 
 }
 
 
-const canvasElm = document.getElementsByClassName("board-canvas")[0];
-canvasElm.width = document.getElementsByClassName("board-content")[0].offsetWidth;
-canvasElm.height = document.getElementsByClassName("board-content")[0].offsetHeight;
+const topCanvasElm = document.getElementsByClassName("top-canvas")[0];
+topCanvasElm.width = topCanvasElm.offsetWidth;
+topCanvasElm.height = topCanvasElm.offsetHeight;
+const topContext = topCanvasElm.getContext("2d");
 
-var context = canvasElm.getContext("2d");
-
-const canvasTop = canvasElm.getBoundingClientRect().top;
-const canvasLeft = canvasElm.getBoundingClientRect().left;
+const bottomCanvasElm = document.getElementsByClassName("bottom-canvas")[0];
+bottomCanvasElm.width = bottomCanvasElm.offsetWidth;
+bottomCanvasElm.height = bottomCanvasElm.offsetHeight;
+const bottomContext = bottomCanvasElm.getContext("2d");
 
 var fromId = null;
 var toId = null;
-var drawFrom = new Point(null, null);
-var drawTo = new Point(null, null);
-var dict = Directions.NONE;
-var isFixed = false;
+var tmpSelectList = [];
 
 var xhr = new window.XMLHttpRequest();
 
@@ -152,29 +200,15 @@ function startDraw(e) {
 
 	var elmFrom = document.elementFromPoint(destX, destY);
 
-    if(elmFrom.dataset.id != null){
-	    fromId = elmFrom.dataset.id;
-    }
+	if (elmFrom.dataset.id != null) {
+		fromId = elmFrom.dataset.id;
+	}
 
-	var left = elmFrom.offsetLeft;
-	var top = elmFrom.offsetTop;
-	var width = elmFrom.getBoundingClientRect().width;
-	var height = elmFrom.getBoundingClientRect().height;
+	draw(topContext, fromId, fromId, true);
 
-
-
-	var drawFromX = offsetCenterLeft = left + (width / 2);
-	var drawFromY = offsetCenterTop = top + (height / 2);
-
-	drawFrom.setX = drawFromX;
-	drawFrom.setY = drawFromY;
-	drawTo.setX = drawFromX;
-	drawTo.setY = drawFromY;
-
-	console.log(left + " " + top);
 }
 
-function draw(e) {
+function drawing(e) {
 
 
 	e.preventDefault();
@@ -187,90 +221,75 @@ function draw(e) {
 
 	var elmTo = document.elementsFromPoint(destX, destY)[0];
 
-    if(elmTo.dataset.id != null){
-	    toId = elmTo.dataset.id;
-    }
+	if (elmTo.dataset.id != null) {
+		toId = elmTo.dataset.id;
+	}
+
 
 
 	if (elmTo.className == 'letter' && isDraggable(fromId, toId)) {
-		console.log("fromId:" + fromId + " toId" + toId);
-		var left = elmTo.offsetLeft;
-		var top = elmTo.offsetTop;
-		var width = elmTo.getBoundingClientRect().width;
-		var height = elmTo.getBoundingClientRect().height;
-
-		var drawToX = left + (width / 2);
-		var drawToY = top + (height / 2);
-
-		drawTo.setX = drawToX;
-		drawTo.setY = drawToY;
-
-
-        context.clearRect(0, 0, canvasElm.width, canvasElm.height);
-		context.fillStyle = '#aaa';
-		context.strokeStyle = '#aaa';
-		context.beginPath();
-		context.lineCap = "round";
-
-		context.moveTo(drawFrom.getX, drawFrom.getY);
-		context.lineTo(drawTo.getX, drawTo.getY);
-
-		context.strokeStyle = "red";
-		context.lineWidth = 30;
-		context.strokeStyle = 'rgb(255,0,255)';
-		context.stroke();
-
+		draw(topContext, fromId, toId, true);
 	}
 }
 
 function endDraw(e) {
 	console.log("ended");
 
-    context.clearRect(0, 0, canvasElm.width, canvasElm.height);
+	refleshFont(tmpSelectList);
+	topContext.clearRect(0, 0, topCanvasElm.width, topCanvasElm.height);
 
-    if(playId == null || fromId == null){
-        return;
-    }
+	if (playId == null || fromId == null) {
+		return;
+	}
 
 
-    let header = $("meta[name='_csrf_header']").attr("content");
-    let token = $("meta[name='_csrf']").attr("content");
+	let header = $("meta[name='_csrf_header']").attr("content");
+	let token = $("meta[name='_csrf']").attr("content");
 
-    var data = [
-        { "playId" : playId,
-          "fromId" : fromId,
-          "toId" : toId
-        }
-      ];
+	var data = [
+		{
+			"playId": playId,
+			"fromId": fromId,
+			"toId": toId
+		}
+	];
 
-    var dataJSON = JSON.stringify(data);
+	var dataJSON = JSON.stringify(data);
 
-    xhr.open('POST', '/ws-answer', true);
-    xhr.setRequestHeader(header, token);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.open('POST', '/ws-answer', true);
+	xhr.setRequestHeader(header, token);
+	xhr.setRequestHeader('Content-Type', 'application/json');
 
-    console.log(header);
-    console.log(token);
+	xhr.send(dataJSON);
 
-    xhr.send(dataJSON);
-
-    fromId = toId = null;
+	fromId = toId = null;
 }
 
 var letters = document.getElementsByClassName('letter');
 
 for (var i = 0; i < letters.length; i++) {
-	console.log("i = " + i);
 	letters[i].ontouchstart = startDraw;
-	letters[i].ontouchmove = draw;
+	letters[i].ontouchmove = drawing;
 	letters[i].ontouchend = endDraw;
 }
 
+answerStatus.forEach((elm) => {
+	if (elm.hasAnswer == true) {
+		draw(bottomContext, elm.fromId, elm.toId, false);
+	}
+
+});
+
 xhr.onload = function(){        //レスポンスを受け取った時の処理（非同期）
     var res = xhr.responseText;
-    console.log(res.length);
+	var parse_data = JSON.parse(res);
+	var answerStatus = parse_data.responseAnswerStatus;
+
+    console.log(parse_data);
+	if(answerStatus.hasAnswer == true){
+		draw(bottomContext, answerStatus.fromId, answerStatus.toId, false);
+	}
 };
 xhr.onerror = function(){       //エラーが起きた時の処理（非同期）
     alert("error!");
 }
-

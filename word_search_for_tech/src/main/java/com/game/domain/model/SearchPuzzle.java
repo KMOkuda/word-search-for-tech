@@ -25,12 +25,10 @@ public class SearchPuzzle extends Puzzle {
 
 	char[][] board;
 
-	private List<String> answer;
-	private List<String> KWList;
-
-	private List<AnswerReturn> answerReturn = new ArrayList<AnswerReturn>();
+	private List<AnswerStatus> answerStatus = new ArrayList<AnswerStatus>();
 
 	public SearchPuzzle() {
 
 	}
+
 }

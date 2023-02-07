@@ -17,6 +17,16 @@
 
 <script th:src="@{/js/layout.js}"></script>
 
+<!--/*-->
+
+コントローラから受け取る値
+KW
+hasAnswer
+from
+to
+puzzle
+
+<!--*/-->
 
 <head>
 <meta charset="UTF8"></meta>
@@ -26,10 +36,9 @@
 		<div th:fragment="play_contents" th:remove="tag">
 			<div class="play-content">
 				<div class="inner-header">
-					<!--<button class="btn" type="button" onclick="history.back()">戻る</button>-->
 				</div>
 				<div class="kw-content">
-					<th:block th:each="ar : ${puzzle.answerReturn}">
+					<th:block th:each="ar : ${puzzle.answerStatus}">
 						<span th:text="${ar.kw}"></span>
 					</th:block>
 				</div>
@@ -42,17 +51,22 @@
 						</th:block>
 						<br>
 					</th:block>
-					<canvas class="board-canvas">
-図形を表示するには、canvasタグをサポートしたブラウザが必要です。
-</canvas>
+					<canvas class="top-canvas">
+						図形を表示するには、canvasタグをサポートしたブラウザが必要です。
+					</canvas>
+					<canvas class="bottom-canvas">
+						図形を表示するには、canvasタグをサポートしたブラウザが必要です。
+					</canvas>
 
 				</div>
 			</div>
 
-			<script>
-				const playId = [[${playId}]]
-                const boardHeight = [[${puzzle.height}]]
-                const boardWidth = [[${puzzle.width}]]
+			<script th:inline="javascript">
+				const playId = /*[[${playId}]]*/
+                const boardHeight = /*[[${puzzle.height}]]*/
+                const boardWidth = /*[[${puzzle.width}]]*/
+				const answerStatus = /*[[${puzzle.answerStatus}]]*/
+
             </script>
 
 			<script th:src="@{/js/play.js}"></script>
