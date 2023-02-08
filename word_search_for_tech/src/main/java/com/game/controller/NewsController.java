@@ -10,10 +10,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class NewsController {
 
 
-	@GetMapping("/news")
-	public String getNews(Model model, @AuthenticationPrincipal UserDetails user) {
+	@GetMapping("/release")
+	public String getRelease(Model model, @AuthenticationPrincipal UserDetails user) {
 
-		model.addAttribute("contents", "news/news::news_contents");
+		model.addAttribute("contents", "news/release::release_contents");
+		return "layout";
+	}
+	
+	@GetMapping("/maint")
+	public String getMaint(Model model, @AuthenticationPrincipal UserDetails user) {
+
+		model.addAttribute("contents", "news/maint::maint_contents");
 		return "layout";
 	}
 }

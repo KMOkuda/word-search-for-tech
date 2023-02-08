@@ -1,4 +1,4 @@
-var Point = class {
+var CvsPoint = class {
 
 	constructor(x, y) {
 		this.x = x;
@@ -63,7 +63,7 @@ function calcDrawPoint(id) {
 	var drawX = left + (width / 2);
 	var drawY = top + (height / 2);
 
-	return new Point(drawX, drawY);
+	return new CvsPoint(drawX, drawY);
 }
 
 /**
@@ -73,8 +73,8 @@ function calcDrawPoint(id) {
  * @param {boolean} overWrite
  */
 function draw(context, fromId, toId, overWrite) {
-	var fromPoint = calcDrawPoint(fromId);
-	var toPoint = calcDrawPoint(toId);
+	var fromCvsPoint = calcDrawPoint(fromId);
+	var toCvsPoint = calcDrawPoint(toId);
 
 	var fromHeight = calcHeight(fromId);
 	var fromWidth = calcWidth(fromId);
@@ -92,7 +92,7 @@ function draw(context, fromId, toId, overWrite) {
 		refleshFont(tmpSelectList);
 	}
 
-	do {
+	while(true) {
 		var target = document.querySelector('[data-id="' + currentId + '"]');
 		target.classList.add("selected");
 
@@ -103,21 +103,19 @@ function draw(context, fromId, toId, overWrite) {
 		if (overWrite && !target.classList.contains("protected")) {
 			tmpSelectList.push(target);
 		}
-
-		console.log(currentHeight + " " + currentWidth);
+		
+		if(currentId == toId){
+			break;
+		}
 
 		currentWidth += dx;
 		currentHeight += dy;
 
 		currentId = calcId(currentHeight, currentWidth);
-
-	} while (!(dx == 0 && dy == 0)
-	&& Math.min(fromHeight, toHeight) <= currentHeight
-	&& currentHeight <= Math.max(fromHeight, toHeight)
-	&& Math.min(fromWidth, toWidth) <= currentWidth
-		&& currentWidth <= Math.max(fromWidth, toWidth));
+	} 
 
 	if (overWrite == true) {
+		console.log("AAA");
 		context.clearRect(0, 0, topCanvasElm.width, topCanvasElm.height);
 	}
 
@@ -126,8 +124,8 @@ function draw(context, fromId, toId, overWrite) {
 	context.beginPath();
 	context.lineCap = "round";
 
-	context.moveTo(fromPoint.getX, fromPoint.getY);
-	context.lineTo(toPoint.getX, toPoint.getY);
+	context.moveTo(fromCvsPoint.getX, fromCvsPoint.getY);
+	context.lineTo(toCvsPoint.getX, toCvsPoint.getY);
 
 
 	context.strokeStyle = "red";
@@ -166,6 +164,14 @@ function isDraggable(fromId, toId) {
 	if (fromId == null || toId == null) {
 		return false;
 	}
+	
+	var elmFrom = document.querySelector('[data-id="' + fromId + '"]');
+	var elmTo = document.querySelector('[data-id="' + toId + '"]');
+
+	if(elmFrom.classList.contains("protected") || elmTo.classList.contains("protected")){
+		return false;
+	}
+
 
 	var fromHeight = calcHeight(fromId);
 	var fromWidth = calcWidth(fromId);
@@ -210,20 +216,20 @@ function startDraw(e) {
 	var elmFrom = document.elementFromPoint(destX, destY);
 
 	if (elmFrom.dataset.id != null) {
-		fromId = elmFrom.dataset.id;
+		toId = fromId = elmFrom.dataset.id;
 	}
 
-	draw(topContext, fromId, fromId, true);
+	if (elmFrom.classList.contains('letter') && isDraggable(fromId, toId)) {
+		draw(topContext, fromId, toId, true);
+	}
 
 }
 
 function drawing(e) {
 
-
 	e.preventDefault();
 
 	console.log("drawing");
-
 
 	var destX = e.changedTouches[0].pageX;
 	var destY = e.changedTouches[0].pageY;
@@ -233,10 +239,9 @@ function drawing(e) {
 	if (elmTo.dataset.id != null) {
 		toId = elmTo.dataset.id;
 	}
+	
 
-
-
-	if (elmTo.className == 'letter' && isDraggable(fromId, toId)) {
+	if (elmTo.classList.contains('letter') && isDraggable(fromId, toId)) {
 		draw(topContext, fromId, toId, true);
 	}
 }
@@ -247,7 +252,7 @@ function endDraw(e) {
 	refleshFont(tmpSelectList);
 	topContext.clearRect(0, 0, topCanvasElm.width, topCanvasElm.height);
 
-	if (playId == null || fromId == null) {
+	if (!isDraggable(fromId, toId)) {
 		return;
 	}
 
@@ -323,7 +328,7 @@ function screenLock(){
 	element.style.top = '0px';
 	element.style.width = '100%';
 	element.style.zIndex = '10';
-	element.style.opacity = '0.5';
+	element.style.opacity = '0.9';
 	element.style.backgroundColor = "white";
 
 	var objBody = document.getElementById("m-inner");

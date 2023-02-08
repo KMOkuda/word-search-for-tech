@@ -14,7 +14,7 @@ main {
 	margin: 0;
     padding: 0;
 	background-color: white;
-	height: calc(100% - 50px);
+	height: auto;
 }
 
 header {
@@ -281,15 +281,11 @@ a.category-select{
 }
 
 .kw-content{
-	width: fit-content;
-	margin: 0rem auto;
-
-	/**
-	display: flex;
-    flex-wrap: wrap;
-    width: fit-content;
+	font-size: 5vw;
     margin: 0rem auto;
-	**/
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
 }
 
 .board-content{
@@ -347,15 +343,15 @@ span.letter{
 }
 
 #clear{
-	position: fixed;
-	top: 10%;
+	position: absolute;
+    top: 0;
 	height: auto;
 	width: 80%;
 	display: none;
 	opacity:1;
 	z-index:99;
 	padding: 10%;
-	background-color: white;
+	background-color: transparent;
 
 }
 
