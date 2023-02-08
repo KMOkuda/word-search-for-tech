@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
+
 	/**
 	@Autowired
 	UserService userService;
-**/
+	**/
 
 	//まだSecurity用クラス実装してないのでこれで...
 	@GetMapping("/")

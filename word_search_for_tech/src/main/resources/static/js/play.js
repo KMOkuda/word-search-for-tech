@@ -30,6 +30,15 @@ var Point = class {
 }
 
 /**
+ * @param {var} index
+ */
+
+function eraseLetter(index){
+	var delElm = document.querySelector('[data-index="' + index + '"]');
+	delElm.classList.add("deleted");
+}
+
+/**
  *
  * @param {list} list
  */
@@ -276,6 +285,7 @@ for (var i = 0; i < letters.length; i++) {
 answerStatus.forEach((elm) => {
 	if (elm.hasAnswer == true) {
 		draw(bottomContext, elm.fromId, elm.toId, false);
+		eraseLetter(elm.index);
 	}
 
 });
@@ -288,8 +298,42 @@ xhr.onload = function(){        //レスポンスを受け取った時の処理�
     console.log(parse_data);
 	if(answerStatus.hasAnswer == true){
 		draw(bottomContext, answerStatus.fromId, answerStatus.toId, false);
+		tmpSelectList = [];
+		eraseLetter(answerStatus.index);
+	}
+
+	if(parse_data.hasCleared == true){
+		screenLock();
+		var elm = document.getElementById("clear");
+		elm.style.display = "block";
 	}
 };
+
 xhr.onerror = function(){       //エラーが起きた時の処理（非同期）
     alert("error!");
 }
+
+function screenLock(){
+	var element = document.createElement('div');
+	element.id = "screenLock";
+
+	element.style.height = '100%';
+	element.style.left = '0px';
+	element.style.position = 'absolute';
+	element.style.top = '0px';
+	element.style.width = '100%';
+	element.style.zIndex = '10';
+	element.style.opacity = '0.5';
+	element.style.backgroundColor = "white";
+
+	var objBody = document.getElementById("m-inner");
+	objBody.appendChild(element);
+  }
+
+  /**
+   * ScreenUnLook
+   */
+  function screenUnLock(){
+	var screenLock = document.getElementById("screenLock");
+	screenLock.parentNode.removeChild(screenLock);
+  }

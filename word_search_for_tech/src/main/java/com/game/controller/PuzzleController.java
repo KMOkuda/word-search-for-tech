@@ -112,6 +112,7 @@ public class PuzzleController {
 		}
 
 		puzzle.setBoard(board);
+		puzzle.setCategoryId("1");
 
 		puzzle.setWidth(7);
 		puzzle.setHeight(7);
@@ -121,12 +122,12 @@ public class PuzzleController {
 		puzzle.setId(Long.toString(playId));
 
 		puzzle.setAnswerStatus(new ArrayList<AnswerStatus>());
-		puzzle.getAnswerStatus().add(new AnswerStatus("ABC",false, 0, 0));
-		puzzle.getAnswerStatus().add(new AnswerStatus("HOV",false, 0, 0));
-		puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
-		puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
-		puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
-		puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
+		puzzle.getAnswerStatus().add(new AnswerStatus(1,"ABC",false, 0, 0));
+		puzzle.getAnswerStatus().add(new AnswerStatus(2, "HOV",false, 0, 0));
+		puzzle.getAnswerStatus().add(new AnswerStatus(3, "GN", false, 1, 15));
+		puzzle.getAnswerStatus().add(new AnswerStatus(4, "XXX", false, 1, 15));
+		puzzle.getAnswerStatus().add(new AnswerStatus(5, "XXX", false, 1, 15));
+		puzzle.getAnswerStatus().add(new AnswerStatus(6, "XXX", false, 1, 15));
 
 
 		ModelMap modelMap = new ModelMap();
@@ -153,17 +154,19 @@ public class PuzzleController {
 				}
 			}
 
+
+			puzzle.setCategoryId("1");
 			puzzle.setBoard(board);
 
 			puzzle.setWidth(7);
 			puzzle.setHeight(7);
 			puzzle.setAnswerStatus(new ArrayList<AnswerStatus>());
-			puzzle.getAnswerStatus().add(new AnswerStatus("ABC", true, 0, 2));
-			puzzle.getAnswerStatus().add(new AnswerStatus("HOV", true, 7, 21));
-			puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
-			puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
-			puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
-			puzzle.getAnswerStatus().add(new AnswerStatus("XXX", false, 1, 15));
+			puzzle.getAnswerStatus().add(new AnswerStatus(1, "ABC", true, 0, 2));
+			puzzle.getAnswerStatus().add(new AnswerStatus(2, "HOV", true, 7, 21));
+			puzzle.getAnswerStatus().add(new AnswerStatus(3, "GN", false, 1, 15));
+			puzzle.getAnswerStatus().add(new AnswerStatus(4, "XXX", false, 1, 15));
+			puzzle.getAnswerStatus().add(new AnswerStatus(5, "XXX", false, 1, 15));
+			puzzle.getAnswerStatus().add(new AnswerStatus(6, "XXX", false, 1, 15));
 
 			model.addAttribute("playId", publicPlayId);
 			model.addAttribute("puzzle", puzzle);
@@ -197,14 +200,16 @@ public class PuzzleController {
 		*/
 
 		JsonAnswerResponse jsonAnswerResponse = new JsonAnswerResponse();
-		jsonAnswerResponse.setHasCleared(false);
-		jsonAnswerResponse.setResponseAnswerStatus(new AnswerStatus("GN", true, 6, 13));
+		jsonAnswerResponse.setHasCleared(true);
+		jsonAnswerResponse.setResponseAnswerStatus(new AnswerStatus(3, "GN", true, 6, 13));
 
 		//Javaオブジェクト⇒JSONに変換
 		String JavaObjectToJson = mapper.writeValueAsString(jsonAnswerResponse);
 
 		return JavaObjectToJson;
 	}
+
+	/**
 
 	@PostMapping("/ws-clear/{id}")
 	public String postClear(Model model, @RequestParam String publicPlayId, String answerCode,
@@ -213,6 +218,6 @@ public class PuzzleController {
 		model.addAttribute("contents", "ws-puzzle/clear::clear_contents");
 		return "layout";
 
-	}
+	}**/
 
 }

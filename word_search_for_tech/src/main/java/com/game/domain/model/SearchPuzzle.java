@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 public class SearchPuzzle extends Puzzle {
 
 	private String id;
+	private String categoryId;
 	private String category;
 	private String classCategory;
 	private int level;

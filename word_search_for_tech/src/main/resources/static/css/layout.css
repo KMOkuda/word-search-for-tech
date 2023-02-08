@@ -20,7 +20,7 @@ main {
 header {
 	position: relative;
 	box-shadow: 2px 2px 2px #CCC;
-	z-index: 1;
+	z-index: 1000;
 	height: 50px;
 }
 
@@ -39,6 +39,7 @@ header .inner{
 
 .drawer-nav {
 	padding: 3% 3%;
+	z-index:9999;
 }
 
 .drawer-hamburger {
@@ -73,13 +74,20 @@ header .inner{
 	text-decoration: none;
 }
 
+#ver{
+	position: absolute;
+	display: block;
+	padding: 0.75rem;
+	bottom: 0;
+}
+
 .main-content h1 {
 	font-size: 1.5rem;
 	margin-bottom: 1.5rem;
 	text-align: center;
 }
 
-.m-inner {
+#m-inner {
 	padding: 10%;
     height: 100%;
 }
@@ -180,6 +188,16 @@ a.category-select, .each-puzzle{
     transform: skewX(-15deg);
 
     **/
+}
+
+.common-btn{
+	display: block;
+	padding: 1rem;
+	width: 100%;
+	text-decoration: none;
+	margin-top: 30px;
+	margin-bottom: 30px;
+    color: white;
 }
 
 a.category-select{
@@ -313,7 +331,32 @@ span.letter{
     display: inline-block;
     font-size: 7vw;
     text-align: center;
-    z-index: 90;
+    z-index: 5;
+}
+
+.deleted{
+	text-decoration: line-through;
+	color: #AAA;
+}
+
+#good{
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 0;
+}
+
+#clear{
+	position: fixed;
+	top: 10%;
+	height: auto;
+	width: 80%;
+	display: none;
+	opacity:1;
+	z-index:99;
+	padding: 10%;
+	background-color: white;
+
 }
 
 
@@ -327,4 +370,8 @@ span.letter{
 
 .bg-orange{
 	background-color: #fd7e14
+}
+
+#news h1,p{
+	text-align: center;
 }
