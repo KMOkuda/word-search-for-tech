@@ -12,8 +12,6 @@ public class PuzzleContent extends Puzzle {
 
 	private String puzzleId;
 	private String playId;
-	private int level;
-	boolean solvable;
 
 	char[][] board;
 	int height;
@@ -21,8 +19,10 @@ public class PuzzleContent extends Puzzle {
 
 	private List<AnswerStatus> answerStatus = new ArrayList<AnswerStatus>();
 
-	public PuzzleContent() {
+	public PuzzleContent(String puzzleId, char board[][], List<String> KWList) {
 
 	}
+	
+	
 
 }

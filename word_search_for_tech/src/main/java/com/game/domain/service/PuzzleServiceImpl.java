@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.game.domain.model.Puzzle;
 import com.game.domain.model.PuzzleContent;
+import com.game.domain.model.PuzzleModel;
 import com.game.repository.PuzzleDao;
 
 public class PuzzleServiceImpl implements PuzzleService{
@@ -25,9 +26,10 @@ public class PuzzleServiceImpl implements PuzzleService{
 	}
 
 	public Puzzle createNewPuzzle(String puzzleId) {
-		Puzzle puzzle = dao.selectOne(puzzleId);
-		PuzzleContent puzzleContent = dao.insertOne(puzzleId);
-		return puzzle;
+		PuzzleModel puzzleModel = (PuzzleModel)dao.selectOne(puzzleId);
+		PuzzleContent puzzleContent = puzzleModel.createPuzzleContent();
+		
+		return puzzleContent;
 	}
 
 	@Override
