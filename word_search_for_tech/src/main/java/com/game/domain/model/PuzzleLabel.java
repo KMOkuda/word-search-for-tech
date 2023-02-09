@@ -3,7 +3,7 @@ package com.game.domain.model;
 import lombok.Data;
 
 @Data
-public abstract class PuzzleLabel{
+public class PuzzleLabel extends Puzzle{
 	private String id;
 	private String category;
 	private String classCategory;

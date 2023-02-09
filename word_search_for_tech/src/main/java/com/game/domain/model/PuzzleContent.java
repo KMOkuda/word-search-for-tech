@@ -8,27 +8,20 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class SearchPuzzle extends Puzzle {
+public class PuzzleContent extends Puzzle {
 
-	private String id;
-	private String categoryId;
-	private String category;
-	private String classCategory;
+	private String puzzleId;
+	private String playId;
 	private int level;
 	boolean solvable;
 
-	//表示に使わないかも
-	private int serialNumber;
-
-	private int height;
-	private int width;
-	boolean display;
-
 	char[][] board;
+	int height;
+	int width;
 
 	private List<AnswerStatus> answerStatus = new ArrayList<AnswerStatus>();
 
-	public SearchPuzzle() {
+	public PuzzleContent() {
 
 	}
 

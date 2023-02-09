@@ -22,9 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.game.domain.model.Answer;
 import com.game.domain.model.AnswerStatus;
 import com.game.domain.model.JsonAnswerResponse;
+import com.game.domain.model.PuzzleContent;
 import com.game.domain.model.PuzzleLabel;
-import com.game.domain.model.SearchPuzzle;
-import com.game.domain.model.SearchPuzzleLabel;
 
 @Controller
 public class PuzzleController {
@@ -36,11 +35,12 @@ public class PuzzleController {
 	}
 
 	@GetMapping("/ws-puzzles")
-	public String getPuzzleDetail(Model model, @RequestParam(name = "category", required = true) String category,
-			@RequestParam(name = "level", required = false) String level) {
+	public String getPuzzles(Model model, @RequestParam(name = "category", required = true) String category,
+			@AuthenticationPrincipal UserDetails user) {
+
 
 		model.addAttribute("contents", "ws-puzzle/puzzles::puzzles_contents");
-		PuzzleLabel puzzleLabel = new SearchPuzzleLabel();
+		PuzzleLabel puzzleLabel = new PuzzleLabel();
 
 		List<PuzzleLabel> puzzleList = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class PuzzleController {
 
 		puzzleList.add(puzzleLabel);
 
-		puzzleLabel = new SearchPuzzleLabel();
+		puzzleLabel = new PuzzleLabel();
 
 		puzzleLabel.setId("010102");
 		puzzleLabel.setCategory("ハードウェア");
@@ -66,7 +66,7 @@ public class PuzzleController {
 
 		puzzleList.add(puzzleLabel);
 
-		puzzleLabel = new SearchPuzzleLabel();
+		puzzleLabel = new PuzzleLabel();
 
 		puzzleLabel.setId("010103");
 		puzzleLabel.setCategory("ハードウェア");
@@ -78,7 +78,7 @@ public class PuzzleController {
 
 		puzzleList.add(puzzleLabel);
 
-		puzzleLabel = new SearchPuzzleLabel();
+		puzzleLabel = new PuzzleLabel();
 
 		puzzleLabel.setId("010104");
 		puzzleLabel.setCategory("ハードウェア");
@@ -101,7 +101,7 @@ public class PuzzleController {
 
 		System.out.println(puzzleId);
 		model.addAttribute("contents", "ws-puzzle/category::category_contents");
-		SearchPuzzle puzzle = new SearchPuzzle();
+		PuzzleContent puzzle = new PuzzleContent();
 
 		char board[][] = new char[7][7];
 
@@ -112,14 +112,13 @@ public class PuzzleController {
 		}
 
 		puzzle.setBoard(board);
-		puzzle.setCategoryId("1");
 
 		puzzle.setWidth(7);
 		puzzle.setHeight(7);
 
 		long playId = 4567890987658L;
 
-		puzzle.setId(Long.toString(playId));
+		puzzle.setPlayId(Long.toString(playId));
 
 		puzzle.setAnswerStatus(new ArrayList<AnswerStatus>());
 		puzzle.getAnswerStatus().add(new AnswerStatus(1,"ABC",false, 0, 0));
@@ -132,7 +131,6 @@ public class PuzzleController {
 
 		ModelMap modelMap = new ModelMap();
 		modelMap.addAttribute("puzzle", puzzle);
-		modelMap.addAttribute("playId", playId);
 		redirectAttributes.addFlashAttribute("modelMap", modelMap);
 
 		return "redirect:/ws-play/" + Long.toString(playId);
@@ -144,7 +142,7 @@ public class PuzzleController {
 			@RequestParam(name = "msg", required = false) String msg, @AuthenticationPrincipal UserDetails user) {
 
 		if (modelMap.isEmpty()) {
-			SearchPuzzle puzzle = new SearchPuzzle();
+			PuzzleContent puzzle = new PuzzleContent();
 
 			char board[][] = new char[7][7];
 
@@ -154,10 +152,8 @@ public class PuzzleController {
 				}
 			}
 
-
-			puzzle.setCategoryId("1");
 			puzzle.setBoard(board);
-
+			puzzle.setPlayId(Long.toString(4567890987658L));
 			puzzle.setWidth(7);
 			puzzle.setHeight(7);
 			puzzle.setAnswerStatus(new ArrayList<AnswerStatus>());
@@ -172,7 +168,6 @@ public class PuzzleController {
 			model.addAttribute("puzzle", puzzle);
 			System.out.println("isnull");
 		} else {
-			model.addAttribute("playId", publicPlayId);
 			model.addAttribute("puzzle", modelMap.get("puzzle"));
 		}
 
@@ -208,16 +203,5 @@ public class PuzzleController {
 
 		return JavaObjectToJson;
 	}
-
-	/**
-
-	@PostMapping("/ws-clear/{id}")
-	public String postClear(Model model, @RequestParam String publicPlayId, String answerCode,
-			RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails user) {
-
-		model.addAttribute("contents", "ws-puzzle/clear::clear_contents");
-		return "layout";
-
-	}**/
 
 }
