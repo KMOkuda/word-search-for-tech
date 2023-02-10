@@ -19,11 +19,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.game.domain.model.Answer;
 import com.game.domain.model.AnswerStatus;
+import com.game.domain.model.Content;
+import com.game.domain.model.JSONSingleAnswer;
 import com.game.domain.model.JsonAnswerResponse;
-import com.game.domain.model.PuzzleContent;
-import com.game.domain.model.PuzzleLabel;
+import com.game.domain.model.Label;
 
 @Controller
 public class PuzzleController {
@@ -35,58 +35,64 @@ public class PuzzleController {
 	}
 
 	@GetMapping("/ws-puzzles")
-	public String getPuzzles(Model model, @RequestParam(name = "category", required = true) String category,
+	public String getPuzzles(Model model, @RequestParam(name = "category", required = false) String category,
+			@RequestParam(name = "prev-pid", required = false) String pid,
 			@AuthenticationPrincipal UserDetails user) {
 
+		if(category == null && pid == null) {
+			System.out.println("エラー発生");
+			//例外処理を書く。
+		}
+
+		/**
+		 * パズルIDと同じカテゴリーの問題をselectするか、
+		 * 指定されたカテゴリーIDの問題をselectする。
+		 */
 
 		model.addAttribute("contents", "ws-puzzle/puzzles::puzzles_contents");
-		PuzzleLabel puzzleLabel = new PuzzleLabel();
+		Label puzzleLabel = new Label();
 
-		List<PuzzleLabel> puzzleList = new ArrayList<>();
+		List<Label> puzzleList = new ArrayList<>();
 
-		puzzleLabel.setId("010101");
+		puzzleLabel.setPuzzleId("010101");
 		puzzleLabel.setCategory("ハードウェア");
-		puzzleLabel.setClassCategory("hardware");
+		puzzleLabel.setCategoryClass("hardware");
 		puzzleLabel.setLevel(1);
 		puzzleLabel.setWidth(9);
 		puzzleLabel.setHeight(9);
-		puzzleLabel.setSolvable(true);
 
 		puzzleList.add(puzzleLabel);
 
-		puzzleLabel = new PuzzleLabel();
+		puzzleLabel = new Label();
 
-		puzzleLabel.setId("010102");
+		puzzleLabel.setPuzzleId("010102");
 		puzzleLabel.setCategory("ハードウェア");
-		puzzleLabel.setClassCategory("hardware");
+		puzzleLabel.setCategoryClass("hardware");
 		puzzleLabel.setLevel(1);
 		puzzleLabel.setWidth(9);
 		puzzleLabel.setHeight(9);
-		puzzleLabel.setSolvable(true);
 
 		puzzleList.add(puzzleLabel);
 
-		puzzleLabel = new PuzzleLabel();
+		puzzleLabel = new Label();
 
-		puzzleLabel.setId("010103");
+		puzzleLabel.setPuzzleId("010103");
 		puzzleLabel.setCategory("ハードウェア");
-		puzzleLabel.setClassCategory("hardware");
+		puzzleLabel.setCategoryClass("hardware");
 		puzzleLabel.setLevel(1);
 		puzzleLabel.setWidth(9);
 		puzzleLabel.setHeight(9);
-		puzzleLabel.setSolvable(true);
 
 		puzzleList.add(puzzleLabel);
 
-		puzzleLabel = new PuzzleLabel();
+		puzzleLabel = new Label();
 
-		puzzleLabel.setId("010104");
+		puzzleLabel.setPuzzleId("010104");
 		puzzleLabel.setCategory("ハードウェア");
-		puzzleLabel.setClassCategory("hardware");
+		puzzleLabel.setCategoryClass("hardware");
 		puzzleLabel.setLevel(2);
 		puzzleLabel.setWidth(9);
 		puzzleLabel.setHeight(9);
-		puzzleLabel.setSolvable(false);
 
 		puzzleList.add(puzzleLabel);
 
@@ -101,7 +107,7 @@ public class PuzzleController {
 
 		System.out.println(puzzleId);
 		model.addAttribute("contents", "ws-puzzle/category::category_contents");
-		PuzzleContent puzzle = new PuzzleContent();
+		Content puzzle = new Content();
 
 		char board[][] = new char[7][7];
 
@@ -118,8 +124,9 @@ public class PuzzleController {
 
 		long playId = 4567890987658L;
 
-		puzzle.setPlayId(Long.toString(playId));
+		puzzle.setPlayId(playId);
 
+		puzzle.setPuzzleId(puzzleId);
 		puzzle.setAnswerStatus(new ArrayList<AnswerStatus>());
 		puzzle.getAnswerStatus().add(new AnswerStatus(1,"ABC",false, 0, 0));
 		puzzle.getAnswerStatus().add(new AnswerStatus(2, "HOV",false, 0, 0));
@@ -133,7 +140,7 @@ public class PuzzleController {
 		modelMap.addAttribute("puzzle", puzzle);
 		redirectAttributes.addFlashAttribute("modelMap", modelMap);
 
-		return "redirect:/ws-play/" + Long.toString(playId);
+		return "redirect:/ws-play/" + puzzle.getPlayId();
 	}
 
 	@GetMapping("/ws-play/{id}")
@@ -142,7 +149,7 @@ public class PuzzleController {
 			@RequestParam(name = "msg", required = false) String msg, @AuthenticationPrincipal UserDetails user) {
 
 		if (modelMap.isEmpty()) {
-			PuzzleContent puzzle = new PuzzleContent();
+			Content puzzle = new Content();
 
 			char board[][] = new char[7][7];
 
@@ -152,8 +159,9 @@ public class PuzzleController {
 				}
 			}
 
+			puzzle.setPuzzleId("010101");
 			puzzle.setBoard(board);
-			puzzle.setPlayId(Long.toString(4567890987658L));
+			puzzle.setPlayId(4567890987658L);
 			puzzle.setWidth(7);
 			puzzle.setHeight(7);
 			puzzle.setAnswerStatus(new ArrayList<AnswerStatus>());
@@ -164,7 +172,6 @@ public class PuzzleController {
 			puzzle.getAnswerStatus().add(new AnswerStatus(5, "XXX", false, 1, 15));
 			puzzle.getAnswerStatus().add(new AnswerStatus(6, "XXX", false, 1, 15));
 
-			model.addAttribute("playId", publicPlayId);
 			model.addAttribute("puzzle", puzzle);
 			System.out.println("isnull");
 		} else {
@@ -178,12 +185,12 @@ public class PuzzleController {
 
 	@PostMapping("/ws-answer")
 	@ResponseBody
-	public String postAnswer(@RequestBody List<Answer> answer, @AuthenticationPrincipal UserDetails user) throws JsonProcessingException {
-		String puzzleId = answer.get(0).getPlayId();
+	public String postAnswer(@RequestBody List<JSONSingleAnswer> answer, @AuthenticationPrincipal UserDetails user) throws JsonProcessingException {
+		String playId = answer.get(0).getPlayId();
 		String fromId = answer.get(0).getFromId();
 		String toId = answer.get(0).getToId();
 
-		System.out.println(puzzleId);
+		System.out.println(playId);
 		System.out.println(fromId);
 		System.out.println(toId);
 

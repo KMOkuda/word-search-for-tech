@@ -3,7 +3,7 @@ package com.game.domain.model;
 import lombok.Data;
 
 @Data
-public class AnswerStatus {
+public class AnswerStatus implements Answer{
 	int index;
 	String kw;
 	boolean hasAnswer;

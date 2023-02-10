@@ -8,10 +8,10 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class PuzzleContent extends Puzzle {
+public class Content {
 
+	private long playId;
 	private String puzzleId;
-	private String playId;
 
 	char[][] board;
 	int height;
@@ -19,10 +19,14 @@ public class PuzzleContent extends Puzzle {
 
 	private List<AnswerStatus> answerStatus = new ArrayList<AnswerStatus>();
 
-	public PuzzleContent(String puzzleId, char board[][], List<String> KWList) {
+	public Content(Ingredient puzzleModel) {
 
 	}
-	
-	
+
+	public Content() {
+		// TODO 自動生成されたコンストラクター・スタブ
+	}
+
+
 
 }

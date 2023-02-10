@@ -4,13 +4,15 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.game.domain.model.Puzzle;
+import com.game.domain.model.Content;
+import com.game.domain.model.Label;
 
 @Service
 public interface PuzzleService {
-	public List<Puzzle> selectMany(String username, int categoryId);
 
-	public Puzzle createNewPuzzle(String puzzleId);
+	public List<Label> selectMany(String username, int categoryId);
 
-	public Puzzle selectOne(String playId);
+	public Content createNewPuzzle(String puzzleId);
+
+	public Content selectOne(String playId);
 }

@@ -29,58 +29,54 @@
 				<div class="each-puzzle" th:each="puzzle : ${puzzleList}"
 					th:object="${puzzle}">
 					<div class="puzzle-inner bg-gradient"
-						th:classappend="${puzzle.classCategory} + ' lv' + ${puzzle.level}">
-						<div
-							th:classappend="${puzzle.solvable} ? 'solvable' : 'unsolvable'">
-							<div class="id" th:text="'#' + *{id}"></div>
-							<div class="category" th:text="*{category}"></div>
-							<div class="level" th:text="'レベル ' + *{level}"></div>
-							<div class="board-size"
-								th:text="'ボードサイズ ' + *{width} + ' * ' + *{height}"></div>
-							<div class="width" th:text="*{width}" hidden></div>
-							<div class="height" th:text="*{height}" hidden></div>
-						</div>
+						th:classappend="${puzzle.categoryClass} + ' lv' + ${puzzle.level}">
+
+						<div class="id" th:text="'#' + *{puzzleId}"></div>
+						<div class="category" th:text="*{category}"></div>
+						<div class="level" th:text="'レベル ' + *{level}"></div>
+						<div class="board-size"
+							th:text="'ボードサイズ ' + *{width} + ' * ' + *{height}"></div>
+						<div class="width" th:text="*{width}" hidden></div>
+						<div class="height" th:text="*{height}" hidden></div>
 					</div>
 				</div>
 			</div>
 			<script>
-				$(function() {
-					$('.each-puzzle')
-							.on(
-									'touchstart',
-									function() {
-										var id = $(this).find(".id").html();
-										id = id.slice(1, id.length);
+		$(function() {
+		    $('.each-puzzle')
+			    .on(
+				    'touchstart',
+				    function() {
+					var id = $(this).find(".id").html();
+					id = id.slice(1, id.length);
 
-										// POST先
-										var url = "./ws-create";
+					// POST先
+					var url = "./ws-create";
 
-										// パラメータを付与する場合
-										var inputs = '';
-										var params = [ [ "id", id ] ];
-										for (var i = 0, n = params.length; i < n; i++) {
-											inputs += '<input type="hidden" name="' + params[i][0] + '" value="' + params[i][1] + '" />';
-										}
+					// パラメータを付与する場合
+					var inputs = '';
+					var params = [ [ "id", id ] ];
+					for (var i = 0, n = params.length; i < n; i++) {
+					    inputs += '<input type="hidden" name="' + params[i][0] + '" value="' + params[i][1] + '" />';
+					}
 
-										var token = $('head meta[name="_csrf"]')
-												.attr("content");
+					var token = $('head meta[name="_csrf"]')
+						.attr("content");
 
-										inputs += '<input type="hidden" name="_csrf" value="' + token + '" />';
+					inputs += '<input type="hidden" name="_csrf" value="' + token + '" />';
 
-										// POST遷移
-										$("body").append(
-												'<form action="'+url+'" method="post" id="post">'
-														+ inputs + '</form>');
-										$("#post").submit();
+					// POST遷移
+					$("body").append(
+						'<form action="'+url+'" method="post" id="post">'
+							+ inputs + '</form>');
+					$("#post").submit();
 
-									});
-				});
-			</script>
+				    });
+		});
+	    </script>
 		</div>
 	</main>
-	<footer>
-
-	</footer>
+	<footer> </footer>
 
 </body>
 

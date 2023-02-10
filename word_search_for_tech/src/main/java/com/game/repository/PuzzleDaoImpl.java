@@ -7,7 +7,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.game.domain.model.Puzzle;
+import com.game.domain.model.Ingredient;
+import com.game.domain.model.Label;
 
 @Repository("PuzzleDaoImpl")
 public class PuzzleDaoImpl implements PuzzleDao{
@@ -15,13 +16,13 @@ public class PuzzleDaoImpl implements PuzzleDao{
 	private JdbcTemplate jdbc;
 
 	@Override
-	public List<Puzzle> selectMany(int categoryId) throws DataAccessException {
+	public List<Label> selectMany(int categoryId) throws DataAccessException {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
 
 	@Override
-	public Puzzle selectOne(String categoryId) throws DataAccessException {
+	public Ingredient selectOne(String categoryId) throws DataAccessException {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
