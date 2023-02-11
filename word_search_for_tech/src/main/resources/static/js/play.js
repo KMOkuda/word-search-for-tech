@@ -235,13 +235,11 @@ function drawing(e) {
 	var destY = e.changedTouches[0].pageY;
 
 	var elmTo = document.elementsFromPoint(destX, destY)[0];
-
-	if (elmTo.dataset.id != null) {
-		toId = elmTo.dataset.id;
-	}
 	
+	var newToId = elmTo.dataset.id;
 
-	if (elmTo.classList.contains('letter') && isDraggable(fromId, toId)) {
+	if (elmTo.classList.contains('letter') && elmTo.dataset.id != null && isDraggable(fromId, newToId)) {
+		toId = newToId;
 		draw(topContext, fromId, toId, true);
 	}
 }
