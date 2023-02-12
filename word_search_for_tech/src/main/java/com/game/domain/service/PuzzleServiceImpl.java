@@ -20,11 +20,19 @@ public class PuzzleServiceImpl implements PuzzleService{
 	 * 今回の実装ではログインなしのみに限定
 	 */
 	@Override
-	public List<Label> selectMany(String username, int categoryId) {
-		List<Label> puzzleList = dao.selectMany(categoryId);
+	public List<Label> selectManyByCategory(String username, int categoryId) {
+		List<Label> puzzleList = dao.selectManyByCategory(categoryId);
 		return puzzleList;
 	}
-
+	
+	@Override
+	public List<Label> selectManyByPID(String username, String puzzleId) {
+		List<Label> puzzleList = dao.selectManyByPID(puzzleId);
+		return puzzleList;
+	}
+	
+	
+	@Override
 	public Content createNewPuzzle(String puzzleId) {
 		Ingredient puzzleModel = (Ingredient)dao.selectOne(puzzleId);
 		Content puzzleContent = new Content(puzzleModel);

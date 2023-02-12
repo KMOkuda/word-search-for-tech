@@ -22,8 +22,12 @@
 
 <link rel="stylesheet" th:href="@{/css/reset.css}"></link>
 <link rel="stylesheet" th:href="@{/css/layout.css}"></link>
+<link rel="manifest" href="/manifest.json">
 <script th:src="@{/js/layout.js}"></script>
-
+<script src="/sw.js"></script>
+<script>
+navigator.serviceWorker.register('/sw.js');
+</script>
 
 <head>
 <meta charset="UTF8"></meta>

@@ -10,7 +10,9 @@ import com.game.domain.model.Label;
 @Service
 public interface PuzzleService {
 
-	public List<Label> selectMany(String username, int categoryId);
+	public List<Label> selectManyByCategory(String username, int categoryId);
+	
+	public List<Label> selectManyByPID(String username, String puzzleId);
 
 	public Content createNewPuzzle(String puzzleId);
 
