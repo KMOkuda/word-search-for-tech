@@ -13,6 +13,4 @@ public class Label {
 
 	private int height;
 	private int width;
-
-	boolean isSolvable;
 }

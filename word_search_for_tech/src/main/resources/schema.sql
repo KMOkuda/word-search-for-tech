@@ -20,9 +20,9 @@ CREATE TABLE IF NOT EXISTS t_level(
 	level_description VARCHAR(100)
 );
 
-INSERT INTO t_level (level_name,level_description) VALUES ('ITパスポート','');
-INSERT INTO t_level (level_name,level_description) VALUES ('基本情報','');
-INSERT INTO t_level (level_name,level_description) VALUES ('応用情報','');
+INSERT INTO t_level (level_id,level_name,level_description) VALUES ('ITパスポート','');
+INSERT INTO t_level (level_id,level_name,level_description) VALUES ('基本情報','');
+INSERT INTO t_level (level_id,level_name,level_description) VALUES ('応用情報','');
 
 CREATE TABLE t_kw(kw_id INT PRIMARY KEY AUTO_INCREMENT,kw VARCHAR(10));
 INSERT INTO t_kw (kw) VALUES ('and');
@@ -125,12 +125,28 @@ INSERT INTO t_kw (kw) VALUES ('bsc');
 INSERT INTO t_kw (kw) VALUES ('scm');
 
 CREATE TABLE t_puzzle(
-puzzle_id VARCHAR PRIMARY KEY,
+puzzle_id VARCHAR(20) PRIMARY KEY,
 category_id INT, level_id INT,
 height INT,
-width INT
+width INT,
 FOREIGN KEY (category_id)
-REFERENCES t_category(category_id)
+REFERENCES t_category(category_id),
+FOREIGN KEY (level_id)
+REFERENCES t_level(level_id)
 );
+
+INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('060101',6,1,8,8);
+INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('010101',1,1,8,8);
+INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('010102',1,1,8,8);
+INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('010103',1,1,8,8);
+INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('020101',2,1,8,8);
+INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('030102',3,1,8,8);
+INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('040101',4,1,8,8);
+INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('040102',4,1,8,8);
+INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('040103',4,1,8,8);
+INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('040104',4,1,8,8);
+INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('010201',1,2,8,8);
+INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('010202',1,2,8,8);
+INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('050101',5,1,8,8);
 
 

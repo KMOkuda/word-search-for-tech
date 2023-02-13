@@ -59,57 +59,7 @@ public class PuzzleController {
 
 
 		model.addAttribute("contents", "ws-puzzle/puzzles::puzzles_contents");
-		Label puzzleLabel = new Label();
-
-		List<Label> puzzleList = new ArrayList<>();
-
-		puzzleLabel.setPuzzleId("010101");
-		puzzleLabel.setCategoryName("ハードウェア");
-		puzzleLabel.setCategoryClass("hardware");
-		puzzleLabel.setLevel(1);
-		puzzleLabel.setWidth(9);
-		puzzleLabel.setHeight(9);
-		puzzleLabel.setSolvable(true);
-
-		puzzleList.add(puzzleLabel);
-
-		puzzleLabel = new Label();
-
-		puzzleLabel.setPuzzleId("010102");
-		puzzleLabel.setCategoryName("ハードウェア");
-		puzzleLabel.setCategoryClass("hardware");
-		puzzleLabel.setLevel(1);
-		puzzleLabel.setWidth(9);
-		puzzleLabel.setHeight(9);
-		puzzleLabel.setSolvable(false);
-
-		puzzleList.add(puzzleLabel);
-
-		puzzleLabel = new Label();
-
-		puzzleLabel.setPuzzleId("010103");
-		puzzleLabel.setCategoryName("ハードウェア");
-		puzzleLabel.setCategoryClass("hardware");
-		puzzleLabel.setLevel(1);
-		puzzleLabel.setWidth(9);
-		puzzleLabel.setHeight(9);
-		puzzleLabel.setSolvable(true);
-
-		puzzleList.add(puzzleLabel);
-
-		puzzleLabel = new Label();
-
-		puzzleLabel.setPuzzleId("010104");
-		puzzleLabel.setCategoryName("ハードウェア");
-		puzzleLabel.setCategoryClass("hardware");
-		puzzleLabel.setLevel(2);
-		puzzleLabel.setWidth(9);
-		puzzleLabel.setHeight(9);
-		puzzleLabel.setSolvable(true);
-
-		puzzleList.add(puzzleLabel);
-
-		model.addAttribute("puzzleList", puzzleList);
+		model.addAttribute("puzzleList", labelList);
 
 		return "layout";
 	}
