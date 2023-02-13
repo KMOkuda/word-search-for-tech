@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import com.game.domain.model.Content;
 import com.game.domain.model.Ingredient;
 import com.game.domain.model.Label;
 import com.game.repository.PuzzleDao;
 
+@Service
 public class PuzzleServiceImpl implements PuzzleService{
 
 	@Autowired
@@ -24,14 +26,14 @@ public class PuzzleServiceImpl implements PuzzleService{
 		List<Label> puzzleList = dao.selectManyByCategory(categoryId);
 		return puzzleList;
 	}
-	
+
 	@Override
 	public List<Label> selectManyByPID(String username, String puzzleId) {
 		List<Label> puzzleList = dao.selectManyByPID(puzzleId);
 		return puzzleList;
 	}
-	
-	
+
+
 	@Override
 	public Content createNewPuzzle(String puzzleId) {
 		Ingredient puzzleModel = (Ingredient)dao.selectOne(puzzleId);

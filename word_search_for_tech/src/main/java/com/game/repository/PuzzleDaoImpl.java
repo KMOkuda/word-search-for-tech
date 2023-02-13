@@ -20,15 +20,20 @@ public class PuzzleDaoImpl implements PuzzleDao{
 	@Override
 	public List<Label> selectManyByCategory(int categoryId) throws DataAccessException {
 		// TODO 自動生成されたメソッド・スタブ
-		
-		String sql = "SELECT * FROM m_user";
+
+		String sql = "SELECT puzzle_id, category_id, category_name, category_class, level,"
+				+ "height, width, "
+				+ "CASE WHEN level >= 2 THEN \"True\" ELSE \"False\" "
+						+ "END "
+				+ "FROM t_category, t_puzzle "
+				+ "WHERE t_category.category_id = t_puzzle.category_id";
 
 		RowMapper<Label> rowMapper = new BeanPropertyRowMapper<Label>(Label.class);
 		return jdbc.query(sql, rowMapper);
 	}
-	
+
 	@Override
-	public List<Label> selectManyByPID(int categoryId) throws DataAccessException {
+	public List<Label> selectManyByPID(String puzzleId) throws DataAccessException {
 		String sql = "SELECT * FROM m_user";
 
 		RowMapper<Label> rowMapper = new BeanPropertyRowMapper<Label>(Label.class);

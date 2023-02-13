@@ -7,10 +7,12 @@ public class Label {
 	private String puzzleId;
 
 	private int categoryId;
-	private String category;
+	private String categoryName;
 	private String categoryClass;
 	private int level;
 
 	private int height;
 	private int width;
+
+	boolean isSolvable;
 }

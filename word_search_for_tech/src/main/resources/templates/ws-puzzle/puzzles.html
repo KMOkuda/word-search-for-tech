@@ -32,13 +32,18 @@
 						th:classappend="${puzzle.categoryClass} + ' lv' + ${puzzle.level}">
 
 						<div class="id" th:text="'#' + *{puzzleId}"></div>
-						<div class="category" th:text="*{category}"></div>
+						<div class="category" th:text="*{categoryName}"></div>
 						<div class="level" th:text="'レベル ' + *{level}"></div>
 						<div class="board-size"
-							th:text="'ボードサイズ ' + *{width} + ' * ' + *{height}"></div>
+							th:text="'サイズ ' + *{width} + ' * ' + *{height}"></div>
 						<div class="width" th:text="*{width}" hidden></div>
 						<div class="height" th:text="*{height}" hidden></div>
+						<div class="solvable" th:text="*{isSolvable}" hidden></div>
+						<th:block th:if="${!puzzle.isSolvable}">
+							<div class="unsolvable"></div>
+						</th:block>
 					</div>
+
 				</div>
 			</div>
 			<script>
@@ -47,7 +52,15 @@
 			    .on(
 				    'touchstart',
 				    function() {
+					var isSolvable = $(this).find(".solvable").html();
+
+					if(isSolvable == "false"){
+					    return;
+					}
+
 					var id = $(this).find(".id").html();
+
+					//#を取る
 					id = id.slice(1, id.length);
 
 					// POST先

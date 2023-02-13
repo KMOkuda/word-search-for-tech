@@ -3,6 +3,7 @@ package com.game.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -24,9 +25,13 @@ import com.game.domain.model.Content;
 import com.game.domain.model.JSONSingleAnswer;
 import com.game.domain.model.JsonAnswerResponse;
 import com.game.domain.model.Label;
+import com.game.domain.service.PuzzleService;
 
 @Controller
 public class PuzzleController {
+	@Autowired
+	PuzzleService puzzleService;
+
 	@GetMapping("/ws-category")
 	public String getPuzzles(Model model) {
 		model.addAttribute("contents", "ws-puzzle/category::category_contents");
@@ -44,10 +49,14 @@ public class PuzzleController {
 			//例外処理を書く。
 		}
 
+		List<Label> labelList = puzzleService.selectManyByCategory(null, 1);
+
 		/**
 		 * パズルIDと同じカテゴリーの問題をselectするか、
 		 * 指定されたカテゴリーIDの問題をselectする。
 		 */
+
+
 
 		model.addAttribute("contents", "ws-puzzle/puzzles::puzzles_contents");
 		Label puzzleLabel = new Label();
@@ -55,44 +64,48 @@ public class PuzzleController {
 		List<Label> puzzleList = new ArrayList<>();
 
 		puzzleLabel.setPuzzleId("010101");
-		puzzleLabel.setCategory("ハードウェア");
+		puzzleLabel.setCategoryName("ハードウェア");
 		puzzleLabel.setCategoryClass("hardware");
 		puzzleLabel.setLevel(1);
 		puzzleLabel.setWidth(9);
 		puzzleLabel.setHeight(9);
+		puzzleLabel.setSolvable(true);
 
 		puzzleList.add(puzzleLabel);
 
 		puzzleLabel = new Label();
 
 		puzzleLabel.setPuzzleId("010102");
-		puzzleLabel.setCategory("ハードウェア");
+		puzzleLabel.setCategoryName("ハードウェア");
 		puzzleLabel.setCategoryClass("hardware");
 		puzzleLabel.setLevel(1);
 		puzzleLabel.setWidth(9);
 		puzzleLabel.setHeight(9);
+		puzzleLabel.setSolvable(false);
 
 		puzzleList.add(puzzleLabel);
 
 		puzzleLabel = new Label();
 
 		puzzleLabel.setPuzzleId("010103");
-		puzzleLabel.setCategory("ハードウェア");
+		puzzleLabel.setCategoryName("ハードウェア");
 		puzzleLabel.setCategoryClass("hardware");
 		puzzleLabel.setLevel(1);
 		puzzleLabel.setWidth(9);
 		puzzleLabel.setHeight(9);
+		puzzleLabel.setSolvable(true);
 
 		puzzleList.add(puzzleLabel);
 
 		puzzleLabel = new Label();
 
 		puzzleLabel.setPuzzleId("010104");
-		puzzleLabel.setCategory("ハードウェア");
+		puzzleLabel.setCategoryName("ハードウェア");
 		puzzleLabel.setCategoryClass("hardware");
 		puzzleLabel.setLevel(2);
 		puzzleLabel.setWidth(9);
 		puzzleLabel.setHeight(9);
+		puzzleLabel.setSolvable(true);
 
 		puzzleList.add(puzzleLabel);
 
@@ -109,11 +122,11 @@ public class PuzzleController {
 		model.addAttribute("contents", "ws-puzzle/category::category_contents");
 		Content puzzle = new Content();
 
-		char board[][] = new char[7][7];
+		char board[][] = new char[8][8];
 
-		for (int i = 0; i < 7; i++) {
-			for (int j = 0; j < 7; j++) {
-				board[i][j] = (char) ((i * 7 + j) % 26 + 65);
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				board[i][j] = (char) ((i * 8 + j) % 26 + 65);
 			}
 		}
 
@@ -151,11 +164,11 @@ public class PuzzleController {
 		if (modelMap.isEmpty()) {
 			Content puzzle = new Content();
 
-			char board[][] = new char[7][7];
+			char board[][] = new char[8][8];
 
-			for (int i = 0; i < 7; i++) {
-				for (int j = 0; j < 7; j++) {
-					board[i][j] = (char) ((i * 7 + j) % 26 + 65);
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					board[i][j] = (char) ((i * 8 + j) % 26 + 65);
 				}
 			}
 

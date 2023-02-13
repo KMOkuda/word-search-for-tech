@@ -96,8 +96,18 @@ header .inner{
 }
 
 #m-inner {
-	padding: 10%;
+	padding: 10% 0%;
     height: 100%;
+}
+
+.category-content, .puzzles-content{
+	padding-right: 10%;
+	padding-left:10%;
+}
+
+.play-content{
+	margin-right: 5%;
+    margin-left: 5%;
 }
 
 .home h1 {
@@ -182,10 +192,6 @@ select{
 	width: auto;
 }
 
-.category-contents, .puzzles-content, .play-content{
-	margin: 0px;
-}
-
 a.category-select, .each-puzzle{
 	display: block;
 	padding: 1rem;
@@ -222,15 +228,29 @@ a.category-select{
 }
 
 .each-puzzle{
+	position: relative;
 	padding: 0;
 	color: #FFF;
 	width: 50%;
 	display: inline-block;
-	border: solid #FFF;
+	border: solid #FFF 7px;
 }
+
+.puzzle-inner{
+	padding: 1rem;
+}
+
 
 .unsolvable{
 	pointer-events: none;
+	z-index: 100;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: 0.3;
 }
 
 /**
@@ -247,10 +267,6 @@ a.category-select{
   transform: rotate(-45deg);
 }
 **/
-
-.each-puzzle > div{
-	padding: 1rem;
-}
 
 .board-size{
 	display: block;
