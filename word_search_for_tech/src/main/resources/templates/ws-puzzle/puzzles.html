@@ -29,11 +29,11 @@
 				<div class="each-puzzle" th:each="puzzle : ${puzzleList}"
 					th:object="${puzzle}">
 					<div class="puzzle-inner bg-gradient"
-						th:classappend="${puzzle.categoryClass} + ' lv' + ${puzzle.level}">
+						th:classappend="${puzzle.categoryClass} + ' lv' + ${puzzle.levelId}">
 
 						<div class="id" th:text="'#' + *{puzzleId}"></div>
 						<div class="category" th:text="*{categoryName}"></div>
-						<div class="level" th:text="'レベル ' + *{level}"></div>
+						<div class="level" th:text="'レベル ' + *{levelId}"></div>
 						<div class="board-size"
 							th:text="'サイズ ' + *{width} + ' * ' + *{height}"></div>
 						<div class="width" th:text="*{width}" hidden></div>

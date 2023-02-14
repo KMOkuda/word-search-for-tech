@@ -7,10 +7,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import com.game.domain.model.Ingredient;
+import com.game.domain.entity.IngredientEntity;
 import com.game.domain.model.Label;
+import com.game.domain.model.Play;
 
 @Repository("PuzzleDaoImpl")
 public class PuzzleDaoImpl implements PuzzleDao{
@@ -21,11 +23,10 @@ public class PuzzleDaoImpl implements PuzzleDao{
 	public List<Label> selectManyByCategory(int categoryId) throws DataAccessException {
 		// TODO 自動生成されたメソッド・スタブ
 
-		String sql = "SELECT puzzle_id, t_puzzle.category_id, category_name, category_class, t_puzzle.level_id, "
+		String sql = "SELECT puzzle_id, t_puzzle.category_id, category_name, category_class, level_id, "
 				+ "height, width "
-				+ "FROM t_category, t_puzzle, t_level "
-				+ "WHERE t_category.category_id = t_puzzle.category_id "
-				+ "AND t_level.level_id = t_puzzle.level_id";
+				+ "FROM t_category, t_puzzle "
+				+ "WHERE t_puzzle.category_id = t_category.category_id and t_category.category_id = " + Integer.toString(categoryId)+ ";";
 
 		RowMapper<Label> rowMapper = new BeanPropertyRowMapper<Label>(Label.class);
 		return jdbc.query(sql, rowMapper);
@@ -33,16 +34,56 @@ public class PuzzleDaoImpl implements PuzzleDao{
 
 	@Override
 	public List<Label> selectManyByPID(String puzzleId) throws DataAccessException {
-		String sql = "SELECT * FROM m_user";
+		String sql = "SELECT puzzle_id, t_puzzle.category_id, category_name, category_class, level_id, "
+				+ "height, width "
+				+ "FROM t_category, t_puzzle "
+				+ "WHERE t_puzzle.category_id = t_category.category_id and t_category.category_id = "
+				+ "(SELECT category_id FROM t_puzzle WHERE t_puzzle.puzzle_id = " + puzzleId + ");";
 
 		RowMapper<Label> rowMapper = new BeanPropertyRowMapper<Label>(Label.class);
 		return jdbc.query(sql, rowMapper);
 	}
 
 	@Override
-	public Ingredient selectOne(String categoryId) throws DataAccessException {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+	public IngredientEntity selectOne(String puzzleId) throws DataAccessException {
+		String sql = "SELECT puzzle_id, height, width "
+				+ "FROM t_puzzle "
+				+ "WHERE puzzle_id = " + puzzleId + ";";
+
+		RowMapper<IngredientEntity> rowMapper = new BeanPropertyRowMapper<IngredientEntity>(IngredientEntity.class);
+		return jdbc.query(sql, rowMapper).get(0);
 	}
 
+	@Override
+	public List<String> selectKW(String puzzleId) throws DataAccessException {
+		String sql = "SELECT kw "
+				+ "FROM t_puzzle, t_kw_property, t_kw "
+				+ "WHERE t_puzzle.puzzle_id = " + puzzleId + " "
+				+ "AND t_puzzle.puzzle_id = t_kw_property.puzzle_id "
+				+ "AND t_kw_property.kw_id = t_kw.kw_id;";
+
+		//RowMapper<String> rowMapper = new BeanPropertyRowMapper<String>(String.class);
+		return jdbc.queryForList(sql, String.class);
+
+	}
+
+	@Override
+	public long insertOne(String puzzleId) throws DataAccessException {
+		String sql ="INSERT INTO t_play_status (public_id, puzzle_id, created_at, cleared_at), "
+				+ "VALUES( " + "random_uuid() " + new java.sql.Date(new java.util.Date().getTime()) +
+				")";
+
+		jdbc.update(
+			    "INSERT INTO employee(id, name, salary) VALUES (:id, :name, :salary)",
+			    new BeanPropertySqlParameterSource(Play.class));
+	}
+
+	/**
+	@Override
+	public long insertOne(String puzzleId) throws DataAccessException{
+		String sql = "INSERT INTO ";
+
+
+	}
+**/
 }

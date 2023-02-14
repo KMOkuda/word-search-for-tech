@@ -1,9 +1,13 @@
 package com.game.domain.model;
 
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
 public class Play{
-	private String publicPlayStatusId;
-	private int gameId;
+	int playId;
+	String puzzleId;
+	Date createdAt;
+	Date clearedAt;
 }

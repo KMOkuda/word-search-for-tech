@@ -9,7 +9,7 @@ public class Label {
 	private int categoryId;
 	private String categoryName;
 	private String categoryClass;
-	private int level;
+	private int levelId;
 
 	private int height;
 	private int width;

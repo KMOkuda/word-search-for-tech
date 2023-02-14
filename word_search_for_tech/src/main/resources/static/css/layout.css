@@ -272,6 +272,10 @@ a.category-select{
 	display: block;
 }
 
+.logic {
+	background-color: var(--bs-primary);
+}
+
 .hardware{
 	background-color: var(--bs-primary);
 }
@@ -369,14 +373,19 @@ span.letter{
 #clear{
 	position: absolute;
     top: 0;
-	height: auto;
-	width: 80%;
+	height: 100%;
+	width: 100%;
 	display: none;
 	opacity:1;
 	z-index:99;
-	padding: 10%;
+	padding: 0%;
 	background-color: transparent;
 
+}
+
+#clear-inner{
+	width: 60%;
+	margin: 20% auto;
 }
 
 

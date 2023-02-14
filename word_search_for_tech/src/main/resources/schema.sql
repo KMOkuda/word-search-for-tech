@@ -20,9 +20,9 @@ CREATE TABLE IF NOT EXISTS t_level(
 	level_description VARCHAR(100)
 );
 
-INSERT INTO t_level (level_id,level_name,level_description) VALUES ('ITパスポート','');
-INSERT INTO t_level (level_id,level_name,level_description) VALUES ('基本情報','');
-INSERT INTO t_level (level_id,level_name,level_description) VALUES ('応用情報','');
+INSERT INTO t_level (level_name,level_description) VALUES ('ITパスポート','');
+INSERT INTO t_level (level_name,level_description) VALUES ('基本情報','');
+INSERT INTO t_level (level_name,level_description) VALUES ('応用情報','');
 
 CREATE TABLE t_kw(kw_id INT PRIMARY KEY AUTO_INCREMENT,kw VARCHAR(10));
 INSERT INTO t_kw (kw) VALUES ('and');
@@ -140,6 +140,7 @@ INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('0101
 INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('010102',1,1,8,8);
 INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('010103',1,1,8,8);
 INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('020101',2,1,8,8);
+INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('030101',3,1,8,8);
 INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('030102',3,1,8,8);
 INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('040101',4,1,8,8);
 INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('040102',4,1,8,8);
@@ -149,4 +150,121 @@ INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('0102
 INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('010202',1,2,8,8);
 INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES ('050101',5,1,8,8);
 
+CREATE TABLE t_kw_property(
+puzzle_kw_id INT PRIMARY KEY AUTO_INCREMENT,
+kw_id INT,
+puzzle_id VARCHAR(20),
+FOREIGN KEY (kw_id)
+REFERENCES t_kw(kw_id),
+FOREIGN KEY (puzzle_id)
+REFERENCES t_puzzle(puzzle_id)
+);
 
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (1,'060101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (2,'060101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (3,'060101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (4,'060101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (5,'060101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (6,'060101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (7,'060101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (8,'060101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (9,'060101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (10,'060101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (11,'060101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (12,'010101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (13,'010101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (14,'010101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (15,'010101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (16,'010101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (17,'010101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (18,'010101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (19,'010101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (20,'010102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (21,'010102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (22,'010102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (23,'010102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (24,'010102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (25,'010102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (26,'010102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (27,'010103');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (28,'010103');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (29,'010103');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (30,'010103');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (31,'010103');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (32,'010103');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (33,'020101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (34,'020101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (35,'020101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (36,'020101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (37,'020101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (38,'020101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (39,'020101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (40,'030101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (41,'030101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (42,'030101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (43,'030101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (44,'030101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (45,'030101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (46,'030101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (47,'030102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (48,'030102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (49,'030102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (50,'030102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (51,'030102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (52,'030102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (53,'040101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (54,'040101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (55,'040101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (56,'040101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (57,'040101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (58,'040101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (59,'040101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (60,'040102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (61,'040102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (62,'040102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (63,'040102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (64,'040102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (65,'040102');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (66,'040103');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (67,'040103');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (68,'040103');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (69,'040103');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (70,'040103');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (71,'040103');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (72,'040104');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (73,'040104');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (74,'040104');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (75,'040104');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (76,'040104');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (77,'040104');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (78,'010201');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (79,'010201');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (80,'010201');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (81,'010201');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (82,'010201');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (83,'010201');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (84,'010202');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (85,'010202');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (86,'010202');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (87,'010202');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (88,'010202');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (89,'010202');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (90,'050101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (91,'050101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (92,'050101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (93,'050101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (94,'050101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (95,'050101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (96,'050101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (97,'050101');
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (98,'050101');
+
+CREATE TABLE t_play(
+play_id INT PRIMARY KEY AUTO_INCREMENT,
+public_id uuid DEFAULT random_uuid(),
+puzzle_id VARCHAR(20),
+created_at DATETIME,
+cleared_at DATETIME,
+FOREIGN KEY (puzzle_id)
+REFERENCES t_puzzle(puzzle_id)
+);

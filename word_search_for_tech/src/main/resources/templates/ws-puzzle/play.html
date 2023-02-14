@@ -35,9 +35,11 @@ puzzle
 	<main role="main">
 		<div th:fragment="play_contents" th:remove="tag">
 			<div id="clear">
-				<h1>Congratulations!</h1>
-				<a class="common-btn bg-primary bg-gradient" th:href="@{../ws-puzzles?prev-pid=} + ${puzzle.puzzleId}">パズル選択に戻る</a>
-				<a class="common-btn bg-primary bg-gradient" href="../ws-category">カテゴリーに戻る</a>
+				<div id="clear-inner">
+					<h1>Congratulations!</h1>
+					<a class="common-btn bg-primary bg-gradient" th:href="@{../ws-puzzles?prev-pid=} + ${puzzle.puzzleId}">パズル選択に戻る</a>
+					<a class="common-btn bg-primary bg-gradient" href="../ws-category">カテゴリーに戻る</a>
+				</div>
 			</div>
 			<div class="play-content">
 				<div id="inner-header">

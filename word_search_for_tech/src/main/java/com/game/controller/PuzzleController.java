@@ -40,23 +40,28 @@ public class PuzzleController {
 	}
 
 	@GetMapping("/ws-puzzles")
-	public String getPuzzles(Model model, @RequestParam(name = "category", required = false) String category,
+	public String getPuzzles(Model model, @RequestParam(name = "category", required = false) String categoryId,
 			@RequestParam(name = "prev-pid", required = false) String pid,
-			@AuthenticationPrincipal UserDetails user) {
+			@AuthenticationPrincipal UserDetails user) throws Exception{
 
-		if(category == null && pid == null) {
+		if (categoryId == null && pid == null) {
 			System.out.println("エラー発生");
 			//例外処理を書く。
 		}
 
-		List<Label> labelList = puzzleService.selectManyByCategory(null, 1);
+		List<Label> labelList;
 
+		if (categoryId != null) {
+
+			labelList = puzzleService.selectManyByCategory(null, Integer.parseInt(categoryId));
+
+		}else {
+			labelList = puzzleService.selectManyByPID(null, pid);
+		}
 		/**
 		 * パズルIDと同じカテゴリーの問題をselectするか、
 		 * 指定されたカテゴリーIDの問題をselectする。
 		 */
-
-
 
 		model.addAttribute("contents", "ws-puzzle/puzzles::puzzles_contents");
 		model.addAttribute("puzzleList", labelList);
@@ -66,10 +71,13 @@ public class PuzzleController {
 
 	@PostMapping("/ws-create")
 	public String postCreate(Model model, @RequestParam(name = "id", required = true) String puzzleId,
-			RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails user) {
+			RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails user)  throws Exception{
 
 		System.out.println(puzzleId);
 		model.addAttribute("contents", "ws-puzzle/category::category_contents");
+
+		Content testContent = puzzleService.createNewPuzzle(puzzleId);
+
 		Content puzzle = new Content();
 
 		char board[][] = new char[8][8];
@@ -91,13 +99,12 @@ public class PuzzleController {
 
 		puzzle.setPuzzleId(puzzleId);
 		puzzle.setAnswerStatus(new ArrayList<AnswerStatus>());
-		puzzle.getAnswerStatus().add(new AnswerStatus(1,"ABC",false, 0, 0));
-		puzzle.getAnswerStatus().add(new AnswerStatus(2, "HOV",false, 0, 0));
+		puzzle.getAnswerStatus().add(new AnswerStatus(1, "ABC", false, 0, 0));
+		puzzle.getAnswerStatus().add(new AnswerStatus(2, "HOV", false, 0, 0));
 		puzzle.getAnswerStatus().add(new AnswerStatus(3, "GN", false, 1, 15));
 		puzzle.getAnswerStatus().add(new AnswerStatus(4, "XXX", false, 1, 15));
 		puzzle.getAnswerStatus().add(new AnswerStatus(5, "XXX", false, 1, 15));
 		puzzle.getAnswerStatus().add(new AnswerStatus(6, "XXX", false, 1, 15));
-
 
 		ModelMap modelMap = new ModelMap();
 		modelMap.addAttribute("puzzle", puzzle);
@@ -148,7 +155,8 @@ public class PuzzleController {
 
 	@PostMapping("/ws-answer")
 	@ResponseBody
-	public String postAnswer(@RequestBody List<JSONSingleAnswer> answer, @AuthenticationPrincipal UserDetails user) throws JsonProcessingException {
+	public String postAnswer(@RequestBody List<JSONSingleAnswer> answer, @AuthenticationPrincipal UserDetails user)
+			throws JsonProcessingException {
 		String playId = answer.get(0).getPlayId();
 		String fromId = answer.get(0).getFromId();
 		String toId = answer.get(0).getToId();
