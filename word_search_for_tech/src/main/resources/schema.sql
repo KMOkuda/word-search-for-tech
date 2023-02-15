@@ -125,7 +125,7 @@ INSERT INTO t_kw (kw) VALUES ('bsc');
 INSERT INTO t_kw (kw) VALUES ('scm');
 
 CREATE TABLE t_puzzle(
-puzzle_id VARCHAR(20) PRIMARY KEY,
+puzzle_id INT PRIMARY KEY,
 category_id INT, level_id INT,
 height INT,
 width INT,
@@ -262,9 +262,9 @@ INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (98,'050101');
 CREATE TABLE t_play(
 play_id INT PRIMARY KEY AUTO_INCREMENT,
 public_id uuid DEFAULT random_uuid(),
-puzzle_id VARCHAR(20),
-created_at DATETIME,
-cleared_at DATETIME,
+puzzle_id INT,
+created_at TIMESTAMP,
+cleared_at TIMESTAMP,
 FOREIGN KEY (puzzle_id)
 REFERENCES t_puzzle(puzzle_id)
 );

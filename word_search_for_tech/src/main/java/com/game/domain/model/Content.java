@@ -12,6 +12,25 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class Content {
 
+	enum Dir{
+		UP(0),
+		DOWN(1),
+		RIGHT(2),
+		LEFT(3),
+		UPPERRIGHT(4),
+		UPPERLEFT(5),
+		DOWNRIGHT(6),
+		DOWNLEFT(7);
+
+		private int id; // フィールドの定義
+
+	    private Dir(int id) { // コンストラクタの定義
+	      this.id = id;
+	    }
+	};
+
+
+
 	private long playId;
 	private String puzzleId;
 
@@ -22,16 +41,23 @@ public class Content {
 	private List<AnswerStatus> answerStatus = new ArrayList<AnswerStatus>();
 
 	public Content(IngredientEntity ingredientEntity, List<String> kws) {
-		System.out.println(ingredientEntity.getPuzzleId());
-		System.out.println(ingredientEntity.getHeight());
-		System.out.println(ingredientEntity.getWidth());
 
-		for (String eachKW : kws) {
-			System.out.println(eachKW);
-		}
+		int beginIndex = (int)Math.floor(Math.random() * this.height * this.width) + 1;
+/**
+		int beginY = calcY(beginIndex);
+		int beginX = calcX(beginIndex);
+**/
 
 	}
+/**
+	private int calcY(int index) {
+		return index / width;
+	}
 
+	private int calcX(int index) {
+		return index % width;
+	}
+**/
 	//テスト用
 	public Content() {
 		// TODO 自動生成されたコンストラクター・スタブ
@@ -39,6 +65,6 @@ public class Content {
 
 
 	public void generateBoard(){
-		
+
 	}
 }

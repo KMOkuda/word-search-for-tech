@@ -49,6 +49,8 @@ public class PuzzleServiceImpl implements PuzzleService {
 
 		puzzleContent.generateBoard();
 
+		String uuid = dao.insertOne(puzzleId);
+
 		return puzzleContent;
 	}
 

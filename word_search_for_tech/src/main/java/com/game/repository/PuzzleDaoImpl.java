@@ -1,18 +1,17 @@
 package com.game.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.game.domain.entity.IngredientEntity;
 import com.game.domain.model.Label;
-import com.game.domain.model.Play;
 
 @Repository("PuzzleDaoImpl")
 public class PuzzleDaoImpl implements PuzzleDao{
@@ -68,14 +67,19 @@ public class PuzzleDaoImpl implements PuzzleDao{
 	}
 
 	@Override
-	public long insertOne(String puzzleId) throws DataAccessException {
-		String sql ="INSERT INTO t_play_status (public_id, puzzle_id, created_at, cleared_at), "
-				+ "VALUES( " + "random_uuid() " + new java.sql.Date(new java.util.Date().getTime()) +
+	public String insertOne(String puzzleId) throws DataAccessException {
+		UUID uuid = UUID.randomUUID();
+		String sql ="INSERT INTO t_play (public_id, puzzle_id, created_at, cleared_at) "
+				+ "VALUES( '" + uuid.toString() + "', " + puzzleId + ", "
+				+ "CURRENT_TIMESTAMP" + " "
+				+ ", " + "NULL" +
 				")";
 
-		jdbc.update(
-			    "INSERT INTO employee(id, name, salary) VALUES (:id, :name, :salary)",
-			    new BeanPropertySqlParameterSource(Play.class));
+		System.out.println("insert: " + puzzleId);
+
+		jdbc.update(sql);
+
+		return uuid.toString();
 	}
 
 	/**

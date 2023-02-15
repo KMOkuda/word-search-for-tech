@@ -90,8 +90,8 @@ public class PuzzleController {
 
 		puzzle.setBoard(board);
 
-		puzzle.setWidth(7);
-		puzzle.setHeight(7);
+		puzzle.setWidth(8);
+		puzzle.setHeight(8);
 
 		long playId = 4567890987658L;
 
@@ -132,8 +132,8 @@ public class PuzzleController {
 			puzzle.setPuzzleId("010101");
 			puzzle.setBoard(board);
 			puzzle.setPlayId(4567890987658L);
-			puzzle.setWidth(7);
-			puzzle.setHeight(7);
+			puzzle.setWidth(8);
+			puzzle.setHeight(8);
 			puzzle.setAnswerStatus(new ArrayList<AnswerStatus>());
 			puzzle.getAnswerStatus().add(new AnswerStatus(1, "ABC", true, 0, 2));
 			puzzle.getAnswerStatus().add(new AnswerStatus(2, "HOV", true, 7, 21));

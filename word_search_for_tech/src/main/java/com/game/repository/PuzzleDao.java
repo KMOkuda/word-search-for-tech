@@ -17,5 +17,5 @@ public interface PuzzleDao {
 
 	List<String> selectKW(String puzzleId) throws DataAccessException;
 
-	long insertOne(String puzzleId) throws DataAccessException;
+	String insertOne(String puzzleId) throws DataAccessException;
 }
