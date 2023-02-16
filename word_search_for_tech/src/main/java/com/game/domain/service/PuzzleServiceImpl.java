@@ -30,22 +30,23 @@ public class PuzzleServiceImpl implements PuzzleService {
 	}
 
 	@Override
-	public List<Label> selectManyByPID(String username, String puzzleId) throws Exception {
-
-		stringParameterCheck(puzzleId);
+	public List<Label> selectManyByPID(String username, int puzzleId) throws Exception {
 
 		List<Label> puzzleList = dao.selectManyByPID(puzzleId);
 		return puzzleList;
 	}
 
 	@Override
-	public Content createNewPuzzle(String puzzleId) throws Exception{
-
-		stringParameterCheck(puzzleId);
+	public Content createNewPuzzle(int puzzleId) throws Exception{
 
 		IngredientEntity puzzleModel = dao.selectOne(puzzleId);
 		List<String> kw = dao.selectKW(puzzleId);
 		Content puzzleContent = new Content(puzzleModel, kw);
+
+		System.out.println("got data");
+		System.out.println(puzzleModel.getPuzzleId());
+		System.out.println(puzzleModel.getHeight());
+		System.out.println(puzzleModel.getWidth());
 
 		puzzleContent.generateBoard();
 

@@ -11,11 +11,11 @@ import com.game.domain.model.Label;
 public interface PuzzleDao {
 	public List<Label> selectManyByCategory(int categoryId) throws DataAccessException;
 
-	public List<Label> selectManyByPID(String puzzleId) throws DataAccessException;
+	public List<Label> selectManyByPID(int puzzleId) throws DataAccessException;
 
-	public IngredientEntity selectOne(String puzzleId) throws DataAccessException;
+	public IngredientEntity selectOne(int puzzleId) throws DataAccessException;
 
-	List<String> selectKW(String puzzleId) throws DataAccessException;
+	List<String> selectKW(int puzzleId) throws DataAccessException;
 
-	String insertOne(String puzzleId) throws DataAccessException;
+	String insertOne(int puzzleId) throws DataAccessException;
 }

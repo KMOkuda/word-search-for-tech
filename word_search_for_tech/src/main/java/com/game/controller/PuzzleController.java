@@ -56,7 +56,7 @@ public class PuzzleController {
 			labelList = puzzleService.selectManyByCategory(null, Integer.parseInt(categoryId));
 
 		}else {
-			labelList = puzzleService.selectManyByPID(null, pid);
+			labelList = puzzleService.selectManyByPID(null, Integer.parseInt(pid));
 		}
 		/**
 		 * パズルIDと同じカテゴリーの問題をselectするか、
@@ -76,7 +76,7 @@ public class PuzzleController {
 		System.out.println(puzzleId);
 		model.addAttribute("contents", "ws-puzzle/category::category_contents");
 
-		Content testContent = puzzleService.createNewPuzzle(puzzleId);
+		Content testContent = puzzleService.createNewPuzzle(Integer.parseInt(puzzleId));
 
 		Content puzzle = new Content();
 
@@ -97,7 +97,7 @@ public class PuzzleController {
 
 		puzzle.setPlayId(playId);
 
-		puzzle.setPuzzleId(puzzleId);
+		puzzle.setPuzzleId(Integer.parseInt(puzzleId));
 		puzzle.setAnswerStatus(new ArrayList<AnswerStatus>());
 		puzzle.getAnswerStatus().add(new AnswerStatus(1, "ABC", false, 0, 0));
 		puzzle.getAnswerStatus().add(new AnswerStatus(2, "HOV", false, 0, 0));
@@ -129,7 +129,7 @@ public class PuzzleController {
 				}
 			}
 
-			puzzle.setPuzzleId("010101");
+			puzzle.setPuzzleId(10101);
 			puzzle.setBoard(board);
 			puzzle.setPlayId(4567890987658L);
 			puzzle.setWidth(8);

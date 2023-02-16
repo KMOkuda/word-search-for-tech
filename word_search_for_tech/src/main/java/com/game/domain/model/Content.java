@@ -1,6 +1,7 @@
 package com.game.domain.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.game.domain.entity.IngredientEntity;
@@ -12,59 +13,98 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class Content {
 
-	enum Dir{
-		UP(0),
-		DOWN(1),
-		RIGHT(2),
-		LEFT(3),
-		UPPERRIGHT(4),
-		UPPERLEFT(5),
-		DOWNRIGHT(6),
-		DOWNLEFT(7);
-
-		private int id; // フィールドの定義
-
-	    private Dir(int id) { // コンストラクタの定義
-	      this.id = id;
-	    }
-	};
-
-
-
 	private long playId;
-	private String puzzleId;
+	private int puzzleId;
 
 	char[][] board;
 	int height;
 	int width;
 
-	private List<AnswerStatus> answerStatus = new ArrayList<AnswerStatus>();
+	private List<AnswerStatus> answerStatus;
+	private List<Integer> vacantList;
 
 	public Content(IngredientEntity ingredientEntity, List<String> kws) {
+		this.puzzleId = ingredientEntity.getPuzzleId();
+		this.height = ingredientEntity.getHeight();
+		this.width = ingredientEntity.getWidth();
 
-		int beginIndex = (int)Math.floor(Math.random() * this.height * this.width) + 1;
-/**
-		int beginY = calcY(beginIndex);
-		int beginX = calcX(beginIndex);
-**/
-
-	}
-/**
-	private int calcY(int index) {
-		return index / width;
+		for (int i = 0; i < kws.size(); i++) {
+			this.answerStatus.add(new AnswerStatus(i, kws.get(i), false, 999, 999));
+		}
+		
+		for(int i = 0; i < height * width; i++) {
+			
+		}
 	}
 
-	private int calcX(int index) {
-		return index % width;
-	}
-**/
 	//テスト用
 	public Content() {
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
+	private List<Direction> generateDirList() {
+		List<Direction> dirList = new ArrayList<Direction>();
 
-	public void generateBoard(){
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				//向きがない組み合わせは含めない
+				if (i == 0 && j == 0)
+					continue;
+				
+				dirList.add(new Direction(i, j));
+			}
+		}
 
+		Collections.shuffle(dirList);
+		return dirList;
+	}
+	
+	private boolean isValidIndex(int x, int y){
+		if(x < 0 || y < 0) {
+			return false;
+		}
+		
+		if(x >= width || y >= height) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private boolean tryPlace(Position beginPos, List<Direction> dirList, String kw){
+		for (Direction dir : dirList) {
+			int x = beginPos.getX();
+			int y = beginPos.getY();
+			
+			boolean canPlace = true;
+			
+			for(int i = 0; i < kw.length(); i++) {
+				x += dir.getDx();
+				y += dir.getDy();
+
+				if(!isValidIndex(x, y)) {
+					canPlace = false;
+					break;
+				}
+				
+				if()
+			}
+		}
+	}
+
+	public void generateBoard() {
+		for (int i = 0; i < answerStatus.size(); i++) {
+			
+			//取りうる値は0 ～ height * width - 1
+			int beginIndex = (int) Math.floor(Math.random() * this.height * this.width);
+			
+			Position beginPos = new Position(beginIndex / width, beginIndex % width);
+			List<Direction> dirList = generateDirList();
+			
+			if(tryPlace(beginIndex, dirList, answerStatus.get(i).getKw()) == false) {
+				//Think later.
+			}
+
+		}
 	}
 }

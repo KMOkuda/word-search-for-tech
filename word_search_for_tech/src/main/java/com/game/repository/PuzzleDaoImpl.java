@@ -32,7 +32,7 @@ public class PuzzleDaoImpl implements PuzzleDao{
 	}
 
 	@Override
-	public List<Label> selectManyByPID(String puzzleId) throws DataAccessException {
+	public List<Label> selectManyByPID(int puzzleId) throws DataAccessException {
 		String sql = "SELECT puzzle_id, t_puzzle.category_id, category_name, category_class, level_id, "
 				+ "height, width "
 				+ "FROM t_category, t_puzzle "
@@ -44,17 +44,19 @@ public class PuzzleDaoImpl implements PuzzleDao{
 	}
 
 	@Override
-	public IngredientEntity selectOne(String puzzleId) throws DataAccessException {
-		String sql = "SELECT puzzle_id, height, width "
+	public IngredientEntity selectOne(int puzzleId) throws DataAccessException {
+		String sql = "SELECT t_puzzle.puzzle_id, t_puzzle.height, t_puzzle.width "
 				+ "FROM t_puzzle "
-				+ "WHERE puzzle_id = " + puzzleId + ";";
+				+ "WHERE t_puzzle.puzzle_id = ?";
+
+		System.out.println(sql);
 
 		RowMapper<IngredientEntity> rowMapper = new BeanPropertyRowMapper<IngredientEntity>(IngredientEntity.class);
-		return jdbc.query(sql, rowMapper).get(0);
+		return jdbc.queryForObject(sql, rowMapper, puzzleId);
 	}
 
 	@Override
-	public List<String> selectKW(String puzzleId) throws DataAccessException {
+	public List<String> selectKW(int puzzleId) throws DataAccessException {
 		String sql = "SELECT kw "
 				+ "FROM t_puzzle, t_kw_property, t_kw "
 				+ "WHERE t_puzzle.puzzle_id = " + puzzleId + " "
@@ -67,7 +69,7 @@ public class PuzzleDaoImpl implements PuzzleDao{
 	}
 
 	@Override
-	public String insertOne(String puzzleId) throws DataAccessException {
+	public String insertOne(int puzzleId) throws DataAccessException {
 		UUID uuid = UUID.randomUUID();
 		String sql ="INSERT INTO t_play (public_id, puzzle_id, created_at, cleared_at) "
 				+ "VALUES( '" + uuid.toString() + "', " + puzzleId + ", "
