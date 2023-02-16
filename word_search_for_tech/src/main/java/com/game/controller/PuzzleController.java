@@ -98,13 +98,13 @@ public class PuzzleController {
 		puzzle.setPlayId(playId);
 
 		puzzle.setPuzzleId(Integer.parseInt(puzzleId));
-		puzzle.setAnswerStatus(new ArrayList<AnswerStatus>());
-		puzzle.getAnswerStatus().add(new AnswerStatus(1, "ABC", false, 0, 0));
-		puzzle.getAnswerStatus().add(new AnswerStatus(2, "HOV", false, 0, 0));
-		puzzle.getAnswerStatus().add(new AnswerStatus(3, "GN", false, 1, 15));
-		puzzle.getAnswerStatus().add(new AnswerStatus(4, "XXX", false, 1, 15));
-		puzzle.getAnswerStatus().add(new AnswerStatus(5, "XXX", false, 1, 15));
-		puzzle.getAnswerStatus().add(new AnswerStatus(6, "XXX", false, 1, 15));
+		puzzle.setAnswerList(new ArrayList<AnswerStatus>());
+		puzzle.getAnswerList().add(new AnswerStatus(1, "ABC", false, 0, 0));
+		puzzle.getAnswerList().add(new AnswerStatus(2, "HOV", false, 0, 0));
+		puzzle.getAnswerList().add(new AnswerStatus(3, "GN", false, 1, 15));
+		puzzle.getAnswerList().add(new AnswerStatus(4, "XXX", false, 1, 15));
+		puzzle.getAnswerList().add(new AnswerStatus(5, "XXX", false, 1, 15));
+		puzzle.getAnswerList().add(new AnswerStatus(6, "XXX", false, 1, 15));
 
 		ModelMap modelMap = new ModelMap();
 		modelMap.addAttribute("puzzle", puzzle);
@@ -134,13 +134,13 @@ public class PuzzleController {
 			puzzle.setPlayId(4567890987658L);
 			puzzle.setWidth(8);
 			puzzle.setHeight(8);
-			puzzle.setAnswerStatus(new ArrayList<AnswerStatus>());
-			puzzle.getAnswerStatus().add(new AnswerStatus(1, "ABC", true, 0, 2));
-			puzzle.getAnswerStatus().add(new AnswerStatus(2, "HOV", true, 7, 21));
-			puzzle.getAnswerStatus().add(new AnswerStatus(3, "GN", false, 1, 15));
-			puzzle.getAnswerStatus().add(new AnswerStatus(4, "XXX", false, 1, 15));
-			puzzle.getAnswerStatus().add(new AnswerStatus(5, "XXX", false, 1, 15));
-			puzzle.getAnswerStatus().add(new AnswerStatus(6, "XXX", false, 1, 15));
+			puzzle.setAnswerList(new ArrayList<AnswerStatus>());
+			puzzle.getAnswerList().add(new AnswerStatus(1, "ABC", true, 0, 2));
+			puzzle.getAnswerList().add(new AnswerStatus(2, "HOV", true, 7, 21));
+			puzzle.getAnswerList().add(new AnswerStatus(3, "GN", false, 1, 15));
+			puzzle.getAnswerList().add(new AnswerStatus(4, "XXX", false, 1, 15));
+			puzzle.getAnswerList().add(new AnswerStatus(5, "XXX", false, 1, 15));
+			puzzle.getAnswerList().add(new AnswerStatus(6, "XXX", false, 1, 15));
 
 			model.addAttribute("puzzle", puzzle);
 			System.out.println("isnull");

@@ -12,5 +12,9 @@ public class Position {
 		X = x;
 		Y = y;
 	}
+	
+	public int toIndex(int width){
+		return Y * width + X;
+	}
 
 }

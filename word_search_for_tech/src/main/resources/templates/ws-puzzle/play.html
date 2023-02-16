@@ -48,7 +48,7 @@ puzzle
 					<div id="good">
 						<p>Good!</p>
 					</div>
-					<th:block th:each="ar : ${puzzle.answerStatus}">
+					<th:block th:each="ar : ${puzzle.answerList}">
 						<span th:text="${ar.kw}" th:data-index="${ar.index}"></span>
 					</th:block>
 				</div>
@@ -75,7 +75,7 @@ puzzle
 				const playId = /*[[${puzzle.playId}]]*/
                 const boardHeight = /*[[${puzzle.height}]]*/
                 const boardWidth = /*[[${puzzle.width}]]*/
-				const answerStatus = /*[[${puzzle.answerStatus}]]*/
+				const answerStatus = /*[[${puzzle.answerList}]]*/
 
             </script>
 
