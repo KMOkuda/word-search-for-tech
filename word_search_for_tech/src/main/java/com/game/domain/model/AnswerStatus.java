@@ -4,14 +4,14 @@ import lombok.Data;
 
 @Data
 public class AnswerStatus implements Answer{
-	int index;
+	int orderIndex;
 	String kw;
 	boolean hasAnswer;
 	int fromId;
 	int toId;
 
 	public AnswerStatus(int index, String kw, boolean hasAnswer, int fromId, int toId) {
-		this.index = index;
+		this.orderIndex = index;
 		this.kw = kw;
 		this.hasAnswer = hasAnswer;
 		this.fromId = fromId;

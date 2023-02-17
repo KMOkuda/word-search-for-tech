@@ -154,11 +154,12 @@ INSERT INTO t_puzzle (puzzle_id,category_id,level_id,height,width) VALUES (50101
 CREATE TABLE t_kw_property(
 puzzle_kw_id INT PRIMARY KEY AUTO_INCREMENT,
 kw_id INT,
-puzzle_id VARCHAR(20),
+puzzle_id INT,
 FOREIGN KEY (kw_id)
 REFERENCES t_kw(kw_id),
 FOREIGN KEY (puzzle_id)
-REFERENCES t_puzzle(puzzle_id)
+REFERENCES t_puzzle(puzzle_id),
+UNIQUE (kw_id, puzzle_id)
 );
 
 INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (1,60101);
@@ -173,13 +174,13 @@ INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (9,60101);
 INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (10,60101);
 INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (11,60101);
 INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (12,10101);
---INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (13,10101);
---INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (14,10101);
---INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (15,10101);
---INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (16,10101);
---INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (17,10101);
---INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (18,10101);
---INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (19,10101);
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (13,10101);
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (14,10101);
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (15,10101);
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (16,10101);
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (17,10101);
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (18,10101);
+INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (19,10101);
 INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (20,10102);
 INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (21,10102);
 INSERT INTO t_kw_property (kw_id,puzzle_id) VALUES (22,10102);
@@ -267,5 +268,19 @@ puzzle_id INT,
 created_at TIMESTAMP,
 cleared_at TIMESTAMP,
 FOREIGN KEY (puzzle_id)
-REFERENCES t_puzzle(puzzle_id)
+REFERENCES t_puzzle(puzzle_id),
+UNIQUE (public_id)
 );
+
+CREATE TABLE t_answer(
+order_index INT,
+puzzle_kw_id INT,
+play_id INT,
+from_id INT,
+to_id INT,
+answer_flg BOOLEAN,
+FOREIGN KEY (puzzle_kw_id)
+REFERENCES t_kw_property(puzzle_kw_id),
+FOREIGN KEY (play_id)
+REFERENCES t_play(play_id)
+)

@@ -19,6 +19,8 @@ public class PuzzleServiceImpl implements PuzzleService {
 	@Qualifier("PuzzleDaoImpl")
 	PuzzleDao dao;
 
+	final long timeLimitMillis = 3;
+
 	/**
 	 * 今回の実装ではログインなしのみに限定
 	 */
@@ -37,27 +39,30 @@ public class PuzzleServiceImpl implements PuzzleService {
 	}
 
 	@Override
-	public Content createNewPuzzle(int puzzleId) throws Exception{
+	public Content createNewPuzzle(int puzzleId) throws Exception {
 
 		IngredientEntity puzzleModel = dao.selectOne(puzzleId);
 		List<String> kw = dao.selectKW(puzzleId);
-		Content puzzleContent = new Content(puzzleModel, kw);
 
-		System.out.println("got data");
-		System.out.println(puzzleModel.getPuzzleId());
-		System.out.println(puzzleModel.getHeight());
-		System.out.println(puzzleModel.getWidth());
+		boolean succeed = false;
+		int tryCount = 1;
 
-		puzzleContent.generateBoard();
+		Content puzzleContent;
+
+		do {
+			puzzleContent = new Content(puzzleModel, kw);
+			tryCount++;
+			succeed = puzzleContent.generateBoard();
+		} while (!succeed);
 
 		String uuid = dao.insertOne(puzzleId);
+		puzzleContent.setPlayId(uuid);
 
 		return puzzleContent;
 	}
 
 	@Override
 	public Content selectOne(String playId) {
-		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
 

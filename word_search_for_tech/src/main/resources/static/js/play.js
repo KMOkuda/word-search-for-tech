@@ -103,7 +103,7 @@ function draw(context, fromId, toId, overWrite) {
 		if (overWrite && !target.classList.contains("protected")) {
 			tmpSelectList.push(target);
 		}
-		
+
 		if(currentId == toId){
 			break;
 		}
@@ -112,7 +112,7 @@ function draw(context, fromId, toId, overWrite) {
 		currentHeight += dy;
 
 		currentId = calcId(currentHeight, currentWidth);
-	} 
+	}
 
 	if (overWrite == true) {
 		console.log("AAA");
@@ -164,7 +164,7 @@ function isDraggable(fromId, toId) {
 	if (fromId == null || toId == null) {
 		return false;
 	}
-	
+
 	var elmFrom = document.querySelector('[data-id="' + fromId + '"]');
 	var elmTo = document.querySelector('[data-id="' + toId + '"]');
 
@@ -235,7 +235,7 @@ function drawing(e) {
 	var destY = e.changedTouches[0].pageY;
 
 	var elmTo = document.elementsFromPoint(destX, destY)[0];
-	
+
 	var newToId = elmTo.dataset.id;
 
 	if (elmTo.classList.contains('letter') && elmTo.dataset.id != null && isDraggable(fromId, newToId)) {
@@ -288,7 +288,7 @@ for (var i = 0; i < letters.length; i++) {
 answerStatus.forEach((elm) => {
 	if (elm.hasAnswer == true) {
 		draw(bottomContext, elm.fromId, elm.toId, false);
-		eraseLetter(elm.index);
+		eraseLetter(elm.orderIndex);
 	}
 
 });

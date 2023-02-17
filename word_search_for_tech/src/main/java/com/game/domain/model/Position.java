@@ -4,17 +4,27 @@ import lombok.Data;
 
 @Data
 public class Position {
-	int X;
-	int Y;
+	int x;
+	int y;
 
 	public Position(int x, int y) {
 		super();
-		X = x;
-		Y = y;
+		this.x = x;
+		this.y = y;
 	}
-	
-	public int toIndex(int width){
-		return Y * width + X;
+
+	public int toIndex(int width) {
+		return y * width + x;
+	}
+
+	@Override
+	public boolean equals(Object pos) {
+		if (pos instanceof Position) {
+			if (((Position) pos).getX() == this.x && ((Position) pos).getY() == this.getY()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

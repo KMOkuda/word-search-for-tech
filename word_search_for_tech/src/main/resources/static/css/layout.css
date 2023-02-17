@@ -253,21 +253,6 @@ a.category-select{
     opacity: 0.3;
 }
 
-/**
-.each-puzzle > div::after {
-  content: '';
-  display: block;
-  position: absolute;
-  top: .5em;
-  left: -1.5em;
-  width: 10px;
-  height: 5px;
-  border-left: 2px solid #25AF01;
-  border-bottom: 2px solid #25AF01;
-  transform: rotate(-45deg);
-}
-**/
-
 .board-size{
 	display: block;
 }
@@ -310,9 +295,9 @@ a.category-select{
 
 .kw-content{
 	font-size: 5vw;
-    margin: 0rem auto;
+    margin: 0rem 1rem;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     flex-wrap: wrap;
 }
 
@@ -345,6 +330,10 @@ a.category-select{
 .selected{
 	color:white;
 	font-size: 7.5vw;
+}
+
+span.kw{
+	margin-right: 1rem;
 }
 
 span.letter{

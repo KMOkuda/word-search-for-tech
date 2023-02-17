@@ -58,10 +58,6 @@ public class PuzzleController {
 		}else {
 			labelList = puzzleService.selectManyByPID(null, Integer.parseInt(pid));
 		}
-		/**
-		 * パズルIDと同じカテゴリーの問題をselectするか、
-		 * 指定されたカテゴリーIDの問題をselectする。
-		 */
 
 		model.addAttribute("contents", "ws-puzzle/puzzles::puzzles_contents");
 		model.addAttribute("puzzleList", labelList);
@@ -78,39 +74,11 @@ public class PuzzleController {
 
 		Content testContent = puzzleService.createNewPuzzle(Integer.parseInt(puzzleId));
 
-		Content puzzle = new Content();
-
-		char board[][] = new char[8][8];
-
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				board[i][j] = (char) ((i * 8 + j) % 26 + 65);
-			}
-		}
-
-		puzzle.setBoard(board);
-
-		puzzle.setWidth(8);
-		puzzle.setHeight(8);
-
-		long playId = 4567890987658L;
-
-		puzzle.setPlayId(playId);
-
-		puzzle.setPuzzleId(Integer.parseInt(puzzleId));
-		puzzle.setAnswerList(new ArrayList<AnswerStatus>());
-		puzzle.getAnswerList().add(new AnswerStatus(1, "ABC", false, 0, 0));
-		puzzle.getAnswerList().add(new AnswerStatus(2, "HOV", false, 0, 0));
-		puzzle.getAnswerList().add(new AnswerStatus(3, "GN", false, 1, 15));
-		puzzle.getAnswerList().add(new AnswerStatus(4, "XXX", false, 1, 15));
-		puzzle.getAnswerList().add(new AnswerStatus(5, "XXX", false, 1, 15));
-		puzzle.getAnswerList().add(new AnswerStatus(6, "XXX", false, 1, 15));
-
 		ModelMap modelMap = new ModelMap();
-		modelMap.addAttribute("puzzle", puzzle);
+		modelMap.addAttribute("puzzle", testContent);
 		redirectAttributes.addFlashAttribute("modelMap", modelMap);
 
-		return "redirect:/ws-play/" + puzzle.getPlayId();
+		return "redirect:/ws-play/" + testContent.getPlayId();
 	}
 
 	@GetMapping("/ws-play/{id}")
@@ -131,7 +99,7 @@ public class PuzzleController {
 
 			puzzle.setPuzzleId(10101);
 			puzzle.setBoard(board);
-			puzzle.setPlayId(4567890987658L);
+			puzzle.setPlayId("4567890987658");
 			puzzle.setWidth(8);
 			puzzle.setHeight(8);
 			puzzle.setAnswerList(new ArrayList<AnswerStatus>());
@@ -143,7 +111,6 @@ public class PuzzleController {
 			puzzle.getAnswerList().add(new AnswerStatus(6, "XXX", false, 1, 15));
 
 			model.addAttribute("puzzle", puzzle);
-			System.out.println("isnull");
 		} else {
 			model.addAttribute("puzzle", modelMap.get("puzzle"));
 		}
@@ -157,6 +124,7 @@ public class PuzzleController {
 	@ResponseBody
 	public String postAnswer(@RequestBody List<JSONSingleAnswer> answer, @AuthenticationPrincipal UserDetails user)
 			throws JsonProcessingException {
+		System.out.println("gotAnswer");
 		String playId = answer.get(0).getPlayId();
 		String fromId = answer.get(0).getFromId();
 		String toId = answer.get(0).getToId();

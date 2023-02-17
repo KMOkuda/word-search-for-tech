@@ -49,7 +49,7 @@ puzzle
 						<p>Good!</p>
 					</div>
 					<th:block th:each="ar : ${puzzle.answerList}">
-						<span th:text="${ar.kw}" th:data-index="${ar.index}"></span>
+						<span th:class="kw" th:text="${ar.kw}" th:data-index="${ar.orderIndex}"></span>
 					</th:block>
 				</div>
 

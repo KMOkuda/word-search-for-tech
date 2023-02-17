@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.game.domain.entity.IngredientEntity;
+import com.game.domain.model.AnswerStatus;
 import com.game.domain.model.Label;
 
 @Repository("PuzzleDaoImpl")
@@ -65,14 +66,25 @@ public class PuzzleDaoImpl implements PuzzleDao {
 	@Override
 	public String insertOne(int puzzleId) throws DataAccessException {
 		UUID uuid = UUID.randomUUID();
-		String sql = "INSERT INTO t_play (public_id, puzzle_id, created_at, cleared_at) " + "VALUES( '"
-				+ uuid.toString() + "', " + puzzleId + ", " + "CURRENT_TIMESTAMP" + " " + ", " + "NULL" + ")";
+		String sql = "INSERT INTO t_play (public_id, puzzle_id, created_at, cleared_at) " + "VALUES("
+				+ "?" + ", ?, " + "CURRENT_TIMESTAMP" + " " + ", " + "NULL" + ")";
 
-		System.out.println("insert: " + puzzleId);
-
-		jdbc.update(sql);
+		jdbc.update(sql, uuid.toString(), puzzleId);
 
 		return uuid.toString();
+	}
+
+	public String insertMany(String publicId, List<AnswerStatus> answers) throws DataAccessException {
+		String sql = "INSERT INTO t_answer (order_index, puzzle_kw_id, play_id, from_id, to_id, answer_flg) " +
+					"VALUES (?, (SELECT ))"
+					+"SELECT order_index, puzzle_kw_id, play_id, from_id, to_id, answer_flg "
+					+ "FROM t_play, t_kw_property "
+					+"INNER JOIN t_kw ON t_kw_property.kw_id = t_kw.kw_id "
+					+"WHERE t_kw.kw_id = ? AND t_kw_property.puzzle_id = ?)";
+
+		for(AnswerStatus ans: answers) {
+			jdbc.update(sql, publicId);
+		}
 	}
 
 }
