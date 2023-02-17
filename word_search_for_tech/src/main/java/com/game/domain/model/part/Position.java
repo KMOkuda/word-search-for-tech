@@ -1,4 +1,4 @@
-package com.game.domain.model;
+package com.game.domain.model.part;
 
 import lombok.Data;
 
@@ -25,6 +25,12 @@ public class Position {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		//同じインスタンスなら同じ値になる
+		return y * 10000 + y;
 	}
 
 }

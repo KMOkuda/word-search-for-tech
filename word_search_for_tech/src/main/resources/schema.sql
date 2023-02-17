@@ -278,7 +278,7 @@ puzzle_kw_id INT,
 play_id INT,
 from_id INT,
 to_id INT,
-answer_flg BOOLEAN,
+has_answer BOOLEAN,
 FOREIGN KEY (puzzle_kw_id)
 REFERENCES t_kw_property(puzzle_kw_id),
 FOREIGN KEY (play_id)

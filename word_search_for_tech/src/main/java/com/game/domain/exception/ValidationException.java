@@ -1,4 +1,4 @@
-package com.game.domain.model;
+package com.game.domain.exception;
 
 public class ValidationException extends Exception{
 

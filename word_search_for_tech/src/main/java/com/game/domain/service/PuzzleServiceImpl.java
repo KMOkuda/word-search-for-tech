@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.game.domain.entity.IngredientEntity;
+import com.game.domain.exception.ValidationException;
 import com.game.domain.model.Content;
 import com.game.domain.model.Label;
-import com.game.domain.model.ValidationException;
 import com.game.repository.PuzzleDao;
 
 @Service
@@ -41,7 +41,10 @@ public class PuzzleServiceImpl implements PuzzleService {
 	@Override
 	public Content createNewPuzzle(int puzzleId) throws Exception {
 
+		//パズル生成に必要なデータ(高さと幅)を取ってくる
 		IngredientEntity puzzleModel = dao.selectOne(puzzleId);
+		
+		//パズル生成に必要なデータ(KWリスト)を取ってくる
 		List<String> kw = dao.selectKW(puzzleId);
 
 		boolean succeed = false;
@@ -57,6 +60,9 @@ public class PuzzleServiceImpl implements PuzzleService {
 
 		String uuid = dao.insertOne(puzzleId);
 		puzzleContent.setPlayId(uuid);
+		
+		//生成した回答を格納
+		dao.insertMany(uuid, puzzleId, puzzleContent.getAnswerList());
 
 		return puzzleContent;
 	}

@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.game.domain.entity.IngredientEntity;
+import com.game.domain.model.part.Direction;
+import com.game.domain.model.part.Position;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

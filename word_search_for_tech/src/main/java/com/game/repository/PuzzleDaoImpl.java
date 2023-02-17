@@ -26,10 +26,10 @@ public class PuzzleDaoImpl implements PuzzleDao {
 		String sql = "SELECT puzzle_id, t_puzzle.category_id, category_name, category_class, level_id, "
 				+ "height, width " + "FROM t_category, t_puzzle "
 				+ "WHERE t_puzzle.category_id = t_category.category_id and t_category.category_id = "
-				+ Integer.toString(categoryId) + ";";
+				+ "?" + ";";
 
 		RowMapper<Label> rowMapper = new BeanPropertyRowMapper<Label>(Label.class);
-		return jdbc.query(sql, rowMapper);
+		return jdbc.query(sql, rowMapper, categoryId);
 	}
 
 	@Override
@@ -37,10 +37,10 @@ public class PuzzleDaoImpl implements PuzzleDao {
 		String sql = "SELECT puzzle_id, t_puzzle.category_id, category_name, category_class, level_id, "
 				+ "height, width " + "FROM t_category, t_puzzle "
 				+ "WHERE t_puzzle.category_id = t_category.category_id and t_category.category_id = "
-				+ "(SELECT category_id FROM t_puzzle WHERE t_puzzle.puzzle_id = " + puzzleId + ");";
+				+ "(SELECT category_id FROM t_puzzle WHERE t_puzzle.puzzle_id = ?);";
 
 		RowMapper<Label> rowMapper = new BeanPropertyRowMapper<Label>(Label.class);
-		return jdbc.query(sql, rowMapper);
+		return jdbc.query(sql, rowMapper, puzzleId);
 	}
 
 	@Override
@@ -54,12 +54,13 @@ public class PuzzleDaoImpl implements PuzzleDao {
 
 	@Override
 	public List<String> selectKW(int puzzleId) throws DataAccessException {
-		String sql = "SELECT kw " + "FROM t_puzzle, t_kw_property, t_kw " + "WHERE t_puzzle.puzzle_id = " + puzzleId
+		String sql = "SELECT kw " + "FROM t_puzzle, t_kw_property, t_kw " + "WHERE t_puzzle.puzzle_id = " + "?"
 				+ " " + "AND t_puzzle.puzzle_id = t_kw_property.puzzle_id " + "AND t_kw_property.kw_id = t_kw.kw_id;";
 
 		// RowMapper<String> rowMapper = new
 		// BeanPropertyRowMapper<String>(String.class);
-		return jdbc.queryForList(sql, String.class);
+		
+		return jdbc.queryForList(sql, String.class, puzzleId);
 
 	}
 
@@ -74,17 +75,26 @@ public class PuzzleDaoImpl implements PuzzleDao {
 		return uuid.toString();
 	}
 
-	public String insertMany(String publicId, List<AnswerStatus> answers) throws DataAccessException {
-		String sql = "INSERT INTO t_answer (order_index, puzzle_kw_id, play_id, from_id, to_id, answer_flg) " +
-					"VALUES (?, (SELECT ))"
-					+"SELECT order_index, puzzle_kw_id, play_id, from_id, to_id, answer_flg "
-					+ "FROM t_play, t_kw_property "
-					+"INNER JOIN t_kw ON t_kw_property.kw_id = t_kw.kw_id "
-					+"WHERE t_kw.kw_id = ? AND t_kw_property.puzzle_id = ?)";
+	public int insertMany(String publicId, int puzzleId, List<AnswerStatus> answers) throws DataAccessException {
+		String sql = "INSERT INTO t_answer (order_index, puzzle_kw_id, play_id, from_id, to_id, has_answer) "
+					+"VALUES (?, ("
+					+"SELECT t_kw_property.puzzle_kw_id FROM t_kw_property "
+					+"INNER JOIN t_kw ON t_kw.kw_id = t_kw_property.kw_id "
+					+"INNER JOIN t_puzzle ON t_puzzle.puzzle_id = t_kw_property.puzzle_id "
+					+"WHERE t_kw.kw = ? AND t_kw_property.puzzle_id = ? "
+					+ "), "
+					+"( "
+					+"SELECT play_id FROM t_play WHERE public_id = ? "
+					+"), "
+					+"?, ?, FALSE);";
 
+		int count = 0;
+		
 		for(AnswerStatus ans: answers) {
-			jdbc.update(sql, publicId);
+			count += jdbc.update(sql, ans.getOrderIndex(), ans.getKw(), puzzleId, publicId, 
+					ans.getFromId(), ans.getToId());
 		}
+		return count;
 	}
 
 }
