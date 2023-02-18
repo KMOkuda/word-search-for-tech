@@ -1,6 +1,5 @@
 package com.game.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,28 +86,7 @@ public class PuzzleController {
 			@RequestParam(name = "msg", required = false) String msg, @AuthenticationPrincipal UserDetails user) {
 
 		if (modelMap.isEmpty()) {
-			Content puzzle = new Content();
-
-			char board[][] = new char[8][8];
-
-			for (int i = 0; i < 8; i++) {
-				for (int j = 0; j < 8; j++) {
-					board[i][j] = (char) ((i * 8 + j) % 26 + 65);
-				}
-			}
-
-			puzzle.setPuzzleId(10101);
-			puzzle.setBoard(board);
-			puzzle.setPlayId("4567890987658");
-			puzzle.setWidth(8);
-			puzzle.setHeight(8);
-			puzzle.setAnswerList(new ArrayList<AnswerStatus>());
-			puzzle.getAnswerList().add(new AnswerStatus(1, "ABC", true, 0, 2));
-			puzzle.getAnswerList().add(new AnswerStatus(2, "HOV", true, 7, 21));
-			puzzle.getAnswerList().add(new AnswerStatus(3, "GN", false, 1, 15));
-			puzzle.getAnswerList().add(new AnswerStatus(4, "XXX", false, 1, 15));
-			puzzle.getAnswerList().add(new AnswerStatus(5, "XXX", false, 1, 15));
-			puzzle.getAnswerList().add(new AnswerStatus(6, "XXX", false, 1, 15));
+			Content puzzle = puzzleService.getPuzzleData(publicPlayId);
 
 			model.addAttribute("puzzle", puzzle);
 		} else {

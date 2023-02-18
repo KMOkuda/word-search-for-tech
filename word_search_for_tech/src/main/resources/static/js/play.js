@@ -299,10 +299,10 @@ xhr.onload = function(){        //レスポンスを受け取った時の処理�
 	var answerStatus = parse_data.responseAnswerStatus;
 
     console.log(parse_data);
-	if(answerStatus.hasAnswer == true){
+	if(answerStatus.answerFlg == true){
 		draw(bottomContext, answerStatus.fromId, answerStatus.toId, false);
 		tmpSelectList = [];
-		eraseLetter(answerStatus.index);
+		eraseLetter(answerStatus.orderIndex);
 	}
 
 	if(parse_data.hasCleared == true){

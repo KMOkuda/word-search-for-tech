@@ -7,6 +7,7 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 
+import com.game.domain.entity.BoardEntity;
 import com.game.domain.entity.IngredientEntity;
 import com.game.domain.model.part.Direction;
 import com.game.domain.model.part.Position;
@@ -19,31 +20,70 @@ import lombok.EqualsAndHashCode;
 public class Content {
 
 	private String playId;
+	
+	/* ゲーム画面から同じカテゴリーのページに戻る際必要。
+	 * getパラメーターになる。
+	 */
 	private int puzzleId;
 
-	char[][] board;
-	int height;
-	int width;
+	private int height;
+	private int width;
+	private char[][] board;
+	private String lineBoard;
 
 	private List<AnswerStatus> answerList;
+	
+	//生成用のフィールドなので、送信には関係ない
 	private List<Position> vacantPosList;
 	private List<Direction> dirList;
 	private List<Character> fillList;
+	
+
+	//テスト用
+	public Content() {
+		
+	}
+	
+	public Content(int height, int width) {
+		this.height = height;
+		this.width = width;
+		this.board = new char[height][width];
+	}
+	
 
 	public Content(IngredientEntity ingredientEntity, List<String> kws) {
+		this(ingredientEntity.getHeight(), ingredientEntity.getWidth());
+		
 		this.puzzleId = ingredientEntity.getPuzzleId();
-		this.height = ingredientEntity.getHeight();
-		this.width = ingredientEntity.getWidth();
-		this.board = new char[this.height][this.width];
 
 		generateAnswerList(kws);
 		generateVacantList();
 		generateDirList();
 		generateFillList(kws);
 	}
+	
+	public Content(String playId, BoardEntity boardEntity, List<AnswerStatus> answerList) {
+		this(boardEntity.getHeight(), boardEntity.getWidth());
+		
+		this.playId = playId;
+		this.puzzleId = boardEntity.getPuzzleId();
+		
+		this.lineBoard = boardEntity.getLineBoard();
+		this.answerList = answerList;
+		
+		convertToCharBoard();
+	}
+	
 
-	// テスト用
-	public Content() {
+	/*以下コンストラクタ呼び出し用*/
+	
+	private void convertToCharBoard() {
+		
+		for(int i = 0; i < height; i++) {
+			for(int j = 0; j < width; j++) {
+				board[i][j] = lineBoard.charAt(i * height + j);
+			}
+		}
 	}
 
 	private void generateAnswerList(List<String> kws) {
@@ -79,6 +119,10 @@ public class Content {
 		Collections.shuffle(dirList);
 	}
 
+	 /*
+	  * 文字以下のKWがある場合、条件を満たす答えが複数できてしまうので
+	  * そのKWのアルファベットは回避する
+	  */
 	private void generateFillList(List<String> kws) {
 		fillList = new ArrayList<Character>();
 
@@ -89,13 +133,15 @@ public class Content {
 		for (String kw : kws) {
 			if (kw.length() <= 2) {
 				for (int i = 0; i < kw.length(); i++) {
-					if (fillList.contains((Character)kw.charAt(i))) {
-						fillList.remove((Character)kw.charAt(i));
+					if (fillList.contains((Character) kw.charAt(i))) {
+						fillList.remove((Character) kw.charAt(i));
 					}
 				}
 			}
 		}
 	}
+	
+	/*コンストラクタ呼び出し用以上*/
 
 	private boolean isValidIndex(int x, int y) {
 		if (x < 0 || y < 0) {
@@ -109,7 +155,7 @@ public class Content {
 		return true;
 	}
 
-	private boolean tryPlace(Position beginPos, int kwIndex) {
+	private boolean hasPlaced(Position beginPos, int kwIndex) {
 		String kw = answerList.get(kwIndex).getKw();
 
 		if (board[beginPos.getY()][beginPos.getX()] != '\u0000') {
@@ -133,8 +179,7 @@ public class Content {
 				int nextX = x + dir.getDx() * i;
 				int nextY = y + dir.getDy() * i;
 
-				if (!isValidIndex(nextX, nextY)
-						|| board[nextY][nextX] != '\u0000') {
+				if (!isValidIndex(nextX, nextY) || board[nextY][nextX] != '\u0000') {
 					canPlace = false;
 					break;
 				} else {
@@ -168,6 +213,19 @@ public class Content {
 		}
 	}
 
+	private void convertToLineBoard() {
+
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				sb.append(board[i][j]);
+			}
+		}
+
+		this.lineBoard = sb.toString();
+	}
+
 	public boolean generateBoard() throws Exception {
 		for (int i = 0; i < answerList.size(); i++) {
 
@@ -175,15 +233,17 @@ public class Content {
 
 			boolean found = false;
 
+			//全ての空きマスにおいて今対象になっているKWの設置を試みる
 			while (it.hasNext()) {
 				Position beginPos = it.next();
 
-				if (tryPlace(beginPos, i)) {
+				if (hasPlaced(beginPos, i)) {
 					found = true;
 					break;
 				}
 			}
-
+			
+			//置ける場所がないなら強制リターン
 			if (!found) {
 				return false;
 			}
@@ -193,6 +253,20 @@ public class Content {
 		}
 
 		fillBlank();
+		
+		//後のDB格納用
+		convertToLineBoard();
+
 		return true;
+	}
+
+	//DBから取り出してきた際、実行する事。
+	public void getReadyToSendAnswerStatus() {
+		for (AnswerStatus ans : answerList) {
+			if (!ans.isAnswerFlg()) {
+				ans.setFromId(999);
+				ans.setToId(999);
+			}
+		}
 	}
 }

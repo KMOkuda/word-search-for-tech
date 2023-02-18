@@ -14,8 +14,9 @@ public interface PuzzleService {
 
 	public Content createNewPuzzle(int puzzleId) throws Exception;
 
-	public Content selectOne(String playId) throws Exception;
-
+	public Content getPuzzleData(String playId);
+	
 	public void stringParameterCheck(String param) throws Exception;
+
 
 }

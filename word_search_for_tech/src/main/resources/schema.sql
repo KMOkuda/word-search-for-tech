@@ -265,6 +265,7 @@ CREATE TABLE t_play(
 play_id INT PRIMARY KEY AUTO_INCREMENT,
 public_id uuid DEFAULT random_uuid(),
 puzzle_id INT,
+line_board VARCHAR(500),
 created_at TIMESTAMP,
 cleared_at TIMESTAMP,
 FOREIGN KEY (puzzle_id)
@@ -278,7 +279,7 @@ puzzle_kw_id INT,
 play_id INT,
 from_id INT,
 to_id INT,
-has_answer BOOLEAN,
+answer_flg BOOLEAN,
 FOREIGN KEY (puzzle_kw_id)
 REFERENCES t_kw_property(puzzle_kw_id),
 FOREIGN KEY (play_id)
