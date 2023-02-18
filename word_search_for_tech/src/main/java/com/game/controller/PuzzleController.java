@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.game.domain.model.AnswerStatus;
 import com.game.domain.model.Content;
 import com.game.domain.model.JSONSingleAnswer;
 import com.game.domain.model.JsonAnswerResponse;
@@ -71,19 +69,19 @@ public class PuzzleController {
 		System.out.println(puzzleId);
 		model.addAttribute("contents", "ws-puzzle/category::category_contents");
 
-		Content testContent = puzzleService.createNewPuzzle(Integer.parseInt(puzzleId));
+		Content content = puzzleService.createNewPuzzle(Integer.parseInt(puzzleId));
 
 		ModelMap modelMap = new ModelMap();
-		modelMap.addAttribute("puzzle", testContent);
+		modelMap.addAttribute("puzzle", content);
 		redirectAttributes.addFlashAttribute("modelMap", modelMap);
 
-		return "redirect:/ws-play/" + testContent.getPlayId();
+		return "redirect:/ws-play/" + content.getPlayId();
 	}
 
 	@GetMapping("/ws-play/{id}")
 	public String getPlay(Model model, @ModelAttribute("modelMap") ModelMap modelMap,
 			@PathVariable(name = "id", required = true) String publicPlayId,
-			@RequestParam(name = "msg", required = false) String msg, @AuthenticationPrincipal UserDetails user) {
+			@RequestParam(name = "msg", required = false) String msg, @AuthenticationPrincipal UserDetails user) throws Exception {
 
 		if (modelMap.isEmpty()) {
 			Content puzzle = puzzleService.getPuzzleData(publicPlayId);
@@ -101,16 +99,12 @@ public class PuzzleController {
 	@PostMapping("/ws-answer")
 	@ResponseBody
 	public String postAnswer(@RequestBody List<JSONSingleAnswer> answer, @AuthenticationPrincipal UserDetails user)
-			throws JsonProcessingException {
+			throws NumberFormatException, Exception {
 		System.out.println("gotAnswer");
 		String playId = answer.get(0).getPlayId();
 		String fromId = answer.get(0).getFromId();
 		String toId = answer.get(0).getToId();
-
-		System.out.println(playId);
-		System.out.println(fromId);
-		System.out.println(toId);
-
+		
 		ObjectMapper mapper = new ObjectMapper();
 
 		/*
@@ -118,9 +112,10 @@ public class PuzzleController {
 		JsonEntity jsonToJavaObject = mapper.readValue(json, JsonEntity.class);
 		*/
 
-		JsonAnswerResponse jsonAnswerResponse = new JsonAnswerResponse();
-		jsonAnswerResponse.setHasCleared(true);
-		jsonAnswerResponse.setResponseAnswerStatus(new AnswerStatus(3, "GN", true, 6, 13));
+		JsonAnswerResponse jsonAnswerResponse = puzzleService.getPlayStatus(playId, Integer.parseInt(fromId), Integer.parseInt(toId));
+
+		//jsonAnswerResponse.setHasCleared(true);
+		//jsonAnswerResponse.setResponseAnswerStatus(new AnswerStatus(3, "GN", true, 6, 13));
 
 		//Javaオブジェクト⇒JSONに変換
 		String JavaObjectToJson = mapper.writeValueAsString(jsonAnswerResponse);

@@ -359,6 +359,17 @@ span.letter{
 	left: 0;
 }
 
+#screen-lock{
+	height: 100%;
+	left: 0px;
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	z-index: 10;
+	opacity: 0.9;
+	background-color: white;
+}
+
 #clear{
 	position: absolute;
     top: 0;

@@ -263,10 +263,7 @@ public class Content {
 	//DBから取り出してきた際、実行する事。
 	public void getReadyToSendAnswerStatus() {
 		for (AnswerStatus ans : answerList) {
-			if (!ans.isAnswerFlg()) {
-				ans.setFromId(999);
-				ans.setToId(999);
-			}
+			ans.resetAnswerId();
 		}
 	}
 }

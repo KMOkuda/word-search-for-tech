@@ -25,8 +25,7 @@ public class PuzzleDaoImpl implements PuzzleDao {
 
 		String sql = "SELECT puzzle_id, t_puzzle.category_id, category_name, category_class, level_id, "
 				+ "height, width " + "FROM t_category, t_puzzle "
-				+ "WHERE t_puzzle.category_id = t_category.category_id and t_category.category_id = "
-				+ "?" + ";";
+				+ "WHERE t_puzzle.category_id = t_category.category_id and t_category.category_id = " + "?" + ";";
 
 		RowMapper<Label> rowMapper = new BeanPropertyRowMapper<Label>(Label.class);
 		return jdbc.query(sql, rowMapper, categoryId);
@@ -54,12 +53,9 @@ public class PuzzleDaoImpl implements PuzzleDao {
 
 	@Override
 	public List<String> selectKW(int puzzleId) throws DataAccessException {
-		String sql = "SELECT kw " + "FROM t_puzzle, t_kw_property, t_kw " + "WHERE t_puzzle.puzzle_id = " + "?"
-				+ " " + "AND t_puzzle.puzzle_id = t_kw_property.puzzle_id " + "AND t_kw_property.kw_id = t_kw.kw_id;";
+		String sql = "SELECT kw " + "FROM t_puzzle, t_kw_property, t_kw " + "WHERE t_puzzle.puzzle_id = " + "?" + " "
+				+ "AND t_puzzle.puzzle_id = t_kw_property.puzzle_id " + "AND t_kw_property.kw_id = t_kw.kw_id;";
 
-		// RowMapper<String> rowMapper = new
-		// BeanPropertyRowMapper<String>(String.class);
-		
 		return jdbc.queryForList(sql, String.class, puzzleId);
 
 	}
@@ -75,70 +71,100 @@ public class PuzzleDaoImpl implements PuzzleDao {
 		return uuid.toString();
 	}
 
+	@Override
 	public int insertMany(String publicId, int puzzleId, List<AnswerStatus> answers) throws DataAccessException {
 		String sql = "INSERT INTO t_answer (order_index, puzzle_kw_id, play_id, from_id, to_id, answer_flg) "
-					+"VALUES (?, ("
-					+"SELECT t_kw_property.puzzle_kw_id FROM t_kw_property "
-					+"INNER JOIN t_kw ON t_kw.kw_id = t_kw_property.kw_id "
-					+"INNER JOIN t_puzzle ON t_puzzle.puzzle_id = t_kw_property.puzzle_id "
-					+"WHERE t_kw.kw = ? AND t_kw_property.puzzle_id = ? "
-					+ "), "
-					+"( "
-					+"SELECT play_id FROM t_play WHERE public_id = ? "
-					+"), "
-					+"?, ?, FALSE);";
+				+ "VALUES (?, (" + "SELECT t_kw_property.puzzle_kw_id FROM t_kw_property "
+				+ "INNER JOIN t_kw ON t_kw.kw_id = t_kw_property.kw_id "
+				+ "INNER JOIN t_puzzle ON t_puzzle.puzzle_id = t_kw_property.puzzle_id "
+				+ "WHERE t_kw.kw = ? AND t_kw_property.puzzle_id = ? " + "), " + "( "
+				+ "SELECT play_id FROM t_play WHERE public_id = ? " + "), " + "?, ?, FALSE);";
 
 		int count = 0;
-		
-		for(AnswerStatus ans: answers) {
-			count += jdbc.update(sql, ans.getOrderIndex(), ans.getKw(), puzzleId, publicId, 
-					ans.getFromId(), ans.getToId());
+
+		for (AnswerStatus ans : answers) {
+			count += jdbc.update(sql, ans.getOrderIndex(), ans.getKw(), puzzleId, publicId, ans.getFromId(),
+					ans.getToId());
 		}
-		
+
 		System.out.println("affected: " + count);
-		
+
 		return count;
 	}
-	
+
 	/**
 	 * 
 	 * @param playId
-	 * @return 
+	 * @return
 	 * @throws DataAccessException
 	 * 
 	 * 
-	 * int orderIndex;
-	 * String kw;
-	 * boolean answerFlg;
-	 * int fromId;
-	 * int toId;
+	 *                             int orderIndex; String kw; boolean answerFlg; int
+	 *                             fromId; int toId;
 	 * 
 	 */
-	
-	public List<AnswerStatus> selectAnswerStatus(String playId) throws DataAccessException {
+
+	@Override
+	public List<AnswerStatus> selectAnswerStatus(String publicId) throws DataAccessException {
 		System.out.println("DAOIMPL");
-		
-		
-		String sql = "SELECT order_index, kw, answer_flg, from_id, to_id "
-				+ "FROM t_play "
+
+		String sql = "SELECT order_index, kw, answer_flg, from_id, to_id " + "FROM t_play "
+				+ "INNER JOIN t_answer ON t_play.play_id = t_answer.play_id "
+				+ "INNER JOIN t_kw_property ON t_answer.puzzle_kw_id = t_kw_property.puzzle_kw_id "
+				+ "INNER JOIN t_kw ON t_kw.kw_id = t_kw_property.kw_id " + "WHERE t_play.public_id = ?";
+
+		RowMapper<AnswerStatus> rowMapper = new BeanPropertyRowMapper<AnswerStatus>(AnswerStatus.class);
+		return jdbc.query(sql, rowMapper, publicId);
+	}
+
+	@Override
+	public BoardEntity selectBoard(String publicId) throws DataAccessException {
+
+		String sql = "SELECT t_puzzle.puzzle_id, width, height, line_board " + "FROM t_play "
+				+ "INNER JOIN t_puzzle ON t_play.puzzle_id = t_puzzle.puzzle_id " + "WHERE public_id = ?";
+
+		RowMapper<BoardEntity> rowMapper = new BeanPropertyRowMapper<BoardEntity>(BoardEntity.class);
+		return jdbc.queryForObject(sql, rowMapper, publicId);
+	}
+
+	@Override
+	public List<AnswerStatus> getAnswer(String publicId, int fromId, int toId) throws DataAccessException {
+		String sql = "SELECT order_index, kw, answer_flg, from_id, to_id FROM t_play INNER JOIN t_answer ON t_play.play_id = t_answer.play_id INNER JOIN t_kw_property ON t_answer.puzzle_kw_id = t_kw_property.puzzle_kw_id INNER JOIN t_kw ON t_kw.kw_id = t_kw_property.kw_id WHERE t_play.public_id = ? AND from_id = ? AND to_id = ?";
+		/*
+		String sql = "SELECT order_index, kw, answer_flg, from_id, to_id " + "FROM t_play "
 				+ "INNER JOIN t_answer ON t_play.play_id = t_answer.play_id "
 				+ "INNER JOIN t_kw_property ON t_answer.puzzle_kw_id = t_kw_property.puzzle_kw_id "
 				+ "INNER JOIN t_kw ON t_kw.kw_id = t_kw_property.kw_id "
-				+ "WHERE t_play.public_id = ?";
+				+ "WHERE t_play.public_id = ? AND from_id = ? AND to_id = ?";
+		*/
+		System.out.println(sql);
 		
 		RowMapper<AnswerStatus> rowMapper = new BeanPropertyRowMapper<AnswerStatus>(AnswerStatus.class);
-		return jdbc.query(sql, rowMapper, playId);
+		return jdbc.query(sql, rowMapper, publicId, fromId, toId);
+	}
+
+	@Override
+	public int updateAnswer(String publicId, AnswerStatus answer) throws DataAccessException {
+		String sql = "UPDATE t_answer SET t_answer.answer_flg = TRUE "
+				+ "WHERE from_id = ? AND to_id = ? AND t_answer.play_id IN "
+				+ "(SELECT t_play.play_id FROM t_play WHERE public_id = ?)";
+		
+		System.out.println(sql);
+
+		return jdbc.update(sql, answer.getFromId(), answer.getToId(), publicId);
 	}
 	
-	public BoardEntity selectBoard(String playId) throws DataAccessException{
+	@Override
+	public boolean hasCleared (String publicId) throws DataAccessException{
+		String sql = "SELECT COUNT(*) FROM t_answer "
+				+ "INNER JOIN t_play ON t_play.play_id = t_answer.play_id "
+				+ "WHERE t_play.public_id = ? AND t_answer.answer_flg = FALSE";
 		
-		String sql = "SELECT t_puzzle.puzzle_id, width, height, line_board "
-				+ "FROM t_play "
-				+ "INNER JOIN t_puzzle ON t_play.puzzle_id = t_puzzle.puzzle_id "
-				+ "WHERE public_id = ?";
+		int count = jdbc.queryForList(sql, Integer.class, publicId).get(0);
 		
-		RowMapper<BoardEntity> rowMapper = new BeanPropertyRowMapper<BoardEntity>(BoardEntity.class);
-		return jdbc.queryForObject(sql, rowMapper, playId);
+		System.out.println("count = " + count);
+		
+		return count == 0 ? true : false;
 	}
 
 }

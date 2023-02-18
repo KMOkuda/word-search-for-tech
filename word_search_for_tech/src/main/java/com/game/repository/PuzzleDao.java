@@ -26,4 +26,11 @@ public interface PuzzleDao {
 	public List<AnswerStatus> selectAnswerStatus(String playId) throws DataAccessException;
 
 	public BoardEntity selectBoard(String playId) throws DataAccessException;
+	
+	public List<AnswerStatus> getAnswer(String playId, int fromId, int toId) throws DataAccessException;
+
+	public int updateAnswer(String publicId, AnswerStatus answer) throws DataAccessException;
+	
+	public boolean hasCleared (String publicId) throws DataAccessException;
+
 }

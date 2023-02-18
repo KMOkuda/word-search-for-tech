@@ -11,6 +11,7 @@ import com.game.domain.entity.IngredientEntity;
 import com.game.domain.exception.ValidationException;
 import com.game.domain.model.AnswerStatus;
 import com.game.domain.model.Content;
+import com.game.domain.model.JsonAnswerResponse;
 import com.game.domain.model.Label;
 import com.game.repository.PuzzleDao;
 
@@ -72,14 +73,12 @@ public class PuzzleServiceImpl implements PuzzleService {
 	}
 
 	@Override
-	public Content getPuzzleData(String playId) {
+	public Content getPuzzleData(String playId) throws Exception {
 		List<AnswerStatus> answerList = dao.selectAnswerStatus(playId);
 		
-		for(AnswerStatus ans: answerList) {
-			System.out.println(ans.getFromId());
-			System.out.println(ans.getToId());
-			System.out.println(ans.getOrderIndex());
-			System.out.println(ans.getKw());
+		boolean hasCleared = dao.hasCleared(playId);
+		if(hasCleared) {
+			throw new Exception("もう既に解き終わったパズルです");
 		}
 		
 		BoardEntity board = dao.selectBoard(playId);
@@ -88,6 +87,34 @@ public class PuzzleServiceImpl implements PuzzleService {
 		puzzleContent.getReadyToSendAnswerStatus();
 		
 		return puzzleContent;
+	}
+	
+	@Override
+	public JsonAnswerResponse getPlayStatus(String playId, int fromId, int toId) throws Exception {
+		
+		//単数指定だと件数０の時にExceptionがスローされるので...
+		List<AnswerStatus> answerList =dao.getAnswer(playId, fromId, toId);
+		JsonAnswerResponse jres;
+		
+		if(answerList.size() != 0) {
+			
+			AnswerStatus answerStatus = answerList.get(0);
+			answerStatus.setAnswerFlg(true);
+			
+			int affectedRow = dao.updateAnswer(playId, answerStatus);
+			
+			if(affectedRow == 0) {
+				throw new Exception("更新異常");
+			}else {
+				boolean hasCleared = dao.hasCleared(playId);
+				jres = new JsonAnswerResponse(hasCleared, answerStatus);
+			}
+
+		}else {
+			jres = new JsonAnswerResponse(false, new AnswerStatus());
+		}
+		
+		return jres;
 	}
 
 	

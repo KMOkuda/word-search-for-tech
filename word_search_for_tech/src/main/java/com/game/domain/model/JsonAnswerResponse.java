@@ -6,4 +6,13 @@ import lombok.Data;
 public class JsonAnswerResponse implements Answer{
 	boolean hasCleared;
 	AnswerStatus responseAnswerStatus;
+	
+	public JsonAnswerResponse() {
+	}
+	
+	public JsonAnswerResponse(boolean hasCleared, AnswerStatus answerStatus) {
+		this.hasCleared = hasCleared;
+		this.responseAnswerStatus = answerStatus;
+	}
+	
 }

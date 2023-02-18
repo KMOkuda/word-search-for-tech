@@ -9,13 +9,26 @@ public class AnswerStatus implements Answer{
 	boolean answerFlg;
 	int fromId;
 	int toId;
+	
+	public AnswerStatus() {
+		this.answerFlg = false;
+		this.fromId = 999;
+		this.toId = 999;
+	}
 
-	public AnswerStatus(int index, String kw, boolean hasAnswer, int fromId, int toId) {
+	public AnswerStatus(int index, String kw, boolean answerFlg, int fromId, int toId) {
 		this.orderIndex = index;
 		this.kw = kw;
-		this.answerFlg = hasAnswer;
+		this.answerFlg = answerFlg;
 		this.fromId = fromId;
 		this.toId = toId;
+	}
+	
+	public void resetAnswerId() {
+		if(this.answerFlg == false) {
+			this.fromId = 999;
+			this.toId = 999;
+		}
 	}
 
 }

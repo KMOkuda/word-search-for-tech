@@ -33,8 +33,8 @@ var CvsPoint = class {
  * @param {var} index
  */
 
-function eraseLetter(index){
-	var delElm = document.querySelector('[data-index="' + index + '"]');
+function drawLineThrough(index){
+	let delElm = document.querySelector('[data-index="' + index + '"]');
 	delElm.classList.add("deleted");
 }
 
@@ -53,15 +53,15 @@ function refleshFont(list) {
  * @param {var} id
  */
 function calcDrawPoint(id) {
-	var elm = document.querySelectorAll(`[data-id="${id}"]`)[0];
+	let elm = document.querySelectorAll(`[data-id="${id}"]`)[0];
 
-	var left = elm.offsetLeft;
-	var top = elm.offsetTop;
-	var width = elm.getBoundingClientRect().width;
-	var height = elm.getBoundingClientRect().height;
+	let left = elm.offsetLeft;
+	let top = elm.offsetTop;
+	let width = elm.getBoundingClientRect().width;
+	let height = elm.getBoundingClientRect().height;
 
-	var drawX = left + (width / 2);
-	var drawY = top + (height / 2);
+	let drawX = left + (width / 2);
+	let drawY = top + (height / 2);
 
 	return new CvsPoint(drawX, drawY);
 }
@@ -71,29 +71,42 @@ function calcDrawPoint(id) {
  * @param {var} fromId
  * @param {var} toId
  * @param {boolean} overWrite
+ * 
+ * ユーザーが線を引く時の他、途中でゲームがロードされた時にも呼び出す。
+ * 引かれた線が正解だった時や途中ロードの時など、
+ * 消されない線を描きたい場合は
+ * 最後の引数をfalseにして呼び出す事。
+ * 
  */
 function draw(context, fromId, toId, overWrite) {
-	var fromCvsPoint = calcDrawPoint(fromId);
-	var toCvsPoint = calcDrawPoint(toId);
+	let fromCvsPoint = calcDrawPoint(fromId);
+	let toCvsPoint = calcDrawPoint(toId);
 
-	var fromHeight = calcHeight(fromId);
-	var fromWidth = calcWidth(fromId);
-	var toHeight = calcHeight(toId);
-	var toWidth = calcWidth(toId);
+	let fromHeight = calcHeight(fromId);
+	let fromWidth = calcWidth(fromId);
+	let toHeight = calcHeight(toId);
+	let toWidth = calcWidth(toId);
 
-	var currentHeight = fromHeight;
-	var currentWidth = fromWidth;
-	var currentId = fromId;
+	let currentHeight = fromHeight;
+	let currentWidth = fromWidth;
+	let currentId = fromId;
 
-	var dx = (fromWidth == toWidth) ? 0 : (fromWidth < toWidth) ? 1 : -1;
-	var dy = (fromHeight == toHeight) ? 0 : (fromHeight < toHeight) ? 1 : -1;
 
+	//縦横の移動距離
+	let dx = (fromWidth == toWidth) ? 0 : (fromWidth < toWidth) ? 1 : -1;
+	let dy = (fromHeight == toHeight) ? 0 : (fromHeight < toHeight) ? 1 : -1;
+	
+	const colors = ["green", "purple", "blue"]
+
+	//白くなっている文字を一旦消す
 	if (overWrite) {
 		refleshFont(tmpSelectList);
 	}
 
 	while(true) {
-		var target = document.querySelector('[data-id="' + currentId + '"]');
+		let target = document.querySelector('[data-id="' + currentId + '"]');
+
+		//文字を白くする
 		target.classList.add("selected");
 
 		if(!overWrite){
@@ -108,14 +121,14 @@ function draw(context, fromId, toId, overWrite) {
 			break;
 		}
 
+		//次のマスのIDと縦横を計算
 		currentWidth += dx;
 		currentHeight += dy;
-
 		currentId = calcId(currentHeight, currentWidth);
 	}
 
+	//今書いているものを一旦消す
 	if (overWrite == true) {
-		console.log("AAA");
 		context.clearRect(0, 0, topCanvasElm.width, topCanvasElm.height);
 	}
 
@@ -128,9 +141,8 @@ function draw(context, fromId, toId, overWrite) {
 	context.lineTo(toCvsPoint.getX, toCvsPoint.getY);
 
 
-	context.strokeStyle = "red";
+	context.strokeStyle = colors[protectedCount % colors.length];
 	context.lineWidth = 30;
-	context.strokeStyle = 'rgb(255,0,255)';
 	context.stroke();
 }
 
@@ -161,22 +173,22 @@ function calcWidth(id) {
 }
 
 function isDraggable(fromId, toId) {
+
+	let elmFrom = document.querySelector('[data-id="' + fromId + '"]');
+	let elmTo = document.querySelector('[data-id="' + toId + '"]');
+
+	let fromHeight = calcHeight(fromId);
+	let fromWidth = calcWidth(fromId);
+	let toHeight = calcHeight(toId);
+	let toWidth = calcWidth(toId);
+
 	if (fromId == null || toId == null) {
 		return false;
 	}
 
-	var elmFrom = document.querySelector('[data-id="' + fromId + '"]');
-	var elmTo = document.querySelector('[data-id="' + toId + '"]');
-
 	if(elmFrom.classList.contains("protected") || elmTo.classList.contains("protected")){
 		return false;
 	}
-
-
-	var fromHeight = calcHeight(fromId);
-	var fromWidth = calcWidth(fromId);
-	var toHeight = calcHeight(toId);
-	var toWidth = calcWidth(toId);
 
 	if (fromHeight == toHeight || fromWidth == toWidth
 		|| Math.abs(fromHeight - toHeight) / Math.abs(fromWidth - toWidth) == 1) {
@@ -188,18 +200,29 @@ function isDraggable(fromId, toId) {
 }
 
 
+
+//canvasのheightとwidthは自動的に設定されない模様。
+
+//固定レイヤー。選択を確定させる時はこちらを使う。
 const topCanvasElm = document.getElementsByClassName("top-canvas")[0];
-topCanvasElm.width = topCanvasElm.offsetWidth;
-topCanvasElm.height = topCanvasElm.offsetHeight;
 const topContext = topCanvasElm.getContext("2d");
 
+topCanvasElm.width = topCanvasElm.offsetWidth;
+topCanvasElm.height = topCanvasElm.offsetHeight;
+
+
+//一時レイヤー。ユーザーが線を引いている間はこちらを使う。
 const bottomCanvasElm = document.getElementsByClassName("bottom-canvas")[0];
+const bottomContext = bottomCanvasElm.getContext("2d");
+
 bottomCanvasElm.width = bottomCanvasElm.offsetWidth;
 bottomCanvasElm.height = bottomCanvasElm.offsetHeight;
-const bottomContext = bottomCanvasElm.getContext("2d");
+
 
 var fromId = null;
 var toId = null;
+
+//ユーザーが線を引いている時、文字を白くするために使う。
 var tmpSelectList = [];
 
 var xhr = new window.XMLHttpRequest();
@@ -210,15 +233,17 @@ function startDraw(e) {
 
 	console.log("started");
 
-	var destX = e.touches[0].pageX;
-	var destY = e.touches[0].pageY;
+	let destX = e.touches[0].pageX;
+	let destY = e.touches[0].pageY;
 
-	var elmFrom = document.elementFromPoint(destX, destY);
+	//文字が選択出来ていなければnullになる
+	let elmFrom = document.elementFromPoint(destX, destY);
 
-	if (elmFrom.dataset.id != null) {
-		toId = fromId = elmFrom.dataset.id;
-	}
+	//各文字にはdata-idが振り分けられている
+	toId = fromId = elmFrom.dataset.id;
+	
 
+	//idを取得出来ても各文字部分のクラスを取得出来ていない場合があったので回避
 	if (elmFrom.classList.contains('letter') && isDraggable(fromId, toId)) {
 		draw(topContext, fromId, toId, true);
 	}
@@ -231,12 +256,12 @@ function drawing(e) {
 
 	console.log("drawing");
 
-	var destX = e.changedTouches[0].pageX;
-	var destY = e.changedTouches[0].pageY;
+	let destX = e.changedTouches[0].pageX;
+	let destY = e.changedTouches[0].pageY;
 
-	var elmTo = document.elementsFromPoint(destX, destY)[0];
+	let elmTo = document.elementsFromPoint(destX, destY)[0];
 
-	var newToId = elmTo.dataset.id;
+	let newToId = elmTo.dataset.id;
 
 	if (elmTo.classList.contains('letter') && elmTo.dataset.id != null && isDraggable(fromId, newToId)) {
 		toId = newToId;
@@ -247,9 +272,6 @@ function drawing(e) {
 function endDraw(e) {
 	console.log("ended");
 
-	refleshFont(tmpSelectList);
-	topContext.clearRect(0, 0, topCanvasElm.width, topCanvasElm.height);
-
 	if (!isDraggable(fromId, toId)) {
 		return;
 	}
@@ -258,15 +280,17 @@ function endDraw(e) {
 	let header = $("meta[name='_csrf_header']").attr("content");
 	let token = $("meta[name='_csrf']").attr("content");
 
-	var data = [
+	let data = [
 		{
 			"playId": playId,
 			"fromId": fromId,
 			"toId": toId
 		}
 	];
+	
+	console.log(data);
 
-	var dataJSON = JSON.stringify(data);
+	let dataJSON = JSON.stringify(data);
 
 	xhr.open('POST', '/ws-answer', true);
 	xhr.setRequestHeader(header, token);
@@ -277,7 +301,11 @@ function endDraw(e) {
 	fromId = toId = null;
 }
 
+//一つ一つのアルファベット文字要素
 var letters = document.getElementsByClassName('letter');
+
+//カラーパレット用に選択済みの数を格納
+var protectedCount = 0;
 
 for (var i = 0; i < letters.length; i++) {
 	letters[i].ontouchstart = startDraw;
@@ -286,28 +314,40 @@ for (var i = 0; i < letters.length; i++) {
 }
 
 answerStatus.forEach((elm) => {
-	if (elm.hasAnswer == true) {
+	if (elm.answerFlg == true) {
+
+		//固定レイヤーで描く（最後の引数）
 		draw(bottomContext, elm.fromId, elm.toId, false);
-		eraseLetter(elm.orderIndex);
+		drawLineThrough(elm.orderIndex);
+		protectedCount++;
 	}
 
 });
 
 xhr.onload = function(){        //レスポンスを受け取った時の処理（非同期）
-    var res = xhr.responseText;
-	var parse_data = JSON.parse(res);
-	var answerStatus = parse_data.responseAnswerStatus;
+    let res = xhr.responseText;
+	let parse_data = JSON.parse(res);
+	let answerStatus = parse_data.responseAnswerStatus;
 
     console.log(parse_data);
 	if(answerStatus.answerFlg == true){
+		//固定レイヤーで描く（最後の引数）
 		draw(bottomContext, answerStatus.fromId, answerStatus.toId, false);
 		tmpSelectList = [];
-		eraseLetter(answerStatus.orderIndex);
+
+		//消し込み線を書く
+		drawLineThrough(answerStatus.orderIndex);
+		protectedCount++;
+	}else{
+		//今選択している状態を外す
+		refleshFont(tmpSelectList);
+		topContext.clearRect(0, 0, topCanvasElm.width, topCanvasElm.height);
+
 	}
 
 	if(parse_data.hasCleared == true){
 		screenLock();
-		var elm = document.getElementById("clear");
+		let elm = document.getElementById("clear");
 		elm.style.display = "block";
 	}
 };
@@ -316,27 +356,18 @@ xhr.onerror = function(){       //エラーが起きた時の処理（非同期�
     alert("error!");
 }
 
-function screenLock(){
-	var element = document.createElement('div');
-	element.id = "screenLock";
+function screenLock(){　//クリア画面表示時に使用
+	let element = document.createElement('div');
+	element.id = "screen-lock";
 
-	element.style.height = '100%';
-	element.style.left = '0px';
-	element.style.position = 'absolute';
-	element.style.top = '0px';
-	element.style.width = '100%';
-	element.style.zIndex = '10';
-	element.style.opacity = '0.9';
-	element.style.backgroundColor = "white";
-
-	var objBody = document.getElementById("m-inner");
+	let objBody = document.getElementById("m-inner");
 	objBody.appendChild(element);
   }
 
   /**
-   * ScreenUnLook
+   * まだ使ってない。
    */
   function screenUnLock(){
-	var screenLock = document.getElementById("screenLock");
+	let screenLock = document.getElementById("screenLock");
 	screenLock.parentNode.removeChild(screenLock);
   }
