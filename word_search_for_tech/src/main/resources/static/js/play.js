@@ -33,7 +33,7 @@ var CvsPoint = class {
  * @param {var} index
  */
 
-function drawLineThrough(index){
+function drawLineThrough(index) {
 	let delElm = document.querySelector('[data-index="' + index + '"]');
 	delElm.classList.add("deleted");
 }
@@ -67,68 +67,66 @@ function calcDrawPoint(id) {
 }
 
 /**
- * @param {var} context
- * @param {var} fromId
- * @param {var} toId
- * @param {boolean} overWrite
+ * 
  * 
  * ユーザーが線を引く時の他、途中でゲームがロードされた時にも呼び出す。
  * 引かれた線が正解だった時や途中ロードの時など、
  * 消されない線を描きたい場合は
  * 最後の引数をfalseにして呼び出す事。
  * 
+ * @param {var} context
+ * @param {var} fromId
+ * @param {var} toId
+ * @param {boolean} erasable
+ * 
+ * 
  */
-function draw(context, fromId, toId, overWrite) {
+function draw(context, fromId, toId, erasable) {
 	let fromCvsPoint = calcDrawPoint(fromId);
 	let toCvsPoint = calcDrawPoint(toId);
 
-	let fromHeight = calcHeight(fromId);
-	let fromWidth = calcWidth(fromId);
-	let toHeight = calcHeight(toId);
-	let toWidth = calcWidth(toId);
+	//移動方向の計算に使用する変数
+	let fromX = calcX(fromId);
+	let fromY = calcY(fromId);
+	let toX = calcX(toId);
+	let toY = calcY(toId);
 
-	let currentHeight = fromHeight;
-	let currentWidth = fromWidth;
-	let currentId = fromId;
+	let tmpId = fromId;
 
+	//縦横の移動方向
+	let dx = (fromX == toX) ? 0 : (fromX < toX) ? 1 : -1;
+	let dy = (fromY == toY) ? 0 : (fromY < toY) ? 1 : -1;
 
-	//縦横の移動距離
-	let dx = (fromWidth == toWidth) ? 0 : (fromWidth < toWidth) ? 1 : -1;
-	let dy = (fromHeight == toHeight) ? 0 : (fromHeight < toHeight) ? 1 : -1;
-	
-	const colors = ["green", "purple", "blue"]
+	const colors = ["#ffc107", "#0d6efd", "#d63384", "#6610f2", "#fd7e14", "#198754", "#0dcaf0"];
 
 	//白くなっている文字を一旦消す
-	if (overWrite) {
+	if (erasable) {
 		refleshFont(tmpSelectList);
 	}
 
-	while(true) {
-		let target = document.querySelector('[data-id="' + currentId + '"]');
+	while (true) {
+		let target = document.querySelector('[data-id="' + tmpId + '"]');
 
 		//文字を白くする
 		target.classList.add("selected");
 
-		if(!overWrite){
+		if (!erasable) {
 			target.classList.add("protected");
 		}
 
-		if (overWrite && !target.classList.contains("protected")) {
+		if (erasable && !target.classList.contains("protected")) {
 			tmpSelectList.push(target);
 		}
 
-		if(currentId == toId){
+		if (tmpId == toId) {
 			break;
+		} else {
+			tmpId = calcId(calcX(tmpId) + dx, calcY(tmpId) + dy);
 		}
-
-		//次のマスのIDと縦横を計算
-		currentWidth += dx;
-		currentHeight += dy;
-		currentId = calcId(currentHeight, currentWidth);
 	}
 
 	//今書いているものを一旦消す
-	if (overWrite == true) {
+	if (erasable == true) {
 		context.clearRect(0, 0, topCanvasElm.width, topCanvasElm.height);
 	}
 
@@ -148,11 +146,11 @@ function draw(context, fromId, toId, overWrite) {
 
 /**
  *
- * @param {var} height
- * @param {var} width
+ * @param {var} x
+ * @param {var} y
  */
-function calcId(height, width) {
-	return height * boardWidth + width;
+function calcId(x, y) {
+	return y * boardWidth + x;
 }
 
 
@@ -160,7 +158,7 @@ function calcId(height, width) {
  *
  * @param {var} id
  */
-function calcHeight(id) {
+function calcY(id) {
 	return Math.floor(id / boardWidth);
 }
 
@@ -168,35 +166,50 @@ function calcHeight(id) {
  *
  * @param {var} id
  */
-function calcWidth(id) {
+function calcX(id) {
 	return id % boardWidth;
 }
 
 function isDraggable(fromId, toId) {
 
-	let elmFrom = document.querySelector('[data-id="' + fromId + '"]');
-	let elmTo = document.querySelector('[data-id="' + toId + '"]');
-
-	let fromHeight = calcHeight(fromId);
-	let fromWidth = calcWidth(fromId);
-	let toHeight = calcHeight(toId);
-	let toWidth = calcWidth(toId);
-
 	if (fromId == null || toId == null) {
 		return false;
 	}
 
-	if(elmFrom.classList.contains("protected") || elmTo.classList.contains("protected")){
-		return false;
-	}
+	let fromY = calcY(fromId);
+	let fromX = calcX(fromId);
+	let toY = calcY(toId);
+	let toX = calcX(toId);
 
-	if (fromHeight == toHeight || fromWidth == toWidth
-		|| Math.abs(fromHeight - toHeight) / Math.abs(fromWidth - toWidth) == 1) {
+	let dx = (toX - fromX) == 0 ? 0 : fromX < toX ? 1 : -1;
+	let dy = (toY - fromY) == 0 ? 0 : fromY < toY ? 1 : -1;
+
+	//横か縦か45度の斜めの場合は、選択が確定している要素を突き抜けなければ引ける
+	if (fromY == toY || fromX == toX
+		|| Math.abs(fromY - toY) / Math.abs(fromX - toX) == 1) {
+
+		let tmpId = fromId;
+
+		while (true) {
+
+			let target = document.querySelector('[data-id="' + tmpId + '"]');
+
+			if (target.classList.contains("protected")) {
+				return false;
+			}
+
+			if (tmpId == toId) {
+				return true;
+			} else {
+				tmpId = calcId(calcX(calcX(tmpId)) + dx, calcY(tmpId) + dy);
+			}
+		}
+
 		return true;
-	} else {
+
+	} else {//それ以外の斜めなどは引けない
 		return false;
 	}
-
 }
 
 
@@ -241,7 +254,7 @@ function startDraw(e) {
 
 	//各文字にはdata-idが振り分けられている
 	toId = fromId = elmFrom.dataset.id;
-	
+
 
 	//idを取得出来ても各文字部分のクラスを取得出来ていない場合があったので回避
 	if (elmFrom.classList.contains('letter') && isDraggable(fromId, toId)) {
@@ -260,17 +273,15 @@ function drawing(e) {
 	let destY = e.changedTouches[0].pageY;
 
 	let elmTo = document.elementsFromPoint(destX, destY)[0];
-
 	let newToId = elmTo.dataset.id;
 
-	if (elmTo.classList.contains('letter') && elmTo.dataset.id != null && isDraggable(fromId, newToId)) {
+	if (elmTo.classList.contains('letter') && isDraggable(fromId, newToId)) {
 		toId = newToId;
 		draw(topContext, fromId, toId, true);
 	}
 }
 
 function endDraw(e) {
-	console.log("ended");
 
 	if (!isDraggable(fromId, toId)) {
 		return;
@@ -287,7 +298,7 @@ function endDraw(e) {
 			"toId": toId
 		}
 	];
-	
+
 	console.log(data);
 
 	let dataJSON = JSON.stringify(data);
@@ -324,13 +335,13 @@ answerStatus.forEach((elm) => {
 
 });
 
-xhr.onload = function(){        //レスポンスを受け取った時の処理（非同期）
-    let res = xhr.responseText;
+xhr.onload = function () {        //レスポンスを受け取った時の処理（非同期）
+	let res = xhr.responseText;
 	let parse_data = JSON.parse(res);
 	let answerStatus = parse_data.responseAnswerStatus;
 
-    console.log(parse_data);
-	if(answerStatus.answerFlg == true){
+	console.log(parse_data);
+	if (answerStatus.answerFlg == true) {
 		//固定レイヤーで描く（最後の引数）
 		draw(bottomContext, answerStatus.fromId, answerStatus.toId, false);
 		tmpSelectList = [];
@@ -338,36 +349,36 @@ xhr.onload = function(){        //レスポンスを受け取った時の処理�
 		//消し込み線を書く
 		drawLineThrough(answerStatus.orderIndex);
 		protectedCount++;
-	}else{
+	} else {
 		//今選択している状態を外す
 		refleshFont(tmpSelectList);
 		topContext.clearRect(0, 0, topCanvasElm.width, topCanvasElm.height);
 
 	}
 
-	if(parse_data.hasCleared == true){
+	if (parse_data.hasCleared == true) {
 		screenLock();
 		let elm = document.getElementById("clear");
 		elm.style.display = "block";
 	}
 };
 
-xhr.onerror = function(){       //エラーが起きた時の処理（非同期）
-    alert("error!");
+xhr.onerror = function () {       //エラーが起きた時の処理（非同期）
+	alert("通信エラーが発生しました。");
 }
 
-function screenLock(){　//クリア画面表示時に使用
+function screenLock() {　//クリア画面表示時に使用
 	let element = document.createElement('div');
 	element.id = "screen-lock";
 
 	let objBody = document.getElementById("m-inner");
 	objBody.appendChild(element);
-  }
+}
 
-  /**
-   * まだ使ってない。
-   */
-  function screenUnLock(){
+/**
+ * まだ使ってない。
+ */
+function screenUnLock() {
 	let screenLock = document.getElementById("screenLock");
 	screenLock.parentNode.removeChild(screenLock);
-  }
+}

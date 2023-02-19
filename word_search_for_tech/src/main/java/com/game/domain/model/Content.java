@@ -264,6 +264,7 @@ public class Content {
 	public void getReadyToSendAnswerStatus() {
 		for (AnswerStatus ans : answerList) {
 			ans.resetAnswerId();
+			ans.toUpperCase();
 		}
 	}
 }

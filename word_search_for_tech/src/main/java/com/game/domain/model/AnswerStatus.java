@@ -30,5 +30,9 @@ public class AnswerStatus implements Answer{
 			this.toId = 999;
 		}
 	}
+	
+	public void toUpperCase() {
+		this.kw = kw.toUpperCase();
+	}
 
 }

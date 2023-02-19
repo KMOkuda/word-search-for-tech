@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.game.domain.entity.BoardEntity;
 import com.game.domain.entity.IngredientEntity;
-import com.game.domain.exception.ValidationException;
+import com.game.domain.exception.AlreadyClearedException;
+import com.game.domain.exception.UpdateException;
 import com.game.domain.model.AnswerStatus;
 import com.game.domain.model.Content;
 import com.game.domain.model.JsonAnswerResponse;
@@ -22,33 +23,36 @@ public class PuzzleServiceImpl implements PuzzleService {
 	@Qualifier("PuzzleDaoImpl")
 	PuzzleDao dao;
 
-	final long timeLimitMillis = 3;
 
 	/**
 	 * 今回の実装ではログインなしのみに限定
 	 */
 	@Override
-	public List<Label> selectManyByCategory(String username, int categoryId) {
+	public List<Label> selectLabelsByCategoryId(String username, int categoryId) {
 
 		List<Label> puzzleList = dao.selectManyByCategory(categoryId);
 		return puzzleList;
 	}
 
 	@Override
-	public List<Label> selectManyByPID(String username, int puzzleId) throws Exception {
+	public List<Label> selectLabelsByPuzzleId(String username, int puzzleId) throws Exception {
 
-		List<Label> puzzleList = dao.selectManyByPID(puzzleId);
+		List<Label> puzzleList = dao.selectManyByPuzzleId(puzzleId);
 		return puzzleList;
 	}
+	
+	
+	
+	/*最大DBアクセス4回*/
 
 	@Override
 	public Content createNewPuzzle(int puzzleId) throws Exception {
 
 		//パズル生成に必要なデータ(高さと幅)を取ってくる
-		IngredientEntity ingredient = dao.selectOne(puzzleId);
+		IngredientEntity ingredient = dao.selectPuzzle(puzzleId);
 		
 		//パズル生成に必要なデータ(KWリスト)を取ってくる
-		List<String> kw = dao.selectKW(puzzleId);
+		List<String> kw = dao.selectManyKW(puzzleId);
 
 		boolean succeed = false;
 
@@ -60,11 +64,12 @@ public class PuzzleServiceImpl implements PuzzleService {
 			succeed = puzzleContent.generateBoard();
 		} while (!succeed);
 
-		String uuid = dao.insertOne(puzzleId, puzzleContent.getLineBoard());
+		//プレイ開始を記録
+		String uuid = dao.insertPlay(puzzleId, puzzleContent.getLineBoard());
 		puzzleContent.setPlayId(uuid);
 		
 		//生成した正解データをDBへ格納
-		dao.insertMany(uuid, puzzleId, puzzleContent.getAnswerList());
+		dao.insertManyAnswers(uuid, puzzleId, puzzleContent.getAnswerList());
 		
 		//controllへ渡す前に正解データを消しておく
 		puzzleContent.getReadyToSendAnswerStatus();
@@ -72,28 +77,40 @@ public class PuzzleServiceImpl implements PuzzleService {
 		return puzzleContent;
 	}
 
+	
+	
+	/*最大DBアクセス3回*/
+	
 	@Override
 	public Content getPuzzleData(String playId) throws Exception {
-		List<AnswerStatus> answerList = dao.selectAnswerStatus(playId);
 		
 		boolean hasCleared = dao.hasCleared(playId);
+		
 		if(hasCleared) {
-			throw new Exception("もう既に解き終わったパズルです");
+			throw new AlreadyClearedException("このパズルはもう終了したか、存在しません。");
 		}
 		
+
 		BoardEntity board = dao.selectBoard(playId);
+		List<AnswerStatus> answerList = dao.selectManyAnswerStatus(playId);
 		
 		Content puzzleContent = new Content(playId, board, answerList);
+		
+		//controllへ渡す前に正解データを消しておく
 		puzzleContent.getReadyToSendAnswerStatus();
 		
 		return puzzleContent;
 	}
 	
+	
+	
+	/*最大DBアクセス4回*/
+	
 	@Override
 	public JsonAnswerResponse getPlayStatus(String playId, int fromId, int toId) throws Exception {
 		
 		//単数指定だと件数０の時にExceptionがスローされるので...
-		List<AnswerStatus> answerList =dao.getAnswer(playId, fromId, toId);
+		List<AnswerStatus> answerList =dao.selectAnswerStatus(playId, fromId, toId);
 		JsonAnswerResponse jres;
 		
 		if(answerList.size() != 0) {
@@ -103,10 +120,19 @@ public class PuzzleServiceImpl implements PuzzleService {
 			
 			int affectedRow = dao.updateAnswer(playId, answerStatus);
 			
-			if(affectedRow == 0) {
-				throw new Exception("更新異常");
+			if(affectedRow != 1) {
+				throw new UpdateException("回答データ更新異常。");
 			}else {
 				boolean hasCleared = dao.hasCleared(playId);
+				
+				if(hasCleared) {
+					affectedRow = dao.updateClear(playId);
+					
+					if(affectedRow != 1) {
+						throw new UpdateException("クリアタイムスタンプ更新異常。");
+					}
+				}
+				
 				jres = new JsonAnswerResponse(hasCleared, answerStatus);
 			}
 
@@ -115,21 +141,6 @@ public class PuzzleServiceImpl implements PuzzleService {
 		}
 		
 		return jres;
-	}
-
-	
-	//後で実装
-	public void stringParameterCheck(String param) throws Exception {
-		if (param == null) {
-			throw new ValidationException();
-		}
-
-		for (int i = 0; i < param.length(); i++) {
-			char c = param.charAt(i);
-			if (!(c >= '0' && c <= '9')) {
-				throw new ValidationException();
-			}
-		}
 	}
 
 }

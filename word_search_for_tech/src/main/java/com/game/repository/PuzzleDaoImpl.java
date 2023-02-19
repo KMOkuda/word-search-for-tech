@@ -32,7 +32,7 @@ public class PuzzleDaoImpl implements PuzzleDao {
 	}
 
 	@Override
-	public List<Label> selectManyByPID(int puzzleId) throws DataAccessException {
+	public List<Label> selectManyByPuzzleId(int puzzleId) throws DataAccessException {
 		String sql = "SELECT puzzle_id, t_puzzle.category_id, category_name, category_class, level_id, "
 				+ "height, width " + "FROM t_category, t_puzzle "
 				+ "WHERE t_puzzle.category_id = t_category.category_id and t_category.category_id = "
@@ -43,7 +43,7 @@ public class PuzzleDaoImpl implements PuzzleDao {
 	}
 
 	@Override
-	public IngredientEntity selectOne(int puzzleId) throws DataAccessException {
+	public IngredientEntity selectPuzzle(int puzzleId) throws DataAccessException {
 		String sql = "SELECT t_puzzle.puzzle_id, t_puzzle.height, t_puzzle.width " + "FROM t_puzzle "
 				+ "WHERE t_puzzle.puzzle_id = ?";
 
@@ -52,7 +52,7 @@ public class PuzzleDaoImpl implements PuzzleDao {
 	}
 
 	@Override
-	public List<String> selectKW(int puzzleId) throws DataAccessException {
+	public List<String> selectManyKW(int puzzleId) throws DataAccessException {
 		String sql = "SELECT kw " + "FROM t_puzzle, t_kw_property, t_kw " + "WHERE t_puzzle.puzzle_id = " + "?" + " "
 				+ "AND t_puzzle.puzzle_id = t_kw_property.puzzle_id " + "AND t_kw_property.kw_id = t_kw.kw_id;";
 
@@ -61,7 +61,7 @@ public class PuzzleDaoImpl implements PuzzleDao {
 	}
 
 	@Override
-	public String insertOne(int puzzleId, String lineBoard) throws DataAccessException {
+	public String insertPlay(int puzzleId, String lineBoard) throws DataAccessException {
 		UUID uuid = UUID.randomUUID();
 		String sql = "INSERT INTO t_play (public_id, puzzle_id, line_board, created_at, cleared_at) " + "VALUES("
 				+ "?, ?, ?, " + "CURRENT_TIMESTAMP" + " " + ", " + "NULL" + ")";
@@ -72,9 +72,9 @@ public class PuzzleDaoImpl implements PuzzleDao {
 	}
 
 	@Override
-	public int insertMany(String publicId, int puzzleId, List<AnswerStatus> answers) throws DataAccessException {
-		String sql = "INSERT INTO t_answer (order_index, puzzle_kw_id, play_id, from_id, to_id, answer_flg) "
-				+ "VALUES (?, (" + "SELECT t_kw_property.puzzle_kw_id FROM t_kw_property "
+	public int insertManyAnswers(String publicId, int puzzleId, List<AnswerStatus> answers) throws DataAccessException {
+		String sql = "INSERT INTO t_answer (order_index, kw_id, play_id, from_id, to_id, answer_flg) "
+				+ "VALUES (?, (" + "SELECT t_kw_property.kw_id FROM t_kw_property "
 				+ "INNER JOIN t_kw ON t_kw.kw_id = t_kw_property.kw_id "
 				+ "INNER JOIN t_puzzle ON t_puzzle.puzzle_id = t_kw_property.puzzle_id "
 				+ "WHERE t_kw.kw = ? AND t_kw_property.puzzle_id = ? " + "), " + "( "
@@ -99,19 +99,20 @@ public class PuzzleDaoImpl implements PuzzleDao {
 	 * @throws DataAccessException
 	 * 
 	 * 
-	 *                             int orderIndex; String kw; boolean answerFlg; int
-	 *                             fromId; int toId;
+	 * int orderIndex
+	 * String kw
+	 * boolean answerFlg
+	 * int fromId
+	 * int toId;
 	 * 
 	 */
 
 	@Override
-	public List<AnswerStatus> selectAnswerStatus(String publicId) throws DataAccessException {
-		System.out.println("DAOIMPL");
+	public List<AnswerStatus> selectManyAnswerStatus(String publicId) throws DataAccessException {
 
 		String sql = "SELECT order_index, kw, answer_flg, from_id, to_id " + "FROM t_play "
 				+ "INNER JOIN t_answer ON t_play.play_id = t_answer.play_id "
-				+ "INNER JOIN t_kw_property ON t_answer.puzzle_kw_id = t_kw_property.puzzle_kw_id "
-				+ "INNER JOIN t_kw ON t_kw.kw_id = t_kw_property.kw_id " + "WHERE t_play.public_id = ?";
+				+ "INNER JOIN t_kw ON t_kw.kw_id = t_answer.kw_id " + "WHERE t_play.public_id = ?";
 
 		RowMapper<AnswerStatus> rowMapper = new BeanPropertyRowMapper<AnswerStatus>(AnswerStatus.class);
 		return jdbc.query(sql, rowMapper, publicId);
@@ -128,16 +129,12 @@ public class PuzzleDaoImpl implements PuzzleDao {
 	}
 
 	@Override
-	public List<AnswerStatus> getAnswer(String publicId, int fromId, int toId) throws DataAccessException {
-		String sql = "SELECT order_index, kw, answer_flg, from_id, to_id FROM t_play INNER JOIN t_answer ON t_play.play_id = t_answer.play_id INNER JOIN t_kw_property ON t_answer.puzzle_kw_id = t_kw_property.puzzle_kw_id INNER JOIN t_kw ON t_kw.kw_id = t_kw_property.kw_id WHERE t_play.public_id = ? AND from_id = ? AND to_id = ?";
-		/*
+	public List<AnswerStatus> selectAnswerStatus(String publicId, int fromId, int toId) throws DataAccessException {
+		
 		String sql = "SELECT order_index, kw, answer_flg, from_id, to_id " + "FROM t_play "
 				+ "INNER JOIN t_answer ON t_play.play_id = t_answer.play_id "
-				+ "INNER JOIN t_kw_property ON t_answer.puzzle_kw_id = t_kw_property.puzzle_kw_id "
-				+ "INNER JOIN t_kw ON t_kw.kw_id = t_kw_property.kw_id "
+				+ "INNER JOIN t_kw ON t_kw.kw_id = t_answer.kw_id "
 				+ "WHERE t_play.public_id = ? AND from_id = ? AND to_id = ?";
-		*/
-		System.out.println(sql);
 		
 		RowMapper<AnswerStatus> rowMapper = new BeanPropertyRowMapper<AnswerStatus>(AnswerStatus.class);
 		return jdbc.query(sql, rowMapper, publicId, fromId, toId);
@@ -148,8 +145,6 @@ public class PuzzleDaoImpl implements PuzzleDao {
 		String sql = "UPDATE t_answer SET t_answer.answer_flg = TRUE "
 				+ "WHERE from_id = ? AND to_id = ? AND t_answer.play_id IN "
 				+ "(SELECT t_play.play_id FROM t_play WHERE public_id = ?)";
-		
-		System.out.println(sql);
 
 		return jdbc.update(sql, answer.getFromId(), answer.getToId(), publicId);
 	}
@@ -162,9 +157,15 @@ public class PuzzleDaoImpl implements PuzzleDao {
 		
 		int count = jdbc.queryForList(sql, Integer.class, publicId).get(0);
 		
-		System.out.println("count = " + count);
-		
 		return count == 0 ? true : false;
 	}
-
+	
+	public int updateClear(String publicId) throws DataAccessException{
+		String sql = "UPDATE t_play SET cleared_at = CURRENT_TIMESTAMP "
+				+ "WHERE public_id = ?";
+		
+		System.out.println(sql);
+		
+		return jdbc.update(sql, publicId);
+	}
 }

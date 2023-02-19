@@ -13,24 +13,26 @@ import com.game.domain.model.Label;
 public interface PuzzleDao {
 	public List<Label> selectManyByCategory(int categoryId) throws DataAccessException;
 
-	public List<Label> selectManyByPID(int puzzleId) throws DataAccessException;
+	public List<Label> selectManyByPuzzleId(int puzzleId) throws DataAccessException;
 
-	public IngredientEntity selectOne(int puzzleId) throws DataAccessException;
+	public IngredientEntity selectPuzzle(int puzzleId) throws DataAccessException;
 
-	public List<String> selectKW(int puzzleId) throws DataAccessException;
+	public List<String> selectManyKW(int puzzleId) throws DataAccessException;
 
-	public String insertOne(int puzzleId, String lineBoard) throws DataAccessException;
+	public String insertPlay(int puzzleId, String lineBoard) throws DataAccessException;
 	
-	public int insertMany(String publicId, int puzzleId,  List<AnswerStatus> answers) throws DataAccessException;
+	public int insertManyAnswers(String publicId, int puzzleId,  List<AnswerStatus> answers) throws DataAccessException;
 
-	public List<AnswerStatus> selectAnswerStatus(String playId) throws DataAccessException;
+	public List<AnswerStatus> selectManyAnswerStatus(String playId) throws DataAccessException;
 
 	public BoardEntity selectBoard(String playId) throws DataAccessException;
 	
-	public List<AnswerStatus> getAnswer(String playId, int fromId, int toId) throws DataAccessException;
+	public List<AnswerStatus> selectAnswerStatus(String playId, int fromId, int toId) throws DataAccessException;
 
 	public int updateAnswer(String publicId, AnswerStatus answer) throws DataAccessException;
-	
-	public boolean hasCleared (String publicId) throws DataAccessException;
+
+	public int updateClear(String publicId) throws DataAccessException;
+
+	boolean hasCleared(String publicId) throws DataAccessException;
 
 }

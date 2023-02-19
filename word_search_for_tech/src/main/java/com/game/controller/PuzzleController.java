@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.game.domain.exception.ParameterException;
 import com.game.domain.model.Content;
 import com.game.domain.model.JSONSingleAnswer;
 import com.game.domain.model.JsonAnswerResponse;
@@ -42,18 +43,17 @@ public class PuzzleController {
 			@AuthenticationPrincipal UserDetails user) throws Exception{
 
 		if (categoryId == null && pid == null) {
-			System.out.println("エラー発生");
-			//例外処理を書く。
+			throw new ParameterException("不正な値を検出しました。");
 		}
 
 		List<Label> labelList;
 
 		if (categoryId != null) {
 
-			labelList = puzzleService.selectManyByCategory(null, Integer.parseInt(categoryId));
+			labelList = puzzleService.selectLabelsByCategoryId(null, Integer.parseInt(categoryId));
 
 		}else {
-			labelList = puzzleService.selectManyByPID(null, Integer.parseInt(pid));
+			labelList = puzzleService.selectLabelsByPuzzleId(null, Integer.parseInt(pid));
 		}
 
 		model.addAttribute("contents", "ws-puzzle/puzzles::puzzles_contents");
