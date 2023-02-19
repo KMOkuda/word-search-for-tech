@@ -56,6 +56,7 @@ UNIQUE (public_id)
 );
 
 CREATE TABLE IF NOT EXISTS t_answer(
+t_answer INT PRIMARY KEY AUTO_INCREMENT,
 order_index INT,
 kw_id INT,
 play_id INT,
@@ -63,7 +64,7 @@ from_id INT,
 to_id INT,
 answer_flg BOOLEAN,
 FOREIGN KEY (kw_id)
-REFERENCES t_kw_property(kw_id),
+REFERENCES t_kw(kw_id),
 FOREIGN KEY (play_id)
 REFERENCES t_play(play_id)
 )
