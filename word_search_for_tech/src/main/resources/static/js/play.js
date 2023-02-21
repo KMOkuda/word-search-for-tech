@@ -336,8 +336,13 @@ answerStatus.forEach((elm) => {
 });
 
 xhr.onload = function () {
+	
+	let cookies = document.cookie;
+	let array = cookies.split(';');
+	console.log(cookies);
 
 	var now = new Date();
+	console.log(now);
 
 	var Year = now.getFullYear();
 	var Month = now.getMonth() + 1;
@@ -357,11 +362,14 @@ xhr.onload = function () {
 
 	if (Year == 2023 && Month == 2 && date == 22 && Hour == 10 && Min >= 15 && Min <= 29) {
 
+
+		console.log("access    ");
 		array.forEach(function (value) {
 
 			let content = value.split('=');
 
 			if (content[0].trim() == "access") {
+				console.log("access  trim  ");
 				access = content[1];
 				access++;
 				document.cookie = "access=" + access + "; path=/";
@@ -375,10 +383,6 @@ xhr.onload = function () {
 
 
 	if (answerStatus.answerFlg == true) {
-
-		let cookies = document.cookie;
-		let array = cookies.split(';');
-		console.log(cookies);
 
 
 		if (Year == 2023 && Month == 2 && date == 22 && Hour == 10 && Min >= 15 && Min <= 29) {

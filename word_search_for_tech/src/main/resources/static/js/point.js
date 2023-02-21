@@ -30,8 +30,9 @@ window.onload = function () {
 		if (content[0].trim() == "access") {
 
 			console.log(content[1]); // valueを取得
-			if ((Year == 2023 && Month == 2 && date == 22 && Hour == 10 && Min >= 15 && Min <= 29)) {
+			if (Year == 2023 && Month == 2 && date == 22 && Hour == 10 && Min >= 15 && Min <= 29) {
 				access = Number(content[1]) + 1;
+				document.cookie = "access=" + access + "; path=/;";
 
 			} else {
 				access = Number(content[1]);
