@@ -54,21 +54,16 @@ navigator.serviceWorker.register('/sw.js');
 		</div>
 	</header>
 	<main role="main">
+		<div id="count-area">
+				<div id ="access-area">ACCESS:<span id="access"></span></div>
+				<div id ="point-area">POINT:<span id="point"></span></div>
+		</div>
 		<div id="m-inner">
 			<!-- Page content -->
 			<div th:insert="__${contents}__" th:class="main-content"></div>
 		</div>
 	</main>
-	<!--
-	<footer>
-		<div
-			class="fixed-bottom mx-0 bg-dark bg-opacity-75 text-center text-white">
-			<h5>@BFT なごやしてん</h5>
-		</div>
-
-	</footer>
--->
-</body>
+	<script th:src="@{/js/point.js}"></script>
 
 </body>
 </html>

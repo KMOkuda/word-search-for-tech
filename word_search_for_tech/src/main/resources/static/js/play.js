@@ -335,13 +335,73 @@ answerStatus.forEach((elm) => {
 
 });
 
-xhr.onload = function () {        //レスポンスを受け取った時の処理（非同期）
+xhr.onload = function () {
+
+	var now = new Date();
+
+	var Year = now.getFullYear();
+	var Month = now.getMonth() + 1;
+	var date = now.getDate();
+	var Hour = now.getHours();
+	var Min = now.getMinutes();
+
+
+	//レスポンスを受け取った時の処理（非同期）
 	let res = xhr.responseText;
 	let parse_data = JSON.parse(res);
 	let answerStatus = parse_data.responseAnswerStatus;
 
 	console.log(parse_data);
+
+
+
+	if (Year == 2023 && Month == 2 && date == 22 && Hour == 10 && Min >= 15 && Min <= 29) {
+
+		array.forEach(function (value) {
+
+			let content = value.split('=');
+
+			if (content[0].trim() == "access") {
+				access = content[1];
+				access++;
+				document.cookie = "access=" + access + "; path=/";
+
+				document.getElementById("access").innerHTML = access;
+			}
+
+		})
+	}
+
+
+
 	if (answerStatus.answerFlg == true) {
+
+		let cookies = document.cookie;
+		let array = cookies.split(';');
+		console.log(cookies);
+
+
+		if (Year == 2023 && Month == 2 && date == 22 && Hour == 10 && Min >= 15 && Min <= 29) {
+
+			array.forEach(function (value) {
+
+				let content = value.split('=');
+
+				if (content[0].trim() == "point") {
+					console.log("aaa")
+					point = content[1];
+					point++;
+					if (parse_data.hasCleared == true) {
+						point += 4;
+					}
+					document.cookie = "point=" + point + "; path=/";
+
+					document.getElementById("point").innerHTML = point;
+				}
+
+			})
+		}
+
 		//固定レイヤーで描く（最後の引数）
 		draw(bottomContext, answerStatus.fromId, answerStatus.toId, false);
 		tmpSelectList = [];

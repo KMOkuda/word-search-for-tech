@@ -98,8 +98,30 @@ header .inner{
 #m-inner {
 	padding: 10% 0%;
     height: 100%;
+    position: relative;
 }
 
+#count-area{
+	display: flex;
+	flex-wrap: wrap;
+	position: relative;
+	justify-content: space-between;
+	margin-right: 30px;
+	margin-left: 30px;
+	margin-top:30px;
+}
+
+#point-area{
+	display: inline-block;
+	right: 10px;
+	
+}
+
+#access-area{
+	display: inline-block;
+	left: 10px;
+	
+}
 
 .h1-wrapper{
 	margin-inline: auto;
