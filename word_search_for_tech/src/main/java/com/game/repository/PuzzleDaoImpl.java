@@ -134,10 +134,10 @@ public class PuzzleDaoImpl implements PuzzleDao {
 		String sql = "SELECT order_index, kw, answer_flg, from_id, to_id " + "FROM t_play "
 				+ "INNER JOIN t_answer ON t_play.play_id = t_answer.play_id "
 				+ "INNER JOIN t_kw ON t_kw.kw_id = t_answer.kw_id "
-				+ "WHERE t_play.public_id = ? AND from_id = ? AND to_id = ?";
+				+ "WHERE t_play.public_id = ? AND ((from_id = ? AND to_id = ?) or (from_id = ? AND to_id = ?))";
 		
 		RowMapper<AnswerStatus> rowMapper = new BeanPropertyRowMapper<AnswerStatus>(AnswerStatus.class);
-		return jdbc.query(sql, rowMapper, publicId, fromId, toId);
+		return jdbc.query(sql, rowMapper, publicId, fromId, toId, toId, fromId);
 	}
 
 	@Override
