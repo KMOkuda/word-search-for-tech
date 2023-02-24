@@ -67,19 +67,19 @@ function calcDrawPoint(id) {
 }
 
 /**
- * 
- * 
+ *
+ *
  * ユーザーが線を引く時の他、途中でゲームがロードされた時にも呼び出す。
  * 引かれた線が正解だった時や途中ロードの時など、
  * 消されない線を描きたい場合は
  * 最後の引数をfalseにして呼び出す事。
- * 
+ *
  * @param {var} context
  * @param {var} fromId
  * @param {var} toId
  * @param {boolean} erasable
- * 
- * 
+ *
+ *
  */
 function draw(context, fromId, toId, erasable) {
 	let fromCvsPoint = calcDrawPoint(fromId);
@@ -284,6 +284,8 @@ function drawing(e) {
 function endDraw(e) {
 
 	if (!isDraggable(fromId, toId)) {
+		refleshFont(tmpSelectList);
+		topContext.clearRect(0, 0, topCanvasElm.width, topCanvasElm.height);
 		return;
 	}
 
