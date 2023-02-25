@@ -1,18 +1,22 @@
 {
-    "short_name": "パスワードマネージャ",
-    "name": "パスワードマネージャ",
-    "display": "standalone",
-    "start_url": "/",
-    "icons": [
-        {
-            "src": "image/192x192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "image/512x512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        }
-    ]
+  "short_name": "ITパズル",
+  "name": "ITパズル 基本情報や応用情報の勉強のおともに",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "image/192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "image/512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "description": "ランダムな文字列からITワードを探そう！",
+  "lang": "ja"
 }
