@@ -45,6 +45,10 @@ header .inner{
 	display: flex;
 }
 
+.policy-content p, .offline-content p{
+	text-align: left;
+}
+
 .drawer-nav {
 	padding: 3% 3%;
 	z-index:9999;
@@ -114,7 +118,7 @@ header .inner{
 	display: flex;
 }
 
-.category-content, .puzzles-content, .error-content{
+.category-content, .puzzles-content, .error-content, .offline-content, .policy-content{
 	padding-right: 10%;
 	padding-left:10%;
 }

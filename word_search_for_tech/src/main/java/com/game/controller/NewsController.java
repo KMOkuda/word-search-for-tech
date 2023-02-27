@@ -23,4 +23,10 @@ public class NewsController {
 		model.addAttribute("contents", "news/maint::maint_contents");
 		return "layout";
 	}
+	
+	@GetMapping("/policy")
+	public String getPolicy(Model model) {
+
+		return "policy";
+	}
 }
