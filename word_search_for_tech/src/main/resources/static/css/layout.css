@@ -12,7 +12,7 @@ body {
 main {
 	position: relative;
 	margin: 0;
-    padding: 0;
+	padding: 0;
 	background-color: white;
 	height: calc(100vh - 50px);
 }
@@ -24,13 +24,13 @@ header {
 	height: 50px;
 }
 
-a{
+a {
 	text-decoration: none;
 }
 
-#center-logo{
+#center-logo {
 	display: block;
-    margin: 0 auto;
+	margin: 0 auto;
 }
 
 header h1 {
@@ -38,20 +38,20 @@ header h1 {
 	text-align: center;
 	color: #FFFFFF;
 	padding: 0.6rem 0rem;
-	color: var(--bs-green);
+	color: var(- -bs-green);
 }
 
-header .inner{
+header .inner {
 	display: flex;
 }
 
-.policy-content p, .offline-content p{
+.policy-content p, .offline-content p {
 	text-align: left;
 }
 
 .drawer-nav {
 	padding: 3% 3%;
-	z-index:9999;
+	z-index: 9999;
 }
 
 .drawer-hamburger {
@@ -74,23 +74,22 @@ header .inner{
 	top: -10px;
 }
 
-
 .drawer-menu-item {
 	font-size: 1rem;
-	border-bottom: dotted 3px var(--bs-gray);
+	border-bottom: dotted 3px var(- -bs-gray);
 }
 
 .drawer-menu-item:hover {
 	text-decoration: none;
 }
 
-.drawer-user{
+.drawer-user {
 	font-size: 1.2rem;
 	color: #000;
 	text-decoration: none;
 }
 
-#ver{
+#ver {
 	position: absolute;
 	display: block;
 	padding: 0.75rem;
@@ -105,31 +104,31 @@ header .inner{
 
 #m-inner {
 	padding: 10% 0%;
-    height: 100%;
+	height: 100%;
 }
 
-
-.h1-wrapper{
+.h1-wrapper {
 	margin-inline: auto;
-    max-inline-size: max-content;
- }
- 
+	max-inline-size: max-content;
+}
+
 .flex-wrap {
 	display: flex;
 }
 
-.category-content, .puzzles-content, .error-content, .offline-content, .policy-content{
+.category-content, .puzzles-content, .error-content, .offline-content,
+	.policy-content, .signup-content {
 	padding-right: 10%;
-	padding-left:10%;
+	padding-left: 10%;
 }
 
-.error-content h1, .error-content p{
+.error-content h1, .error-content p {
 	text-align: left;
 }
 
-.play-content{
+.play-content {
 	margin-right: 5%;
-    margin-left: 5%;
+	margin-left: 5%;
 }
 
 .home h1 {
@@ -148,7 +147,7 @@ form select, form button {
 	background-color: #FFF;
 	width: 120px;
 	outline: auto;
-	outline-color: var(--bs-green);
+	outline-color: var(- -bs-green);
 	padding: 0.5rem;
 }
 
@@ -157,18 +156,31 @@ form option {
 	width: auto;
 }
 
+label {
+	display: block;
+}
+
+input{
+	height: 60px;
+    width: 70vw;
+    border: 2px solid green;
+    padding: 1rem;
+}
+
+button{
+	display: block;
+}
 
 select {
-  -moz-appearance: menulist;
-  -webkit-appearance: menulist;
+	-moz-appearance: menulist;
+	-webkit-appearance: menulist;
 }
-
 
 select::-ms-expand {
-    display: block;
+	display: block;
 }
 
-select{
+select {
 	position: relative;
 	padding: 10px;
 	width: 100%;
@@ -179,78 +191,76 @@ select{
 
 .select-wrap {
 	display: inline-block;
-    position: relative;
-    width: 120px;
+	position: relative;
+	width: 120px;
 }
 
 .select-wrap:after {
-    content: "";
-    position: absolute;
-    right: 6px;
-    top: 15px;
-    width: 10px;
-    height: 10px;
-    border-top: 2px solid #ccc;
-    border-left: 2px solid #ccc;
-    transform: translateY(-50%) rotate(-135deg);
-    font-size: 1rem;
-    pointer-events: none;
+	content: "";
+	position: absolute;
+	right: 6px;
+	top: 15px;
+	width: 10px;
+	height: 10px;
+	border-top: 2px solid #ccc;
+	border-left: 2px solid #ccc;
+	transform: translateY(-50%) rotate(-135deg);
+	font-size: 1rem;
+	pointer-events: none;
 }
 
 .home .btn {
-	display: block;
-	--bs-btn-border-radius: 0.5rem;
-	--bs-btn-font-size: 1rem;
+	display: block; -
+	-bs-btn-border-radius: 0.5rem; -
+	-bs-btn-font-size: 1rem;
 	margin: 1rem 0rem;
 	box-shadow: 10px 10px 10px #666;
 }
 
-.btn:active{
-	border-color: transparent!important;
+.btn:active {
+	border-color: transparent !important;
 }
 
-.main-content #btn-sub{
+.main-content #btn-sub {
 	display: inline-block;
 	width: auto;
 }
 
-a.category-select, .each-puzzle{
+a.category-select, .each-puzzle {
 	display: block;
 	padding: 1rem;
 	width: 100%;
 	text-decoration: none;
-    /**
+	/**
     -webkit-transform: skewX(-15deg);
     transform: skewX(-15deg);
 
     **/
 }
 
-.common-btn{
+.common-btn {
 	display: block;
 	padding: 1rem;
 	width: 100%;
 	text-decoration: none;
 	margin-top: 30px;
 	margin-bottom: 30px;
-    color: white;
-    box-shadow: #bbb 2px 2px;
+	color: white;
+	box-shadow: #bbb 2px 2px;
 }
 
-a.category-select{
+a.category-select {
 	margin-top: 30px;
 	margin-bottom: 30px;
-    color: white;
-    box-shadow: #bbb 2px 2px;
+	color: white;
+	box-shadow: #bbb 2px 2px;
 }
 
+.puzzles-content {
 
-
-.puzzles-content{
-	
 }
 
-.each-puzzle{
+.each-puzzle {
 	position: relative;
 	padding: 0;
 	color: #FFF;
@@ -259,82 +269,81 @@ a.category-select{
 	border: solid #FFF 7px;
 }
 
-.puzzle-inner{
+.puzzle-inner {
 	padding: 1rem;
 	text-align: center;
 	box-shadow: #bbb 2px 2px;
 }
 
-
-.unsolvable{
+.unsolvable {
 	pointer-events: none;
 	z-index: 100;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    background-color: black;
-    opacity: 0.3;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	background-color: black;
+	opacity: 0.3;
 }
 
-.board-size{
+.board-size {
 	display: block;
 }
 
 .logic {
-	background-color: var(--bs-primary);
+	background-color: var(- -bs-primary);
 }
 
-.hardware{
-	background-color: var(--bs-primary);
+.hardware {
+	background-color: var(- -bs-primary);
 }
 
-.software{
-	background-color: var(--bs-info);
+.software {
+	background-color: var(- -bs-info);
 }
 
-.database{
-	background-color: var(--bs-orange);
+.database {
+	background-color: var(- -bs-orange);
 }
 
-.network{
+.network {
 	background-color: #6f42c1;
 }
 
-.security{
-	background-color: var(--bs-danger);
+.security {
+	background-color: var(- -bs-danger);
 }
 
-.system{
-	background-color: var(--bs-warning);
+.system {
+	background-color: var(- -bs-warning);
 }
 
-.management{
+.management {
 	background-color: #6610f2;
 }
 
-.strategy{
-	background-color: var(--bs-success);
+.strategy {
+	background-color: var(- -bs-success);
 }
 
-.kw-content{
+.kw-content {
 	font-size: 5vw;
-    margin: 0rem 1rem;
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+	margin: 0rem 1rem;
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
 }
 
-.board-content{
+.board-content {
 	position: relative;
 	width: fit-content;
 	z-index: 2;
 	background-color: transparent;
-    margin: 1rem auto 1rem;
+	margin: 1rem auto 1rem;
 }
 
-.top-canvas{
+.top-canvas {
 	z-index: -1;
 	width: 100%;
 	height: 100%;
@@ -343,7 +352,7 @@ a.category-select{
 	bottom: 0;
 }
 
-.bottom-canvas{
+.bottom-canvas {
 	z-index: -2;
 	width: 100%;
 	height: 100%;
@@ -352,58 +361,56 @@ a.category-select{
 	bottom: 0;
 }
 
-.selected{
-	color:white;
+.selected {
+	color: white;
 	font-size: 7.5vw;
 }
 
-
-
-span.letter{
-    vertical-align: middle;
-    height: 10vw;
-    line-height: 10vw;
-    width: 10vw;
-    display: inline-block;
-    font-size: 7vw;
-    text-align: center;
-    z-index: 5;
+span.letter {
+	vertical-align: middle;
+	height: 10vw;
+	line-height: 10vw;
+	width: 10vw;
+	display: inline-block;
+	font-size: 7vw;
+	text-align: center;
+	z-index: 5;
 }
 
-span.kw{
+span.kw {
 	margin-right: 1rem;
 	position: relative;
 }
 
 span.kw::after {
 	content: '';
-    width: 100%;
-    height: 2px;
-    background: #AAA;
-    transition: all 0.5s;
-    transform: scale(0,0);
-    transform-origin: left;
-    position: absolute;
-    top: 50%;
-    left: 0%;
+	width: 100%;
+	height: 2px;
+	background: #AAA;
+	transition: all 0.5s;
+	transform: scale(0, 0);
+	transform-origin: left;
+	position: absolute;
+	top: 50%;
+	left: 0%;
 }
 
 span.kw.deleted::after {
-  transform: scale(1,1);
+	transform: scale(1, 1);
 }
 
-.deleted{
+.deleted {
 	color: #AAA;
 }
 
-#good{
+#good {
 	display: none;
 	position: absolute;
 	top: 50%;
 	left: 0;
 }
 
-#screen-lock{
+#screen-lock {
 	height: 100%;
 	left: 0px;
 	position: absolute;
@@ -414,37 +421,35 @@ span.kw.deleted::after {
 	background-color: white;
 }
 
-#clear{
+#clear {
 	position: absolute;
-    top: 0;
+	top: 0;
 	height: 100%;
 	width: 100%;
 	display: none;
-	opacity:1;
-	z-index:99;
+	opacity: 1;
+	z-index: 99;
 	padding: 0%;
 	background-color: transparent;
-
 }
 
-#clear-inner{
+#clear-inner {
 	width: 60%;
 	margin: 20% auto;
 }
 
-
-.bg-indigo{
+.bg-indigo {
 	background-color: #6610f2;
 }
 
-.bg-purple{
+.bg-purple {
 	background-color: #6f42c1;
 }
 
-.bg-orange{
+.bg-orange {
 	background-color: #fd7e14
 }
 
-#news h1,p{
+#news h1, p {
 	text-align: center;
 }

@@ -23,16 +23,25 @@
 </head>
 <body class="drawer drawer--left">
 	<main role="main">
-		<div th:fragment="home_contents" th:remove="tag">
-		<!-- Page content -->
-			<h1>楽しんで受かる基本情報<br>TechSearchFE</h1>
-			<!--
-			<span th:if="${continue == true}">
-			<a class="btn btn-success" href="#">中断したゲームを開始する</a>
-			</span>
-			-->
-			<a class="btn btn-success" href="#">新しく始める</a>
-			
+		<div th:fragment="signup_contents" th:remove="tag">
+			<div class="signup-content">
+				<h1>ユーザー登録</h1>
+				<form>
+					<div class="form-div">
+						<label>ユーザーID</label> <input type="text" name="user_id"
+							placeholder="ユーザーIDを入力してください"><br>
+					</div>
+					<div class="form-div">
+						<label>パスワード</label> <input type="password" name="password"
+							placeholder="パスワードを入力してください">
+					</div>
+					<div class="form-div">
+						<label>メールアドレス</label> <input type="email" name="mail"
+							placeholder="メールアドレスを入力してください">
+					</div>
+					<button type="submit">登録する</button>
+				</form>
+			</div>
 		</div>
 	</main>
 	<footer>
