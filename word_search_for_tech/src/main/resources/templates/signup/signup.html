@@ -26,20 +26,24 @@
 		<div th:fragment="signup_contents" th:remove="tag">
 			<div class="signup-content">
 				<h1>ユーザー登録</h1>
-				<form>
-					<div class="form-div">
-						<label>ユーザーID</label> <input type="text" name="user_id"
-							placeholder="ユーザーIDを入力してください"><br>
+				<form th:action=@{/confirm} method ="post" th:object="${signupForm}">
+					<div class="form-div" th:classappend="${fields.hasErrors('userName')}?'has-error'">
+						<label>ユーザー名</label> <input th:field = "*{userName}" type="text" placeholder="ユーザー名を入力してください"><br>
 					</div>
 					<div class="form-div">
-						<label>パスワード</label> <input type="password" name="password"
-							placeholder="パスワードを入力してください">
+						<label>パスワード</label> <input th:field = "*{password}" type="password" placeholder="パスワードを入力してください">
 					</div>
 					<div class="form-div">
-						<label>メールアドレス</label> <input type="email" name="mail"
-							placeholder="メールアドレスを入力してください">
+						<label>メールアドレス</label> <input th:field = "*{email}" type="email" placeholder="メールアドレスを入力してください">
 					</div>
-					<button type="submit">登録する</button>
+					<div class="form-div">
+						<li th:each="error:${#fields.detailedErrors()}">
+						<span th:text="${error.message}">errorMsg</span>
+						</li>
+
+						</li>
+					</div>
+					<button type="submit" class="bg-success text-white" id="btn-submit">登録する</button>
 				</form>
 			</div>
 		</div>

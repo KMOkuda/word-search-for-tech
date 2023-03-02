@@ -38,7 +38,7 @@ header h1 {
 	text-align: center;
 	color: #FFFFFF;
 	padding: 0.6rem 0rem;
-	color: var(- -bs-green);
+	color: var(--bs-green);
 }
 
 header .inner {
@@ -76,7 +76,7 @@ header .inner {
 
 .drawer-menu-item {
 	font-size: 1rem;
-	border-bottom: dotted 3px var(- -bs-gray);
+	border-bottom: dotted 3px var(--bs-gray);
 }
 
 .drawer-menu-item:hover {
@@ -147,7 +147,7 @@ form select, form button {
 	background-color: #FFF;
 	width: 120px;
 	outline: auto;
-	outline-color: var(- -bs-green);
+	outline-color: var(--bs-green);
 	padding: 0.5rem;
 }
 
@@ -158,17 +158,35 @@ form option {
 
 label {
 	display: block;
+	font-weight: bold;
 }
 
+
 input{
-	height: 60px;
-    width: 70vw;
+	height: 50px;
+    width: 100%;
     border: 2px solid green;
     padding: 1rem;
+    border-radius:5px;
+}
+
+input::placeholder{
+	color: #AAA;
+}
+
+.form-div{
+	margin: 30px 0;
 }
 
 button{
 	display: block;
+}
+
+#btn-submit{
+	margin-top: 30px;
+	color:white;
+	text-align: center;
+	margin-left: auto;
 }
 
 select {
@@ -210,9 +228,9 @@ select {
 }
 
 .home .btn {
-	display: block; -
-	-bs-btn-border-radius: 0.5rem; -
-	-bs-btn-font-size: 1rem;
+	display: block;
+	--bs-btn-border-radius: 0.5rem;
+	--bs-btn-font-size: 1rem;
 	margin: 1rem 0rem;
 	box-shadow: 10px 10px 10px #666;
 }
@@ -292,19 +310,19 @@ a.category-select {
 }
 
 .logic {
-	background-color: var(- -bs-primary);
+	background-color: var(--bs-primary);
 }
 
 .hardware {
-	background-color: var(- -bs-primary);
+	background-color: var(--bs-primary);
 }
 
 .software {
-	background-color: var(- -bs-info);
+	background-color: var(--bs-info);
 }
 
 .database {
-	background-color: var(- -bs-orange);
+	background-color: var(--bs-orange);
 }
 
 .network {
@@ -312,11 +330,11 @@ a.category-select {
 }
 
 .security {
-	background-color: var(- -bs-danger);
+	background-color: var(--bs-danger);
 }
 
 .system {
-	background-color: var(- -bs-warning);
+	background-color: var(--bs-warning);
 }
 
 .management {
@@ -324,7 +342,7 @@ a.category-select {
 }
 
 .strategy {
-	background-color: var(- -bs-success);
+	background-color: var(--bs-success);
 }
 
 .kw-content {
