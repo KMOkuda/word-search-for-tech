@@ -1,0 +1,7 @@
+[{
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target" : { "namespace": "android_app", "package_name": "com.word_search_tech2.twa",
+                     "sha256_cert_fingerprints": ["42:C9:8A:9E:B4:E0:EF:02:C2:1F:EC:E0:26:CC:9A:0E:C0:E1:09:75:79:3D:E8:2E:0B:DE:E2:19:0B:16:30:E1",
+		                                  "51:36:A6:3D:53:40:57:19:C4:08:A5:95:2B:F8:C2:81:C0:EF:8D:A7:F4:2C:C0:6B:10:18:A6:82:9D:14:AB:BD"] }
+      }
+]
