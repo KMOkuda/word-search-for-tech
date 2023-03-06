@@ -117,7 +117,7 @@ header .inner {
 }
 
 .category-content, .puzzles-content, .error-content, .offline-content,
-	.policy-content, .signup-content {
+	.policy-content, .signup-content, .confirm-content {
 	padding-right: 10%;
 	padding-left: 10%;
 }

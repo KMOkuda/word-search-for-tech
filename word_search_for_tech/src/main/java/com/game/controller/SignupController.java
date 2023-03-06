@@ -34,7 +34,10 @@ public class SignupController {
 			System.out.println("hasErrors");
 			return getSignup(form, model);
 		}
-		model.addAttribute("contents", "signup/signup::signup_contents");
+		
+		model.addAttribute("contents", "signup/confirm::confirm_contents");
+		model.addAttribute("SignupForm", form);
+
 		return "layout";
 	}
 }

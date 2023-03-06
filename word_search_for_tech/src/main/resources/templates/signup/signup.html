@@ -27,23 +27,26 @@
 			<div class="signup-content">
 				<h1>ユーザー登録</h1>
 				<form th:action=@{/confirm} method ="post" th:object="${signupForm}">
-					<div class="form-div" th:classappend="${fields.hasErrors('userName')}?'has-error'">
-						<label>ユーザー名</label> <input th:field = "*{userName}" type="text" placeholder="ユーザー名を入力してください"><br>
+					<label><span class="text-danger">*は必須項目です</span></label>
+					<div class="form-div" th:classappend="${#fields.hasErrors('userName')}?'has-error'">
+						<label>ユーザー名 <span class="text-danger">*</span></label> <input th:field = "*{userName}" type="text" placeholder="ユーザー名を入力してください"><br>
+						<span class="text-danger" th:if="${#fields.hasErrors('userName')}"
+								th:errors="*{userName}"> userName error</span>
+					</div>
+					
+					<div class="form-div">
+						<label>パスワード <span class="text-danger">*</span></label> <input th:field = "*{password}" type="password" placeholder="パスワードを入力してください">
+						<span class="text-danger" th:if="${#fields.hasErrors('password')}"
+								th:errors="*{password}"> password error</span>
+					
 					</div>
 					<div class="form-div">
-						<label>パスワード</label> <input th:field = "*{password}" type="password" placeholder="パスワードを入力してください">
+						<label>メールアドレス <span class="text-danger">パスワードの再登録の際必要です。</span></label><input th:field = "*{email}" type="email" placeholder="メールアドレスを入力してください">
+						<span class="text-danger" th:if="${#fields.hasErrors('email')}"
+								th:errors="*{email}"> email error</span>
 					</div>
-					<div class="form-div">
-						<label>メールアドレス</label> <input th:field = "*{email}" type="email" placeholder="メールアドレスを入力してください">
-					</div>
-					<div class="form-div">
-						<li th:each="error:${#fields.detailedErrors()}">
-						<span th:text="${error.message}">errorMsg</span>
-						</li>
-
-						</li>
-					</div>
-					<button type="submit" class="bg-success text-white" id="btn-submit">登録する</button>
+					
+					<button type="submit" class="bg-success text-white" id="btn-submit">確認</button>
 				</form>
 			</div>
 		</div>
