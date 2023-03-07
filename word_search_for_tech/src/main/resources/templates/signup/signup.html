@@ -32,21 +32,28 @@
 						<label>ユーザー名 <span class="text-danger">*</span></label> <input th:field = "*{userName}" type="text" placeholder="ユーザー名を入力してください"><br>
 						<span class="text-danger" th:if="${#fields.hasErrors('userName')}"
 								th:errors="*{userName}"> userName error</span>
+						<span class="text-black" th:if="${!#fields.hasErrors('password')}"
+							th:text="5～15文字の半角英数字で入力して下さい"></span>
+
 					</div>
-					
+
 					<div class="form-div">
 						<label>パスワード <span class="text-danger">*</span></label> <input th:field = "*{password}" type="password" placeholder="パスワードを入力してください">
 						<span class="text-danger" th:if="${#fields.hasErrors('password')}"
 								th:errors="*{password}"> password error</span>
-					
+						<span class="text-black" th:if="${!#fields.hasErrors('password')}"
+							th:text="8～20文字の半角英数字で入力して下さい"></span>
 					</div>
 					<div class="form-div">
-						<label>メールアドレス <span class="text-danger">パスワードの再登録の際必要です。</span></label><input th:field = "*{email}" type="email" placeholder="メールアドレスを入力してください">
+						<label>メールアドレス: <span class="label-detail">パスワードの再登録用(推奨）</span></label>
+						<input th:field = "*{email}" type="email" placeholder="メールアドレスを入力してください">
 						<span class="text-danger" th:if="${#fields.hasErrors('email')}"
 								th:errors="*{email}"> email error</span>
+						<span class="text-black" th:if="${!#fields.hasErrors('email')}"
+								th:text="メール形式で入力して下さい"></span>
 					</div>
-					
-					<button type="submit" class="bg-success text-white" id="btn-submit">確認</button>
+
+					<button type="submit" class="bg-success text-white form-btn" id="btn-submit">確認</button>
 				</form>
 			</div>
 		</div>

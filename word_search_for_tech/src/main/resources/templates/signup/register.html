@@ -23,27 +23,21 @@
 </head>
 <body class="drawer drawer--left">
 	<main role="main">
-		<div th:fragment="confirm_contents" th:remove="tag">
-			<div class="confirm-content">
-				<h1>ユーザー登録</h1>
-				<form th:action=@{/register} method="post" th:object="${signupForm}">
-					<div class="form-div">
-						<label>ユーザー名</label> <span th:text="*{userName}"></span>
-						<input th:field = "*{userName}" type="hidden">
+		<div th:fragment="register_contents" th:remove="tag">
+			<div class="register-content">
+				<h1>以下の内容で登録しました。</h1>
+				<div class="form-div">
+					<label>ユーザー名</label> <span th:text="${signupForm.userName}"></span>
+				</div>
+				<div class="form-div">
+					<label>パスワード</label> <span th:text="セキュリティの為表示されません"></span>
+				</div>
+				<div class="form-div">
+					<label>メールアドレス</label> <span th:text="${signupForm.email}"></span>
+				</div>
+				<button class="bg-success text-white form-btn">ログイン画面へ</button>
 
-					</div>
-					<div class="form-div">
-						<label>パスワード</label> <span th:text="セキュリティの為表示されません"></span>
-						<input th:field = "*{password}" type="hidden">
-					</div>
-					<div class="form-div">
-						<label>メールアドレス</label> <span th:text="*{email}"></span>
-						<input th:field = "*{email}" type="hidden">
-					</div>
-
-			<button type="submit" class="bg-success text-white form-btn" id="btn-submit">登録</button>
-			</form>
-		</div>
+			</div>
 		</div>
 	</main>
 	<footer>

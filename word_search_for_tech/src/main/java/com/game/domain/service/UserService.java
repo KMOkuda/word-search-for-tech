@@ -1,10 +1,7 @@
 package com.game.domain.service;
 
-import org.springframework.stereotype.Service;
+import com.game.domain.model.SignupForm;
 
-@Service
 public interface UserService {
-	//ログイン処理も含まれる
-	int getLongestDuration(String userId);
-	int getCurrentDuration(String userId);
+	public boolean registerUser(SignupForm signupForm);
 }

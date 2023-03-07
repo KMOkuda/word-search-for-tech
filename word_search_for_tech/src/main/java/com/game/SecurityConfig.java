@@ -82,10 +82,5 @@ public class SecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 
-/**
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication()
-				.withUser("user").password("{noop}password").roles("USER");
-	}**/
+
 }

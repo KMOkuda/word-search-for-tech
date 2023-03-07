@@ -69,3 +69,10 @@ FOREIGN KEY (play_id)
 REFERENCES t_play(play_id)
 )
 ;
+
+CREATE TABLE IF NOT EXISTS t_user(
+user_id INT PRIMARY KEY AUTO_INCREMENT,
+user_name VARCHAR(20) NOT NULL,
+password VARCHAR(512) NOT NULL,
+email VARCHAR(254) NOT NULL
+);

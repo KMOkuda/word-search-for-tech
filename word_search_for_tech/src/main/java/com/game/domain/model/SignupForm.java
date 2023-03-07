@@ -11,14 +11,16 @@ import lombok.Data;
 @Data
 public class SignupForm {
 	@NotBlank
-	@Length(min = 6, max = 10)
+	@Length(min = 5, max = 15)
+	@Pattern(regexp = "^[a-zA-Z0-9]+$")
 	private String userName;
 
 	@NotBlank
 	@Length(min = 8, max = 20)
-	@Pattern(regexp = "^[a-zA-Z0-9.?/-]+$")
+	@Pattern(regexp = "^[a-zA-Z0-9]+$")
 	private String password;
 
 	@Email
+	@Length(max = 254)
 	private String email;
 }
