@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.game.domain.model.Login;
 import com.game.domain.model.SignupForm;
 import com.game.repository.UserDao;
 
@@ -22,5 +23,10 @@ public class UserServiceImpl implements UserService {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean loginSucceed(Login login) {
+		return false;
 	};
 }
