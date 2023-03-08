@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 
@@ -18,11 +20,11 @@ public class SecurityConfig {
 	@Autowired
 	private DataSource dataSource;
 
-	private static final String USER_SQL = "SELECT" + " user_id," + " password,"
-			+ " true" + " FROM" + " m_user" + " WHERE" + " user_id = ?";
+	private static final String USER_SQL = "SELECT" + " user_name," + " password,"
+			+ " true" + " FROM" + " t_user" + " WHERE" + " user_name = ?";
 
 	private static final String ROLE_SQL = "SELECT" + " user_id," + " role" + " FROM"
-			+ " m_user" + " WHERE" + " user_id = ?";
+			+ " t_user" + " WHERE" + " user_id = ?";
 
 	/**
 	 * @param http
@@ -52,6 +54,8 @@ public class SecurityConfig {
 				.loginProcessingUrl("/login")
 				.loginPage("/login")
 				.failureUrl("/login")
+				.usernameParameter("userName")
+				.passwordParameter("password")
 				.defaultSuccessUrl("/", true)
 				.permitAll();
 /**
@@ -65,17 +69,20 @@ public class SecurityConfig {
 
 	//参考URL：https://qiita.com/okaponta_/items/de1e640037b89b3ad6ca
 	//ログイン処理時のユーザー情報をDBから取得する
-	/**
+
 	@Bean
 	public UserDetailsManager users(DataSource dataSource) {
+		System.out.println("udm");
 		JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
 
 		users.setUsersByUsernameQuery(USER_SQL);
-		users.setAuthoritiesByUsernameQuery(ROLE_SQL);
+		//users.setAuthoritiesByUsernameQuery(ROLE_SQL);
+
+		System.out.println(users.getUsersByUsernameQuery());
 
 		return users;
 	}
-**/
+
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {

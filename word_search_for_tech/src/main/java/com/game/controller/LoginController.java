@@ -26,7 +26,7 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
-	public String postLogin(Model model, @ModelAttribute Login login, BindingResult bindingResult) {
+	public String postLogin(Model model, @ModelAttribute Login login) {
 
 		if (userService.loginSucceed(login)) {
 			model.addAttribute("Login", login);
@@ -34,6 +34,7 @@ public class LoginController {
 			return "layout";
 		} else {
 			model.addAttribute("Login", login);
+			System.out.println("failed.");
 			model.addAttribute("failureMsg", "ユーザー名もしくはパスワードが違います");
 			model.addAttribute("contents", "login/login::login_contents");
 			return "layout";

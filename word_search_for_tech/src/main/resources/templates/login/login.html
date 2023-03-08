@@ -27,7 +27,7 @@
 			<div class="login-content">
 				<h1>ログイン</h1>
 				<form th:action=@{/login} method ="post" th:object="${login}">
-					<span th:if="${failureMsg != null}" th:text="${failureMsg}"></span>
+					<span th:text="${failureMsg}"></span>
 					<div class="form-div">
 						<label>ユーザー名</label>
 						<input th:field = "*{userName}" type="text" placeholder="ユーザー名を入力してください"><br>
