@@ -23,8 +23,8 @@ public class SecurityConfig {
 	private static final String USER_SQL = "SELECT" + " user_name," + " password,"
 			+ " true" + " FROM" + " t_user" + " WHERE" + " user_name = ?";
 
-	private static final String ROLE_SQL = "SELECT" + " user_id," + " role" + " FROM"
-			+ " t_user" + " WHERE" + " user_id = ?";
+	private static final String ROLE_SQL = "SELECT" + " user_name," + " role" + " FROM"
+			+ " t_user" + " WHERE" + " user_name = ?";
 
 	/**
 	 * @param http
@@ -72,11 +72,10 @@ public class SecurityConfig {
 
 	@Bean
 	public UserDetailsManager users(DataSource dataSource) {
-		System.out.println("udm");
 		JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
 
 		users.setUsersByUsernameQuery(USER_SQL);
-		//users.setAuthoritiesByUsernameQuery(ROLE_SQL);
+		users.setAuthoritiesByUsernameQuery(ROLE_SQL);
 
 		System.out.println(users.getUsersByUsernameQuery());
 
