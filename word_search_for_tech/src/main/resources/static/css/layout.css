@@ -369,7 +369,30 @@ a.category-select {
     aspect-ratio: 1;
     border-radius: 1rem;
 	padding: 1rem;
+}
+
+.category-inner.software{
     box-shadow: 0 2px 0 #0ab0d1;
+}
+
+.category-inner.security{
+    box-shadow: 0 2px 0 #a32733;
+}
+
+.category-inner.network{
+    box-shadow: 0 2px 0 #4b2c82;
+}
+
+.category-inner.database{
+    box-shadow: 0 2px 0 #bd5e0f;
+}
+
+.category-inner.strategy{
+    box-shadow: 0 2px 0 #0f5233;
+}
+
+.category-inner.logic{
+	box-shadow: 0 2px 0 #0b50b5;
 }
 
 
