@@ -76,7 +76,7 @@ header .inner {
 
 .drawer-menu-item {
 	font-size: 1rem;
-	border-bottom: dotted 3px var(--bs-gray);
+	border-bottom: dotted 4px var(--bs-gray);
 }
 
 .drawer-menu-item:hover {
@@ -352,70 +352,76 @@ a.category-select {
 	background-color: var(--bs-success);
 }
 
-.category-wrapper{
+.col2-btn-wrapper{
 	display:flex;
 	flex-wrap: wrap;
 }
 
-.category-item-container{
+.col2-btn-link{
+
+}
+
+.col2-btn-item-container{
 	width: 50%;
 	border: 10px solid white;
 }
 
-.category-inner{
-	display: inline-block;
+.col2-btn-inner{
+	display: flex;
+	flex-direction: column;
 	text-align: center;
     width: 100%;
     aspect-ratio: 1;
     border-radius: 1rem;
-	padding: 1rem;
+	padding: 10%;
+	justify-content: space-between;
+	color: white;
 }
 
-.category-inner.software{
+.col2-btn-inner.software{
     box-shadow: 0 2px 0 #0ab0d1;
 }
 
-.category-inner.security{
+.col2-btn-inner.security{
     box-shadow: 0 2px 0 #a32733;
 }
 
-.category-inner.network{
+.col2-btn-inner.network{
     box-shadow: 0 2px 0 #4b2c82;
 }
 
-.category-inner.database{
+.col2-btn-inner.database{
     box-shadow: 0 2px 0 #bd5e0f;
 }
 
-.category-inner.strategy{
+.col2-btn-inner.strategy{
     box-shadow: 0 2px 0 #0f5233;
 }
 
-.category-inner.logic{
+.col2-btn-inner.logic{
 	box-shadow: 0 2px 0 #0b50b5;
 }
 
 
-.category-inner:active {
+.col2-btn-inner:active {
   box-shadow: none;
   transform: translateY(5px);
 }
 
-.category-icon-container{
+.col2-btn-icon-container{
 	display: flex;
     position: relative;
     justify-content: center;
     align-items: center;
 }
 
-.category-icon{
+.col2-btn-icon{
 	height: auto;
 }
 
-.category-description{
+.col2-btn-description{
 	display: inline-block;
-	margin-top: 0.25rem;
-	font-size: 120%;
+	font-size: 4vw;
     font-weight: 400;
     color: white;
 }

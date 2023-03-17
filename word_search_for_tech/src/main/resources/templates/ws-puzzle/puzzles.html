@@ -30,11 +30,11 @@
 					<h1>遊びたいパズルを選んで下さい</h1>
 				</div>
 
-				<div class="flex-wrap">
+				<div class="col2-btn-wrapper">
 
-					<div th:class="each-puzzle" th:each="puzzle : ${puzzleList}"
+					<div th:class="col2-btn-item-container" th:each="puzzle : ${puzzleList}"
 						th:object="${puzzle}">
-						<div class="puzzle-inner bg-gradient"
+						<div class="col2-btn-inner bg-gradient"
 							th:classappend="${puzzle.categoryClass} + ' lv' + ${puzzle.levelId}">
 
 							<div class="id" th:text="'#' + *{puzzleId}"></div>
@@ -51,7 +51,7 @@
 			</div>
 			<script>
 				$(function() {
-					$('.each-puzzle')
+					$('.col2-btn-item-container')
 							.on(
 									'touchstart',
 									function() {
