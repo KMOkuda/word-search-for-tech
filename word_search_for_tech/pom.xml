@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>released</artifactId>
-	<version>0.0.5</version>
+	<version>1.0.1</version>
 	<name>released</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -120,14 +120,14 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
-		
+
 		<!-- mysql -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>
