@@ -264,14 +264,24 @@ a.category-select, .each-puzzle {
 }
 
 .common-btn {
-	display: block;
-	padding: 1rem;
+	display: inline-block;
 	width: 100%;
+	padding: 1rem;
 	text-decoration: none;
-	margin-top: 30px;
-	margin-bottom: 30px;
+	margin-top: 20px;
+	margin-bottom: 20px;
 	color: white;
+	border-radius: 0.8rem;
 	box-shadow: #bbb 2px 2px;
+}
+
+.common-btn.bg-primary{
+	box-shadow: #0b50b5 2px 2px;
+}
+
+.common-btn:active{
+	box-shadow: none;
+	transform: translateY(5px);
 }
 
 a.category-select {
@@ -535,6 +545,7 @@ span.kw.deleted::after {
 #clear-inner {
 	width: 60%;
 	margin: 20% auto;
+	text-align: center;
 }
 
 .bg-indigo {
@@ -561,4 +572,18 @@ span.kw.deleted::after {
 .label-detail{
 	font-weight: normal;
 	font-size: 90%;
+}
+
+.ret-container{
+	margin-bottom: 30px;
+}
+
+.ret-btn{
+	display: inline-block;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	font-size: 80%;
+	text-decoration: none;
+	color: white;
 }
