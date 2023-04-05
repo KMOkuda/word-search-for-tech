@@ -289,6 +289,13 @@ function endDraw(e) {
 		return;
 	}
 
+	if (fromId == toId) {
+		//一文字の場合の送信はなし
+		refleshFont(tmpSelectList);
+		topContext.clearRect(0, 0, topCanvasElm.width, topCanvasElm.height);
+		return;
+	}
+
 
 	let header = $("meta[name='_csrf_header']").attr("content");
 	let token = $("meta[name='_csrf']").attr("content");
