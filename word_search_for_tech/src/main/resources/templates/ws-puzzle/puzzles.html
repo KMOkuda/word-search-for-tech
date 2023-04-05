@@ -59,8 +59,10 @@
 							<div class="width" th:text="*{width}" hidden></div>
 							<div class="height" th:text="*{height}" hidden></div>
 						</div>
-
 					</div>
+				</div>
+				<div class="center-container">
+					<a th:classappend="'common-btn ' + ${puzzleList[0].categoryClass} " href="/ws-category">カテゴリーに戻る</a>
 				</div>
 			</div>
 			<script>

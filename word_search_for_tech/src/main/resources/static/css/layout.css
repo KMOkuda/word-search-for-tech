@@ -388,27 +388,27 @@ a.category-select {
 	color: white;
 }
 
-.col2-btn-inner.software{
+.software{
     box-shadow: 0 2px 0 #0ab0d1;
 }
 
-.col2-btn-inner.security{
+.security{
     box-shadow: 0 2px 0 #a32733;
 }
 
-.col2-btn-inner.network{
+.network{
     box-shadow: 0 2px 0 #4b2c82;
 }
 
-.col2-btn-inner.database{
+.database{
     box-shadow: 0 2px 0 #bd5e0f;
 }
 
-.col2-btn-inner.strategy{
+.strategy{
     box-shadow: 0 2px 0 #0f5233;
 }
 
-.col2-btn-inner.logic{
+.logic{
 	box-shadow: 0 2px 0 #0b50b5;
 }
 
@@ -574,11 +574,16 @@ span.kw.deleted::after {
 	font-size: 90%;
 }
 
+.center-container{
+	text-align: center;
+}
+
 .ret-container{
 	margin-bottom: 30px;
 }
 
 .ret-btn{
+
 	display: inline-block;
 	position: absolute;
 	top: 10px;
