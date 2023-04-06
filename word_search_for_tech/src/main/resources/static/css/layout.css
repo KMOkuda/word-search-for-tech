@@ -6,22 +6,23 @@ html {
 }
 
 body {
-	height: 100%;
+	min-height: 100%;
 }
 
 main {
 	position: relative;
 	margin: 0;
 	padding: 0;
-	background-color: white;
-	height: calc(100vh - 50px);
+	background-image: url(https://word-search-tech.com/image/back-ground-image.jpg);
+	height: calc(100vh - 60px);
 }
 
 header {
+	background-color: white;
 	position: relative;
 	box-shadow: 2px 2px 2px #CCC;
 	z-index: 1000;
-	height: 50px;
+	height: 60px;
 }
 
 a {
@@ -34,11 +35,12 @@ a {
 }
 
 header h1 {
-	font-size: 1.5rem;
+	font-size: 1.7rem;
 	text-align: center;
-	color: #FFFFFF;
-	padding: 0.6rem 0rem;
-	color: var(--bs-green);
+	color: var(--bs-success);
+	padding: 0rem 1rem;
+	margin: 0;
+	line-height: 60px;
 }
 
 header .inner {
@@ -52,18 +54,19 @@ header .inner {
 .drawer-nav {
 	padding: 3% 3%;
 	z-index: 9999;
+	font-weight: bold;
 }
 
 .drawer-hamburger {
 	position: fixed;
-	padding: 10px;
+	padding: 17px;
 	width: 1.5rem;
 	height: auto;
 }
 
 .drawer-hamburger-icon, .drawer-hamburger-icon:after,
 	.drawer-hamburger-icon:before {
-	background-color: #999;
+	background-color: #666;
 }
 
 .drawer-hamburger-icon:after {
@@ -96,6 +99,11 @@ header .inner {
 	bottom: 0;
 }
 
+.main-content {
+	height: 100%;
+	min-height: 100%;
+}
+
 .main-content h1 {
 	font-size: 1.5rem;
 	margin-bottom: 1.5rem;
@@ -103,8 +111,10 @@ header .inner {
 }
 
 #m-inner {
-	padding: 10% 0%;
+	background-color: rgba(255, 255, 255, 0.5);
+	padding: 30px 0%;
 	min-height: 100%;
+	height: 100%;
 }
 
 .h1-wrapper {
@@ -118,8 +128,10 @@ header .inner {
 
 .category-content, .puzzles-content, .error-content, .offline-content,
 	.policy-content, .signup-content, .confirm-content, .register-content, .login-content{
-	padding-right: 10%;
-	padding-left: 10%;
+	height: 100%;
+	margin-right: 10%;
+	margin-left: 10%;
+	position: relative;
 }
 
 .error-content h1, .error-content p {
@@ -271,15 +283,16 @@ a.category-select, .each-puzzle {
 	margin-top: 20px;
 	margin-bottom: 20px;
 	color: white;
+	background-color: var(--bs-success);
 	border-radius: 0.8rem;
-	box-shadow: #bbb 2px 2px;
+	box-shadow: 0px 2px #0f5233;
 }
 
 .common-btn.bg-primary{
-	box-shadow: #0b50b5 2px 2px;
+	box-shadow: #0b50b5 0px 2px;
 }
 
-.common-btn:active{
+.common-btn:active, .ret-btn:active{
 	box-shadow: none;
 	transform: translateY(5px);
 }
@@ -373,7 +386,7 @@ a.category-select {
 
 .col2-btn-item-container{
 	width: 50%;
-	border: 10px solid white;
+	border: 10px solid transparent;
 }
 
 .col2-btn-inner{
@@ -382,9 +395,10 @@ a.category-select {
 	text-align: center;
     width: 100%;
     aspect-ratio: 1;
-    border-radius: 1rem;
+    border-radius: 0.8rem;
 	padding: 10%;
 	justify-content: space-between;
+	font-weight: bold;
 	color: white;
 }
 
@@ -432,24 +446,28 @@ a.category-select {
 .col2-btn-description{
 	display: inline-block;
 	font-size: 4vw;
-    font-weight: 400;
     color: white;
 }
 
 .kw-content {
 	font-size: 5vw;
-	margin: 0rem 1rem;
+	padding: 1rem;
 	display: flex;
 	justify-content: flex-start;
 	flex-wrap: wrap;
+	background-color: white;
+	border: 1px solid #229C7B;
 }
 
 .board-content {
 	position: relative;
-	width: fit-content;
-	z-index: 2;
-	background-color: transparent;
-	margin: 1rem auto 1rem;
+    width: 100%;
+    padding: 2vw;
+    z-index: 2;
+    background-color: white;
+    margin: 30px auto 30px;
+    border: 1px solid #229C7B;
+    text-align: center;
 }
 
 .top-canvas {
@@ -477,9 +495,9 @@ a.category-select {
 
 span.letter {
 	vertical-align: middle;
-	height: 10vw;
-	line-height: 10vw;
-	width: 10vw;
+	height: 9.5vw;
+	line-height: 9.5vw;
+	width: 9.5vw;
 	display: inline-block;
 	font-size: 7vw;
 	text-align: center;
@@ -487,25 +505,26 @@ span.letter {
 }
 
 span.kw {
-	margin-right: 1rem;
+	margin-left: 0.7rem;
+	margin-right: 0.7rem;
 	position: relative;
 }
 
 span.kw::after {
 	content: '';
 	width: 100%;
-	height: 2px;
+	height: 1px;
 	background: #AAA;
 	transition: all 0.5s;
 	transform: scale(0, 0);
 	transform-origin: left;
 	position: absolute;
 	top: 50%;
-	left: 0%;
+	left: -7%;
 }
 
 span.kw.deleted::after {
-	transform: scale(1, 1);
+	transform: scale(1.14, 1);
 }
 
 .deleted {
@@ -583,12 +602,14 @@ span.kw.deleted::after {
 }
 
 .ret-btn{
-
 	display: inline-block;
 	position: absolute;
-	top: 10px;
-	left: 10px;
+	bottom: 0;
+	right: 0;
 	font-size: 80%;
 	text-decoration: none;
 	color: white;
+	background-color: var(--bs-success);
+	border-radius: 30%;
+	box-shadow: 0px 2px #0f5233;
 }
